@@ -5,6 +5,8 @@
 // components
 #include "components/Input.h"
 
+#include <optional>
+
 class Player
 {
 public:
@@ -42,7 +44,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	// 行動パターン
-	enum class ActionPattarn {
+	enum class Behavior {
 		NONE,	 // 何もつかんでいない
 		GRAB,	 // つかんだ瞬間
 		GRABING, // つかんでいるとき
@@ -50,6 +52,9 @@ private:
 		WAITING, // ラリアットするまでの待ち時間
 		LARIAT	 // ラリアット
 	};
+	Behavior behavior_ = Behavior::NONE;
+	// 次の振るまいリクエスト
+	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
 	// つかんだ瞬間のフレーム
 	int grabFrame_;

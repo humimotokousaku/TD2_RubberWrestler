@@ -43,6 +43,56 @@ void Player::Update() {
 
 	}
 
+	// 初期化
+	if (behaviorRequest_) {
+		//  振るまいを変更
+		behavior_ = behaviorRequest_.value();
+		switch (behavior_) {
+			// 何もつかんでいないとき
+		case Behavior::NONE:
+			break;
+			// つかむ瞬間
+		case Behavior::GRAB:
+			break;
+			// つかんでいるとき
+		case Behavior::GRABING:
+			break;
+			// 投げた瞬間
+		case Behavior::THROW:
+			break;
+			// 待機中
+		case Behavior::WAITING:
+			break;
+			// ラリアット
+		case Behavior::LARIAT:
+			break;
+		}
+		// 振るまいリクエストをリセット
+		behaviorRequest_ = std::nullopt;
+	}
+
+	// 更新処理
+	switch (behavior_) {
+		// 何もつかんでいないとき
+	case Behavior::NONE:
+		break;
+		// つかむ瞬間
+	case Behavior::GRAB:
+		break;
+		// つかんでいるとき
+	case Behavior::GRABING:
+		break;
+		// 投げた瞬間
+	case Behavior::THROW:
+		break;
+		// 待機中
+	case Behavior::WAITING:
+		break;
+		// ラリアット
+	case Behavior::LARIAT:
+		break;
+	}
+
 	// ワールドトランスフォームを更新
 	worldTransform_.UpdateMatrix();
 }
