@@ -21,7 +21,6 @@
 #include "../components/camera/Camera.h"
 #include "../components/camera/DebugCamera.h"
 #include "../components/Input.h"
-#include "../components/Audio.h"
 
 #pragma endregion
 
@@ -74,10 +73,6 @@ private:
 	TextureManager* textureManager_;
 	ImGuiManager* imGuiManager_;
 	Input* input_;
-	Audio* audio_;
-	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	IXAudio2MasteringVoice* masterVoice_;
-	SoundData soundData1_;
 
 	// scene
 	IScene* sceneArr_[4];

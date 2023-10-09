@@ -2,6 +2,7 @@
 #include "../Manager/GameManager.h"
 
 void GameScene::Initialize() {
+	// シーンの切り替え
 	sceneNum = GAME_SCENE;
 	// 基本機能の生成
 	audio_ = Audio::GetInstance();
@@ -17,11 +18,12 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		sceneNum = GAMEOVER_SCENE;
+	}
 	viewProjection_.UpdateMatrix();
-
 	// 自機
 	player_->Update();
-
 }
 
 void GameScene::Draw() {

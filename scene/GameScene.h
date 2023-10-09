@@ -7,6 +7,8 @@
 #include "../components/Input.h"
 // gameObject
 #include "../Player.h"
+// object
+#include "../object/Sprite.h"
 
 #include <memory>
 
@@ -29,10 +31,14 @@ private:
 	Audio* audio_;
 	Input* input_;
 
+	Sprite* sprite_;
+
 	// 自機
 	std::unique_ptr<Player> player_;
 
 	// カメラ
 	ViewProjection viewProjection_;
+
+	WorldTransform worldTransform_;
 };
 

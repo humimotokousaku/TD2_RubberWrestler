@@ -3,6 +3,8 @@
 #include "../VertexData.h"
 #include "../Transform.h"
 #include "../TransformationMatrix.h"
+#include "../base/WorldTransform.h"
+#include "../base/ViewProjection.h"
 #include "../base/DirectXCommon.h"
 #include "../Material.h"
 #include <d3d12.h>
@@ -11,30 +13,48 @@
 class Sprite
 {
 public:
+	/// 
+	/// Default Method
+	/// 
+	
+	// デストラクタ
 	~Sprite();
 
-	void Initialize();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="isBackGround">この画像を背景にするか前景にするか</param>
+	void Initialize(bool isBackGround);
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	/// <param name="pos">座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
-	void Draw(Vector3 pos, int textureNum);
+	void Draw(int textureNum);
 
-	void Release();
+	// 解放処理
+	void Finalize();
 
-	void ImGuiAdjustParameter();
-
+	// メモリの確保やアドレス取得
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
-
 	void CreateVertexResource();
-
 	void CreateVertexBufferView();
-
 	void CreateMaterialResource();
 
-	void CreateWvpResource();
+	///
+	///User Method
+	/// 
+
+	/// <summary>
+	/// 座標の変更
+	/// </summary>
+	/// <param name="leftTop">左上の座標</param>
+	void SetPosition(Vector2 leftTop) {
+		worldTransform_.translation_.x = leftTop.x;
+		worldTransform_.translation_.y = leftTop.y;
+	}
+
 private:	
 	// Material
 	Material* materialData_;
@@ -52,9 +72,8 @@ private:
 	// Sprite
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_;
 	TransformationMatrix* transformationMatrixData_;
-	Transform transform_;
-	Matrix4x4 viewMatrix_;
-	Matrix4x4 projectionMatrix_;
-	Matrix4x4 worldViewProjectionMatrix_;
+
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
 };
 
