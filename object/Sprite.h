@@ -3,6 +3,8 @@
 #include "../VertexData.h"
 #include "../Transform.h"
 #include "../TransformationMatrix.h"
+#include "../base/WorldTransform.h"
+#include "../base/ViewProjection.h"
 #include "../base/DirectXCommon.h"
 #include "../Material.h"
 #include <d3d12.h>
@@ -11,31 +13,40 @@
 class Sprite
 {
 public:
+	/// 
+	/// Default Method
+	/// 
+
+	// デストラクタ
 	~Sprite();
 
-	void Initialize();
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="isBackGround">この画像を背景にするか前景にするか</param>
+	void Initialize(bool isBackGround);
 
 	/// <summary>
 	/// 描画処理
 	/// </summary>
 	/// <param name="pos">座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
-	void Draw(Vector3 pos, int textureNum);
+	void Draw(WorldTransform worldTransform,int textureNum);
 
-	void Release();
+	// 解放処理
+	void Finalize();
 
-	void ImGuiAdjustParameter();
-
+	// メモリの確保やアドレス取得
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
-
 	void CreateVertexResource();
-
 	void CreateVertexBufferView();
-
 	void CreateMaterialResource();
 
-	void CreateWvpResource();
-private:	
+	///
+	///User Method
+	/// 
+
+private:
 	// Material
 	Material* materialData_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource_;
@@ -52,9 +63,7 @@ private:
 	// Sprite
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_;
 	TransformationMatrix* transformationMatrixData_;
-	Transform transform_;
-	Matrix4x4 viewMatrix_;
-	Matrix4x4 projectionMatrix_;
-	Matrix4x4 worldViewProjectionMatrix_;
-};
 
+	bool isBackGround_ = false;
+	ViewProjection viewProjection_;
+};
