@@ -64,7 +64,7 @@ void Sprite::Initialize(bool isBackGround) {
 	viewProjection_.constMap->projection = MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kClientWidth_), float(WinApp::kClientHeight_), 0.0f, 100.0f);
 }
 
-void Sprite::Draw(WorldTransform worldTransform, int textureNum) {
+void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum) {
 	// このスプライトが背景なら
 	if (isBackGround_) {
 		worldTransform.translation_.z = 10000;
@@ -74,10 +74,15 @@ void Sprite::Draw(WorldTransform worldTransform, int textureNum) {
 	}
 	// 更新
 	worldTransform.UpdateMatrix();
+
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
+
+	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(PipelineManager::GetInstance()->GetRootSignature()[blendNum].Get());
+	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(PipelineManager::GetInstance()->GetGraphicsPipelineState()[blendNum].Get()); // PSOを設定
 
 	// コマンドを積む
 	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定

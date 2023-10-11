@@ -70,6 +70,24 @@
     <Filter Include="ヘッダー ファイル\components\camera">
       <UniqueIdentifier>{64cb0be1-4cde-45a1-94d0-fbe462d1991a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject">
+      <UniqueIdentifier>{12e87df1-5fb4-411f-9848-64c6e87f8a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject">
+      <UniqueIdentifier>{cbe1f927-c64e-4401-ac00-38dd502a9e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\Player">
+      <UniqueIdentifier>{9b6d530b-e46e-4efb-b4ee-a89ce6562715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\Enemy">
+      <UniqueIdentifier>{2a52d1c6-70c0-451a-8097-ef3268e8cc55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject\Player">
+      <UniqueIdentifier>{21926cfd-6abe-40d0-a8f9-eceb4b7321c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject\Enemy">
+      <UniqueIdentifier>{4c551f0c-50f5-440d-88e0-db7370fc4f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -176,6 +194,15 @@
     </ClCompile>
     <ClCompile Include="base\Model.cpp">
       <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\ICharacter.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Enemy\Enemy.cpp">
+      <Filter>ソース ファイル\gameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Player\Player.cpp">
+      <Filter>ソース ファイル\gameObject\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +343,15 @@
     </ClInclude>
     <ClInclude Include="base\Model.h">
       <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\ICharacter.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\gameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Player\Player.h">
+      <Filter>ヘッダー ファイル\gameObject\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

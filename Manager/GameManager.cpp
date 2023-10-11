@@ -28,25 +28,12 @@ void GameManager::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	// Audioの初期化
-	audio_ = Audio::GetInstance();
-
-	HRESULT result;
-	// Xaudio2エンジンのインスタンスを生成
-	result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	// マスターボイスを生成
-	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
-	// 音声読み込み
-	soundData1_ = audio_->SoundLoadWave("resources/fanfare.wav");
-	// 音声再生
-	audio_->SoundPlayWave(xAudio2_.Get(), soundData1_);
-
 	// Textureの初期化
 	textureManager_ = TextureManager::GetInstance();
 	textureManager_->TextureManager::GetInstance()->Initialize();
 
 	// エンジンの初期化
-	myEngine_ = new MyEngine();
+	myEngine_ = PipelineManager::GetInstance();
 	myEngine_->Initialize();
 
 	// ライトの設定
@@ -69,7 +56,7 @@ void GameManager::Initialize() {
 	//GlobalVariables::GetInstance()->LoadFiles();
 
 	//初期シーンの設定
-	sceneNum_ = TITLE_SCENE;
+	sceneNum_ = GAME_SCENE;
 	// シーンごとの初期化
 	sceneArr_[sceneNum_]->Initialize();
 }
@@ -149,12 +136,9 @@ void GameManager::Finalize() {
 	// ImGui
 	imGuiManager_->Release();
 	delete imGuiManager_;
-	delete myEngine_;
 	textureManager_->Release();
 	directXCommon_->Release();
 	CloseWindow(winApp_->GetHwnd());
-	xAudio2_.Reset();
-	audio_->SoundUnload(&soundData1_);
 	// Textureのゲーム終了処理
 	textureManager_->ComUninit();
 }

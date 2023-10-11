@@ -2,22 +2,33 @@
 #include "../Manager/ImGuiManager.h"
 
 void TitleScene::Initialize() {
+	// シーンの切り替え
 	sceneNum = TITLE_SCENE;
+
 	// 基本機能
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
-	viewProjection_.Initialize();
+	worldTransform_.Initialize();
+
+	// タイトル文字
+	titleName_ = new Sprite();
+	titleName_->Initialize(false);
 }
 
 void TitleScene::Update() {
-	viewProjection_.UpdateViewMatrix();
-	viewProjection_.TransferMatrix();
+	if (input_->TriggerKey(DIK_RETURN)) {
+		sceneNum = GAME_SCENE;
+	}
+
+	worldTransform_.UpdateMatrix();
 }
 
 void TitleScene::Draw() {
+	titleName_->Draw(worldTransform_, 0, kBlendModeNone);
 }
 
 void TitleScene::Finalize() {
-	viewProjection_.constBuff_.ReleaseAndGetAddressOf();
+	delete titleName_;
+	worldTransform_.constBuff_.ReleaseAndGetAddressOf();
 }

@@ -1,5 +1,9 @@
 #pragma once
 #include "IScene.h"
+// object
+#include "../object/Sprite.h"
+// components
+#include "../components/Input.h"
 
 class GameManager;
 class GameOver : public IScene
@@ -16,6 +20,9 @@ public:
 
 	void Finalize()override;
 private:
+	Input* input_;
 
+	WorldTransform worldTransform_;
+	Sprite* gameOver_;
 };
 
