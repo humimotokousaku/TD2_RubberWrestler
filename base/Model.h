@@ -6,11 +6,19 @@
 #include "ViewProjection.h"
 #include "../Material.h"
 #include "MaterialData.h"
+#include "../Manager/PipelineManager.h"
 #include <d3d12.h>
 
 class Model
 {
 public:
+
+	~Model() = default;
+
+	void Initialize(const std::string& directoryPath, const std::string& filename);
+
+	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber, int blendNum);
+
 	ModelData GetModelData() { return modelData_; }
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
@@ -23,11 +31,8 @@ public:
 
 	static Model* CreateModelFromObj(const std::string& directoryPath, const std::string& filename);
 
+private:
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
-
-	void Initialize(const std::string& directoryPath, const std::string& filename);
-
-	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber);
 
 private:
 	// Material

@@ -409,12 +409,21 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 	return result;
 }
 
-// スカラー倍
+// ベクトルとベクトルの掛け算
 Vector3 Multiply(const Vector3& v1, const Vector3& v2) {
 	Vector3 result;
 	result.x = v1.x * v2.x;
 	result.y = v1.y * v2.y;
 	result.z = v1.z * v2.z;
+	return result;
+}
+
+// スカラー倍
+Vector3 Multiply(const float& scalar, const Vector3& v) {
+	Vector3 result;
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
 	return result;
 }
 

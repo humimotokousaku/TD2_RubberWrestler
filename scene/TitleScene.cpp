@@ -9,21 +9,26 @@ void TitleScene::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	worldTransform_.Initialize();
+
 	// タイトル文字
 	titleName_ = new Sprite();
 	titleName_->Initialize(false);
 }
 
 void TitleScene::Update() {
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_RETURN)) {
 		sceneNum = GAME_SCENE;
 	}
+
+	worldTransform_.UpdateMatrix();
 }
 
 void TitleScene::Draw() {
-	titleName_->Draw(TITLE);
+	titleName_->Draw(worldTransform_, TITLE, kBlendModeNone);
 }
 
 void TitleScene::Finalize() {
 	delete titleName_;
+	worldTransform_.constBuff_.ReleaseAndGetAddressOf();
 }

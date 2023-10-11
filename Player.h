@@ -31,6 +31,17 @@ public:
 	// 解放処理
 	void Finalize();
 
+	///
+	/// User Method
+	/// 
+
+	// 入力処理
+	void ProcessUserInput();
+
+	Vector3 GetWorldPosition();
+
+	void SetParent(const WorldTransform* parent);
+
 private:
 	// 入力
 	Input* input_;
@@ -57,10 +68,10 @@ private:
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
 	// つかんだ瞬間のフレーム
-	int grabFrame_;
+	int grabFrame_ = 4;
 	// 投げた時のフレーム
-	int throwFrame_;
+	int throwFrame_ = 10;
 	// ラリアットした時のフレーム
-	int lariatFrame_;
+	int lariatFrame_ = 60;
 };
 

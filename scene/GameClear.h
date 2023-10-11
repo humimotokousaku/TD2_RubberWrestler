@@ -27,6 +27,7 @@ private:
 	IXAudio2MasteringVoice* masterVoice_;
 	SoundData soundData1_;
 
+	WorldTransform worldTransform_;
 	Sprite* gameClear_;
 };
 

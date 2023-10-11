@@ -107,6 +107,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="components\camera\DebugCamera.cpp" />
     <ClCompile Include="components\Input.cpp" />
     <ClCompile Include="components\light\Light.cpp" />
+    <ClCompile Include="gameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="gameObject\ICharacter.cpp" />
+    <ClCompile Include="gameObject\Player\Player.cpp" />
     <ClCompile Include="Manager\GameManager.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\PipelineManager.cpp" />
@@ -124,7 +127,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="object\Sprite.cpp" />
     <ClCompile Include="object\Triangle.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene\GameClear.cpp" />
     <ClCompile Include="scene\GameOver.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
@@ -146,6 +148,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="components\Input.h" />
     <ClInclude Include="components\light\DirectionalLight.h" />
     <ClInclude Include="components\light\Light.h" />
+    <ClInclude Include="gameObject\Enemy\Enemy.h" />
+    <ClInclude Include="gameObject\ICharacter.h" />
+    <ClInclude Include="gameObject\Player\Player.h" />
     <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\PipelineManager.h" />
@@ -169,8 +174,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="object\Sphere.h" />
     <ClInclude Include="object\Sprite.h" />
     <ClInclude Include="object\Triangle.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <FileType>CppClass</FileType>
+    </ClInclude>
     <ClInclude Include="scene\GameClear.h" />
     <ClInclude Include="scene\GameOver.h" />
     <ClInclude Include="scene\GameScene.h" />

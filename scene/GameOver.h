@@ -21,6 +21,8 @@ public:
 	void Finalize()override;
 private:
 	Input* input_;
+
+	WorldTransform worldTransform_;
 	Sprite* gameOver_;
 };
 

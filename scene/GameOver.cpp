@@ -9,21 +9,26 @@ void GameOver::Initialize() {
 	input_ = Input::GetInstance();
 	input_->Initialize();
 
+	worldTransform_.Initialize();
+
 	// ゲームオーバの文字
 	gameOver_ = new Sprite();
 	gameOver_->Initialize(false);
 }
 
 void GameOver::Update() {
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_RETURN)) {
 		sceneNum = GAMECLEAR_SCENE;
 	}
+
+	worldTransform_.UpdateMatrix();
 }
 
 void GameOver::Draw() {
-	gameOver_->Draw(GAMEOVER);
+	gameOver_->Draw(worldTransform_,GAMEOVER,kBlendModeNone);
 }
 
 void GameOver::Finalize() {
 	delete gameOver_;
+	worldTransform_.constBuff_.ReleaseAndGetAddressOf();
 }

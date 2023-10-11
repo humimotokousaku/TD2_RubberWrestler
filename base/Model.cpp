@@ -155,12 +155,15 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	materialData_->uvTransform = MakeIdentity4x4();
 }
 
-void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber) {
+void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber, int blendNum) {
 	//uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	//uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	//uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
 	//materialData_->uvTransform = uvTransformMatrix_;
 
+		// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(PipelineManager::GetInstance()->GetRootSignature()[blendNum].Get());
+	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(PipelineManager::GetInstance()->GetGraphicsPipelineState()[blendNum].Get()); // PSOを設定
 
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetInstance()->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

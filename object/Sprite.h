@@ -6,6 +6,7 @@
 #include "../base/WorldTransform.h"
 #include "../base/ViewProjection.h"
 #include "../base/DirectXCommon.h"
+#include "../Manager/PipelineManager.h"
 #include "../Material.h"
 #include <d3d12.h>
 #include <wrl.h>
@@ -31,7 +32,7 @@ public:
 	/// </summary>
 	/// <param name="pos">座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
-	void Draw(int textureNum);
+	void Draw(WorldTransform worldTransform, int textureNum, int blendNum);
 
 	// 解放処理
 	void Finalize();
@@ -45,15 +46,6 @@ public:
 	///
 	///User Method
 	/// 
-
-	/// <summary>
-	/// 座標の変更
-	/// </summary>
-	/// <param name="leftTop">左上の座標</param>
-	void SetPosition(Vector2 leftTop) {
-		worldTransform_.translation_.x = leftTop.x;
-		worldTransform_.translation_.y = leftTop.y;
-	}
 
 private:	
 	// Material
@@ -73,7 +65,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_;
 	TransformationMatrix* transformationMatrixData_;
 
-	WorldTransform worldTransform_;
+	bool isBackGround_ = false;
 	ViewProjection viewProjection_;
 };
 

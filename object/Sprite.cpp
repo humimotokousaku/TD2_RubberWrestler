@@ -4,7 +4,6 @@
 
 Sprite::~Sprite() {
 	viewProjection_.constBuff_.ReleaseAndGetAddressOf();
-	worldTransform_.constBuff_.ReleaseAndGetAddressOf();
 }
 
 void Sprite::Initialize(bool isBackGround) {
@@ -57,17 +56,7 @@ void Sprite::Initialize(bool isBackGround) {
 	// Lightingするか
 	materialData_->enableLighting = false;
 
-	// 初期化
-	worldTransform_.Initialize();
-	// このスプライトが背景なら
-	if (isBackGround) {
-		worldTransform_.translation_.z = 10000;
-	}
-	else {
-		worldTransform_.translation_.z = 0;
-	}
-	// 更新
-	worldTransform_.UpdateMatrix();
+	isBackGround_ = isBackGround;
 
 	// カメラ
 	viewProjection_.Initialize();
@@ -75,11 +64,25 @@ void Sprite::Initialize(bool isBackGround) {
 	viewProjection_.constMap->projection = MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kClientWidth_), float(WinApp::kClientHeight_), 0.0f, 100.0f);
 }
 
-void Sprite::Draw(int textureNum) {
+void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum) {
+	// このスプライトが背景なら
+	if (isBackGround_) {
+		worldTransform.translation_.z = 10000;
+	}
+	else {
+		worldTransform.translation_.z = 0;
+	}
+	// 更新
+	worldTransform.UpdateMatrix();
+
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix_;
+
+	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(PipelineManager::GetInstance()->GetRootSignature()[blendNum].Get());
+	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(PipelineManager::GetInstance()->GetGraphicsPipelineState()[blendNum].Get()); // PSOを設定
 
 	// コマンドを積む
 	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
@@ -95,7 +98,7 @@ void Sprite::Draw(int textureNum) {
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_.Get()->GetGPUVirtualAddress());
 
 	// worldTransformの場所を設定
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff_->GetGPUVirtualAddress());
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff_->GetGPUVirtualAddress());
 
 	// viewProjectionの場所を設定
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, viewProjection_.constBuff_->GetGPUVirtualAddress());

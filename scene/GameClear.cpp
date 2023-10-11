@@ -18,24 +18,30 @@ void GameClear::Initialize() {
 	// 音声再生
 	audio_->SoundPlayWave(xAudio2_.Get(), soundData1_);
 
+	// ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+
 	// クリアの文字
 	gameClear_ = new Sprite();
 	gameClear_->Initialize(false);
 }
 
 void GameClear::Update() {
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_RETURN)) {
 		sceneNum = TITLE_SCENE;
 	}
+
+	worldTransform_.UpdateMatrix();
 }
 
 void GameClear::Draw() {
 	// クリア文字
-	gameClear_->Draw(GAMECLEAR);
+	gameClear_->Draw(worldTransform_,GAMECLEAR, kBlendModeNone);
 }
 
 void GameClear::Finalize() {
 	delete gameClear_;
+	worldTransform_.constBuff_.ReleaseAndGetAddressOf();
 	xAudio2_.Reset();
 	audio_->SoundUnload(&soundData1_);
 }

@@ -2,11 +2,12 @@
 #include "IScene.h"
 // base
 #include "../base/ViewProjection.h"
+#include "../base/Model.h"
 // components
 #include "../components/Audio.h"
 #include "../components/Input.h"
 // gameObject
-#include "../Player.h"
+#include "../gameObject/Player/Player.h"
 // object
 #include "../object/Sprite.h"
 
@@ -16,6 +17,7 @@ class GameManager;
 class GameScene : public IScene
 {
 public:
+	~GameScene() = default;
 	// 初期化
 	void Initialize()override;
 
@@ -31,14 +33,16 @@ private:
 	Audio* audio_;
 	Input* input_;
 
-	Sprite* sprite_;
+	// 自機の3Dモデル
+	std::unique_ptr<Model> modelFighterBody_;
+	std::unique_ptr<Model> modelFighterHead_;
+	std::unique_ptr<Model> modelFighterL_arm_;
+	std::unique_ptr<Model> modelFighterR_arm_;
 
 	// 自機
 	std::unique_ptr<Player> player_;
 
 	// カメラ
 	ViewProjection viewProjection_;
-
-	WorldTransform worldTransform_;
 };
 
