@@ -182,7 +182,7 @@ void Cube::Initialize() {
 	materialData_->enableLighting = true;
 }
 
-void Cube::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection) {
+void Cube::Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, int blendNum) {
 	//ImGui::DragFloat4("power", &materialData_->color,)
 	//uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	//uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
@@ -190,6 +190,10 @@ void Cube::Draw(const WorldTransform& worldTransform, const ViewProjection& view
 	//materialData_->uvTransform = uvTransformMatrix_;
 
 	// コマンドを積む
+	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootSignature(PipelineManager::GetInstance()->GetRootSignature()[blendNum].Get());
+	DirectXCommon::GetInstance()->GetCommandList()->SetPipelineState(PipelineManager::GetInstance()->GetGraphicsPipelineState()[blendNum].Get()); // PSOを設定
+
 	DirectXCommon::GetInstance()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_); // VBVを設定
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff_->GetGPUVirtualAddress());
 
@@ -200,7 +204,7 @@ void Cube::Draw(const WorldTransform& worldTransform, const ViewProjection& view
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_.Get()->GetGPUVirtualAddress());
 
 	// DescriptorTableの設定
-	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU()[MONSTERBALL]);
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU()[UVCHEKER]);
 
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(3, Light::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 

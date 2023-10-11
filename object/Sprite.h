@@ -6,6 +6,7 @@
 #include "../base/WorldTransform.h"
 #include "../base/ViewProjection.h"
 #include "../base/DirectXCommon.h"
+#include "../Manager/PipelineManager.h"
 #include "../Material.h"
 #include <d3d12.h>
 #include <wrl.h>
@@ -31,7 +32,7 @@ public:
 	/// </summary>
 	/// <param name="pos">座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
-	void Draw(WorldTransform worldTransform,int textureNum);
+	void Draw(WorldTransform worldTransform, int textureNum, int blendNum);
 
 	// 解放処理
 	void Finalize();

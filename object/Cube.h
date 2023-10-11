@@ -22,6 +22,7 @@
 #include <wrl.h>
 #include "../base/WorldTransform.h"
 #include "../base/ViewProjection.h"
+#include "../Manager/PipelineManager.h"
 
 class Cube
 {
@@ -36,7 +37,7 @@ public:
 	void Initialize();
 
 	// 三角形描画
-	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection);
+	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, int blendNum);
 
 	// Getter
 	const Microsoft::WRL::ComPtr<ID3D12Resource> GetMaterialResource() { return materialResource_.Get(); }
@@ -79,4 +80,3 @@ public:
 	Transform uvTransform_;
 	Matrix4x4 uvTransformMatrix_;
 };
-

@@ -65,7 +65,7 @@ private:
 	// base
 	WinApp* winApp_;
 	DirectXCommon* directXCommon_;
-	MyEngine* myEngine_;
+	PipelineManager* myEngine_;
 
 	// components
 	Camera* camera_;
