@@ -461,3 +461,34 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 		v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] };
 	return result;
 }
+
+float Lerp(const float& a, const float& b, float t) {
+	float result{};
+
+	result = a + b * t;
+
+	return result;
+}
+
+float LerpShortAngle(float a, float b, float t) {
+	// 角度差分を求める
+	float diff = b - a;
+
+	diff = std::fmod(diff, 2 * (float)M_PI);
+	if (diff < 2 * (float)-M_PI) {
+		diff += 2 * (float)M_PI;
+	}
+	else if (diff >= 2 * M_PI) {
+		diff -= 2 * (float)M_PI;
+	}
+
+	diff = std::fmod(diff, 2 * (float)M_PI);
+	if (diff < (float)-M_PI) {
+		diff += 2 * (float)M_PI;
+	}
+	else if (diff >= (float)M_PI) {
+		diff -= 2 * (float)M_PI;
+	}
+
+	return Lerp(a, diff, t);
+}

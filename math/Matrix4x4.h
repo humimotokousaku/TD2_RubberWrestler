@@ -70,3 +70,7 @@ Vector3 Normalize(const Vector3& v);
 
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+float Lerp(const float& a, const float& b, float t);
+
+float LerpShortAngle(float a, float b, float t);

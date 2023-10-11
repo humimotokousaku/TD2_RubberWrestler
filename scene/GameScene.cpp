@@ -23,12 +23,14 @@ void GameScene::Initialize() {
 
 	// カメラの位置と向き
 	viewProjection_.translation_.y = 11;
-	viewProjection_.translation_.z = -10;
-	viewProjection_.rotation_.x = 3.14f / 6;
+	viewProjection_.translation_.z = -30;
+	viewProjection_.rotation_.x = 3.14f / 10.0f;
 
 	// 自機の生成
 	player_ = std::make_unique<Player>();
 	player_->Initialize(playerModels);
+
+	player_->SetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {

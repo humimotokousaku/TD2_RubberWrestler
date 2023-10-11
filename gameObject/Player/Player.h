@@ -30,6 +30,30 @@ public:
 	/// </summary>
 	void Finalize();
 
+	///
+	/// User Method
+	/// 
+
+	// 入力処理
+	void ProcessUserInput();
+
+	// つかみ行動の初期化
+	void BehaviorGrabInitialize();
+	// つかみの挙動
+	void BehaviorGrabUpdate();
+	// つかんでいるときの行動初期化
+	void BehaviorGrabingInitialize();
+	// つかんでいるときの挙動
+	void BehaviorGrabingUpdate();
+	// 投げるときの行動初期化
+	void BehaviorThrowInitialize();
+	// 投げるときの挙動
+	void BehaviorThrowUpdate();
+	// ラリアットの行動初期化
+	void BehaviorLariatInitialize();
+	// ラリアットの挙動
+	void BehaviorLariatUpdate();
+
 	// 自機のワールド座標
 	Vector3 GetWorldPosition();
 
@@ -42,9 +66,6 @@ public:
 
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
-
-	// 入力処理
-	void ProcessUserInput();
 
 private:
 	// 入力
@@ -76,6 +97,11 @@ private:
 	int grabFrame_;
 	// 投げた時のフレーム
 	int throwFrame_;
+	// 投げた後の待ち時間
+	int waitFrame_;
 	// ラリアットした時のフレーム
 	int lariatFrame_;
+
+	// 目標角度
+	float goalAngle_;
 };

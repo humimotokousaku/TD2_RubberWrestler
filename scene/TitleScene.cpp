@@ -25,7 +25,7 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-	titleName_->Draw(worldTransform_, TITLE, kBlendModeNone);
+	titleName_->Draw(worldTransform_, 0, kBlendModeNone);
 }
 
 void TitleScene::Finalize() {
