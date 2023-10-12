@@ -18,6 +18,7 @@
 
 enum TextureName {
 	UVCHEKER,
+	WHITE,
 	TITLE,
 	GAMEOVER,
 	GAMECLEAR
