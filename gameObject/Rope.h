@@ -44,9 +44,26 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(const ViewProjection& viewProjection);
+	void Draw(const ViewProjection& viewProjection, uint32_t textureHandle);
 
 	void Clear();
+
+	void TestSpring();
+
+public: //ゲッターセッター
+
+	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListBeginSpring() { return ropeNodes_.begin(); }
+	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListEndSpring() { return ropeNodes_.end(); }
+	inline bool IsEdgeNode(const RopeNode& ropeNode) { return ropeNode.isEdge; }
+	inline Vector3 GetWorldPos(const RopeNode& ropeNodes) {
+		// ワールド座標を入れる変数
+		Vector3 worldPos;
+		// ワールド行列の平行移動成分を取得
+		worldPos.x = ropeNodes.worldTransform.matWorld_.m[3][0];
+		worldPos.y = ropeNodes.worldTransform.matWorld_.m[3][1];
+		worldPos.z = ropeNodes.worldTransform.matWorld_.m[3][2];
+		return worldPos;
+	}
 
 private: //メンバ関数
 

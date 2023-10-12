@@ -17,6 +17,7 @@ void GameScene::Initialize() {
 	modelFighterHead_.reset(Model::CreateModelFromObj("resources/float_Head", "float_Head.obj"));
 	modelFighterL_arm_.reset(Model::CreateModelFromObj("resources/float_L_arm", "float_L_arm.obj"));
 	modelFighterR_arm_.reset(Model::CreateModelFromObj("resources/float_R_arm", "float_R_arm.obj"));
+	modelUvSphere_.reset(Model::CreateModelFromObj("resources/uvSphere", "uvSphere.obj"));
 	std::vector<Model*> playerModels = {
 		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
 		modelFighterR_arm_.get()};
@@ -33,8 +34,8 @@ void GameScene::Initialize() {
 	player_->SetViewProjection(&viewProjection_);
 
 	//ロープのテスト生成
-	rope_ = std::make_unique<Rope>();
-	rope_->Initialize();
+	bottomRope_ = std::make_unique<Rope>();
+	bottomRope_->Initialize(modelUvSphere_.get(), {-20.0f, 10.0f, -10.0f}, {20.0f, 10.0f, -10.0f});
 }
 
 void GameScene::Update() {
@@ -46,10 +47,29 @@ void GameScene::Update() {
 
 	// 自機
 	player_->Update();
+
+	//ロープ
+	bottomRope_->Update();
+	
+	if (input_->TriggerKey(DIK_LSHIFT)) {
+		bottomRope_->TestSpring();
+	}
+
+	//ロープと自機の当たり判定
+	for (auto ropeNodeIt = bottomRope_->GetListBeginSpring(); ropeNodeIt != bottomRope_->GetListEndSpring(); ropeNodeIt++) {
+		Rope::RopeNode* ropeNode = ropeNodeIt->get();
+
+		if (player_->GetWorldPosition().z - 1 <= bottomRope_->GetWorldPos(*ropeNode).z && bottomRope_->GetWorldPos(*ropeNode).x - 3 < player_->GetWorldPosition().x && player_->GetWorldPosition().x < bottomRope_->GetWorldPos(*ropeNode).x + 3 && !bottomRope_->IsEdgeNode(*ropeNode)) {
+			ropeNode->worldTransform.translation_.z = player_->GetWorldTransform().translation_.z - 1;
+		}
+	}
+
+
 }
 
 void GameScene::Draw() {
 	player_->Draw(viewProjection_, UVCHEKER);
+	bottomRope_->Draw(viewProjection_, UVCHEKER);
 }
 
 void GameScene::Finalize() {

@@ -45,7 +45,7 @@ private:
 	std::unique_ptr<Player> player_;
 
 	//ロープ
-	std::unique_ptr<Rope> rope_;
+	std::unique_ptr<Rope> bottomRope_;
 
 	// カメラ
 	ViewProjection viewProjection_;

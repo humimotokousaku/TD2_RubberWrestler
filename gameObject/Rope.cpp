@@ -15,7 +15,7 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 	startPos_ = startPos;
 	endPos_ = endPos;
 
-	divisionCount_ = 20;
+	divisionCount_ = 30;
 
 	Vector3 direction;
 	direction = startPos_ - endPos_;
@@ -50,13 +50,13 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 		spring->node1 = ropeNodeIt->get();
 		ropeNodeIt++;
 		spring->node2 = ropeNodeIt->get();
-		spring->restLength = (Length(direction) * 0.15f) / 1000.0f;
-		spring->stiffness = 4000;
+		spring->restLength = (Length(direction) * 0.15f) / 10000.0f;
+		spring->stiffness = 5000;
 		spring->dampingCoefficient = 0.5f;
 		spring->worldTransform.Initialize();
 		Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2;
 		spring->worldTransform.translation_ = pos;
-		spring->worldTransform.scale_ *= 0.25f;
+		spring->worldTransform.scale_ *= 0.5f;
 		springs_.push_back(std::move(spring));
 	}
 }
@@ -98,14 +98,10 @@ void Rope::Update() {
 	}
 }
 
-void Rope::Draw(const ViewProjection& viewProjection) {
-	for (auto drawModelIt = ropeNodes_.begin(); drawModelIt != ropeNodes_.end(); drawModelIt++) {
-		RopeNode* ropeNode = drawModelIt->get();
-		model_->Draw(ropeNode->worldTransform, viewProjection, UVCHEKER, kBlendModeNone);
-	}
+void Rope::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
 	for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
 		Spring* spring = springIt->get();
-		model_->Draw(spring->worldTransform, viewProjection, UVCHEKER, kBlendModeNone);
+		model_->Draw(spring->worldTransform, viewProjection, textureHandle, kBlendModeNone);
 	}
 }
 
@@ -125,4 +121,17 @@ Vector3 Rope::CalculateElasticForce(Spring* spring) {
 	Vector3 dampingForce = -spring->dampingCoefficient * relativeVelocity;
 
 	return elasticForce + dampingForce;
+}
+
+void Rope::TestSpring() {
+	int i = 0;
+	for (auto ropeNodeIt = ropeNodes_.begin(); ropeNodeIt != ropeNodes_.end(); ropeNodeIt++) {
+		i++;
+		if (i == 10) {
+			RopeNode* ropeNode = ropeNodeIt->get();
+
+			ropeNode->worldTransform.translation_.y = 20;
+			ropeNode->worldTransform.translation_.z = 10;
+		}
+	}
 }

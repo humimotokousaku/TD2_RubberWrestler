@@ -57,6 +57,7 @@ public:
 	// 自機のワールド座標
 	Vector3 GetWorldPosition();
 
+	const WorldTransform& GetWorldTransform(){ return worldTransform_; }
 	const WorldTransform& GetWorldTransformBody() { return worldTransformBody_; }
 	const WorldTransform& GetWorldTransformBase() { return worldTransform_; }
 
