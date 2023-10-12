@@ -8,6 +8,7 @@
 #include "../components/Input.h"
 // gameObject
 #include "../gameObject/Player/Player.h"
+#include "../gameObject/Rope.h"
 // object
 #include "../object/Sprite.h"
 
@@ -38,9 +39,13 @@ private:
 	std::unique_ptr<Model> modelFighterHead_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+	std::unique_ptr<Model> modelUvSphere_;
 
 	// 自機
 	std::unique_ptr<Player> player_;
+
+	//ロープ
+	std::unique_ptr<Rope> rope_;
 
 	// カメラ
 	ViewProjection viewProjection_;

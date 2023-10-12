@@ -204,6 +204,9 @@
     <ClCompile Include="gameObject\Player\Player.cpp">
       <Filter>ソース ファイル\gameObject\Player</Filter>
     </ClCompile>
+    <ClCompile Include="gameObject\Rope.cpp">
+      <Filter>ソース ファイル\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\Player\Player.h">
       <Filter>ヘッダー ファイル\gameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Rope.h">
+      <Filter>ヘッダー ファイル\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

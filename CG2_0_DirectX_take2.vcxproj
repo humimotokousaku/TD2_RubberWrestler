@@ -110,6 +110,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="gameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="gameObject\ICharacter.cpp" />
     <ClCompile Include="gameObject\Player\Player.cpp" />
+    <ClCompile Include="gameObject\Rope.cpp" />
     <ClCompile Include="Manager\GameManager.cpp" />
     <ClCompile Include="Manager\ImGuiManager.cpp" />
     <ClCompile Include="Manager\PipelineManager.cpp" />
@@ -151,6 +152,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="gameObject\Enemy\Enemy.h" />
     <ClInclude Include="gameObject\ICharacter.h" />
     <ClInclude Include="gameObject\Player\Player.h" />
+    <ClInclude Include="gameObject\Rope.h" />
     <ClInclude Include="Manager\GameManager.h" />
     <ClInclude Include="Manager\ImGuiManager.h" />
     <ClInclude Include="Manager\PipelineManager.h" />

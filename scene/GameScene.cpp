@@ -31,6 +31,10 @@ void GameScene::Initialize() {
 	player_->Initialize(playerModels);
 
 	player_->SetViewProjection(&viewProjection_);
+
+	//ロープのテスト生成
+	rope_ = std::make_unique<Rope>();
+	rope_->Initialize();
 }
 
 void GameScene::Update() {
