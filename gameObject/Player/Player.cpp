@@ -271,13 +271,15 @@ void Player::ProcessUserInput() {
 	}
 }
 
+/// 各ふるまいに応じた挙動と初期化ここから
+
+// つかむ瞬間
 void Player::BehaviorGrabInitialize() {
 	grabFrame_ = 0;
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.3f, 0.0f, -1.5f };
 	worldTransformBody_.rotation_.x = -(float)M_PI / 8.0f;
 }
-
 void Player::BehaviorGrabUpdate() {
 	if (grabFrame_ < 10) {
 		// 腕の挙動
@@ -306,12 +308,12 @@ void Player::BehaviorGrabUpdate() {
 	ImGui::Text("Behavior:GRAB\nGrabFrame:%d", grabFrame_);
 }
 
+// つかんでいる間
 void Player::BehaviorGrabingInitialize() {
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransformBody_.rotation_.x = 0.05f;
 }
-
 void Player::BehaviorGrabingUpdate() {
 	// 移動処理
 	ProcessUserInput();
@@ -320,10 +322,10 @@ void Player::BehaviorGrabingUpdate() {
 	ImGui::Text("Behavior:GRABING\nPRESS SPACEorR_TRIGGER");
 }
 
+// 投げる
 void Player::BehaviorThrowInitialize() {
 	throwFrame_ = 0;
 }
-
 void Player::BehaviorThrowUpdate() {
 	if (throwFrame_ < 10) {
 		// 身体の挙動
@@ -352,11 +354,12 @@ void Player::BehaviorThrowUpdate() {
 	ImGui::Text("Behavior:THROW\nThrowFrame:%d", throwFrame_);
 }
 
+// ラリアット
 void Player::BehaviorLariatInitialize() {
 	lariatFrame_ = 0;
 }
-
 void Player::BehaviorLariatUpdate() {
+
 	if (lariatFrame_ >= 60) {
 		behaviorRequest_ = Behavior::NONE;
 	}
@@ -366,6 +369,8 @@ void Player::BehaviorLariatUpdate() {
 	// playerの今の状態とinfo
 	ImGui::Text("Behavior:LARIAT\nLariatFrame:%d", lariatFrame_);
 }
+
+/// 各ふるまいに応じた挙動と初期化ここまで
 
 Vector3 Player::GetWorldPosition() {
 	// ワールド座標を入れる変数

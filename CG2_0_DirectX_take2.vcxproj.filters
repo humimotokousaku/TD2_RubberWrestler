@@ -88,6 +88,18 @@
     <Filter Include="ヘッダー ファイル\gameObject\Enemy">
       <UniqueIdentifier>{4c551f0c-50f5-440d-88e0-db7370fc4f76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject\Ring">
+      <UniqueIdentifier>{2e61d9c2-f1e3-4f83-b5d6-5182c8f83163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject\Ring\Mat">
+      <UniqueIdentifier>{7315d8b6-3c96-4890-91f8-7254a2fa95af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\Ring">
+      <UniqueIdentifier>{a2d5ca36-c4b5-4a32-b91a-a7e8e5b204f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameObject\Ring\Mat">
+      <UniqueIdentifier>{56ee53e8-7fa1-4ba6-aaad-76bc2eab6784}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="gameObject\Player\Player.cpp">
       <Filter>ソース ファイル\gameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Ring\Mat\RingMat.cpp">
+      <Filter>ソース ファイル\gameObject\Ring\Mat</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +370,12 @@
     </ClInclude>
     <ClInclude Include="gameObject\Player\Player.h">
       <Filter>ヘッダー ファイル\gameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Ring\Mat\RingMat.h">
+      <Filter>ヘッダー ファイル\gameObject\Ring\Mat</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

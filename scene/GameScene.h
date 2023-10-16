@@ -8,10 +8,13 @@
 #include "../components/Input.h"
 // gameObject
 #include "../gameObject/Player/Player.h"
+#include "../gameObject/Ring/Mat/RingMat.h"
+#include "../Skydome.h"
 // object
 #include "../object/Sprite.h"
 
 #include <memory>
+
 
 class GameManager;
 class GameScene : public IScene
@@ -38,9 +41,17 @@ private:
 	std::unique_ptr<Model> modelFighterHead_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+	// リングのマット
+	std::unique_ptr<Model> modelRingMat_;
+	// 天球
+	std::unique_ptr<Model> modelSkydome_;
 
 	// 自機
 	std::unique_ptr<Player> player_;
+	// リングのマット
+	std::unique_ptr<RingMat> ringMat_;
+	// 天球
+	std::unique_ptr<Skydome> skydome_;
 
 	// カメラ
 	ViewProjection viewProjection_;
