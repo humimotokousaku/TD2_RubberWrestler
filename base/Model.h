@@ -16,8 +16,19 @@ public:
 
 	void Initialize(const std::string& directoryPath, const std::string& filename);
 
-	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber, int blendNum);
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="worldTransform">ワールドトランスフォーム</param>
+	/// <param name="viewProjection">ビュープロジェクション</param>
+	/// <param name="textureNumber">enumの番号を入れる</param>
+	/// <param name="blendNum">ブレンドの種類を選ぶ</param>
+	/// <param name="color">RGBAの順に入れる</param>
+	void Draw(const WorldTransform& worldTransform, const ViewProjection& viewProjection, uint32_t textureNumber, int blendNum, Vector4 color);
 
+	static Model* CreateModelFromObj(const std::string& directoryPath, const std::string& filename);
+
+private:
 	ModelData GetModelData() { return modelData_; }
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(const Microsoft::WRL::ComPtr<ID3D12Device>& device, size_t sizeInBytes);
@@ -27,8 +38,6 @@ public:
 	void CreateVertexBufferView();
 
 	void CreateMaterialResource();
-
-	static Model* CreateModelFromObj(const std::string& directoryPath, const std::string& filename);
 
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 
