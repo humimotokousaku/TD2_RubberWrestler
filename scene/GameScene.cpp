@@ -14,7 +14,7 @@ void GameScene::Initialize() {
 	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
 
 	tEmitter_ = std::make_unique<tEmitter>();
-	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
+	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), DUST, reFireModel_.get(), REFIRE);
 }
 
 void GameScene::Update() {
