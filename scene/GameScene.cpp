@@ -2,6 +2,7 @@
 #include "../Manager/GameManager.h"
 
 void GameScene::Initialize() {
+
 	// 基本機能
 	input_ = Input::GetInstance();
 	input_->Initialize();
@@ -13,8 +14,11 @@ void GameScene::Initialize() {
 	//残り火モデルの読み込み
 	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
 
+	dustTextureHandle_ = DUST;
+	reFireTextureHandle_ = REFIRE;
+
 	tEmitter_ = std::make_unique<tEmitter>();
-	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), DUST, reFireModel_.get(), REFIRE);
+	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
 }
 
 void GameScene::Update() {
