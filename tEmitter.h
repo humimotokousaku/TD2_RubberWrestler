@@ -34,10 +34,10 @@ private:
 	std::list <std::unique_ptr<ReFire>> reFires_;
 
 	//ダストのモデル
-	std::unique_ptr<Model> dustModel_;
+	Model* dustModel_ = 0;
 
 	//残り火のモデル
-	std::unique_ptr<Model> reFireModel_ = 0;
+	Model* reFireModel_ = 0;
 
 	//ダストのテクスチャハンドル
 	uint32_t dustTextureHandle_;
