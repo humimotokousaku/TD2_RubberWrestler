@@ -22,8 +22,8 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
 	mipImages_[MONSTERBALL] = LoadTexture("resources/monsterBall.png");
 	mipImages_[TESTBLOCK] = LoadTexture("resources/block.png");
-	mipImages_[DUST] = LoadTexture("resources/Particle/Dust/dust.png");
-	mipImages_[REFIRE] = LoadTexture("resources/Particle/Refire/ReFire.png");
+	mipImages_[DUST] = LoadTexture("resources/particle/dust/dust.png");
+	mipImages_[REFIRE] = LoadTexture("resources/particle/refire/reFire.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

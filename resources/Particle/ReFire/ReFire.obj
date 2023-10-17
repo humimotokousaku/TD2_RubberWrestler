@@ -1,6 +1,6 @@
 # Blender 3.6.0
 # www.blender.org
-mtllib ReFire.mtl
+mtllib reFire.mtl
 o 球
 v 0.000000 0.831470 -8.086802
 v 0.000000 0.555570 -12.102754
