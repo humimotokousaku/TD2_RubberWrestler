@@ -41,14 +41,17 @@ public:
 	void BehaviorGrabInitialize();
 	// つかみの挙動
 	void BehaviorGrabUpdate();
+
 	// つかんでいるときの行動初期化
 	void BehaviorGrabingInitialize();
 	// つかんでいるときの挙動
 	void BehaviorGrabingUpdate();
+
 	// 投げるときの行動初期化
 	void BehaviorThrowInitialize();
 	// 投げるときの挙動
 	void BehaviorThrowUpdate();
+
 	// ラリアットの行動初期化
 	void BehaviorLariatInitialize();
 	// ラリアットの挙動

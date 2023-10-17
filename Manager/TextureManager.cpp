@@ -20,9 +20,11 @@ TextureManager::~TextureManager() {
 void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& srvDescriptorHeap) {
 	// 画像の読み込み
 	mipImages_[UVCHEKER] = LoadTexture("resources/uvChecker.png");
+	mipImages_[WHITE] = LoadTexture("resources/white.png");
 	mipImages_[TITLE] = LoadTexture("resources/Guide/Text/titleName.png");
 	mipImages_[GAMEOVER] = LoadTexture("resources/Guide/Text/gameOver.png");
 	mipImages_[GAMECLEAR] = LoadTexture("resources/Guide/Text/gameClear.png");
+	mipImages_[BACKGROUND] = LoadTexture("resources/skydome/forest.jpg");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

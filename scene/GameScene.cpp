@@ -20,17 +20,28 @@ void GameScene::Initialize() {
 	std::vector<Model*> playerModels = {
 		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
 		modelFighterR_arm_.get()};
+	// リングのマット
+	modelRingMat_.reset(Model::CreateModelFromObj("resources/ring", "Ground.obj"));
+	// 天球
+	modelSkydome_.reset(Model::CreateModelFromObj("resources/skydome", "skydome.obj"));
 
 	// カメラの位置と向き
 	viewProjection_.translation_.y = 11;
-	viewProjection_.translation_.z = -30;
+	viewProjection_.translation_.z = -40;
 	viewProjection_.rotation_.x = 3.14f / 10.0f;
 
 	// 自機の生成
 	player_ = std::make_unique<Player>();
 	player_->Initialize(playerModels);
-
 	player_->SetViewProjection(&viewProjection_);
+
+	// リングのマットの生成
+	ringMat_ = std::make_unique<RingMat>();
+	ringMat_->Initialize(modelRingMat_.get());
+
+	// 天球
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize(modelSkydome_.get());
 }
 
 void GameScene::Update() {
@@ -42,10 +53,18 @@ void GameScene::Update() {
 
 	// 自機
 	player_->Update();
+
+	// リングのマット
+	ringMat_->Update();
+
+	// 天球
+	skydome_->Update();
 }
 
 void GameScene::Draw() {
-	player_->Draw(viewProjection_, UVCHEKER);
+	player_->Draw(viewProjection_, WHITE);
+	ringMat_->Draw(viewProjection_, UVCHEKER);
+	skydome_->Draw(viewProjection_, BACKGROUND);
 }
 
 void GameScene::Finalize() {
