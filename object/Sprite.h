@@ -32,7 +32,8 @@ public:
 	/// </summary>
 	/// <param name="pos">座標を入力</param>
 	/// <param name="textureNum">textureManagerで登録したenum型の番号を入れる</param>
-	void Draw(WorldTransform worldTransform, int textureNum, int blendNum);
+	/// <param name="color">RGBAの順に入力</param>
+	void Draw(WorldTransform worldTransform, int textureNum, int blendNum, Vector4 color);
 
 	// 解放処理
 	void Finalize();
