@@ -1,5 +1,11 @@
 #pragma once
 #include "IScene.h"
+#include "../tEmitter.h"
+#include "../components/Input.h"
+#include "../base/ViewProjection.h"
+#include "../base/Model.h"
+#include "../object/Sprite.h"
+
 
 class GameManager;
 class GameScene : public IScene
@@ -16,6 +22,22 @@ public:
 
 	void Finalize()override;
 private:
+	Input* input_;
 
+	ViewProjection viewProjection_;
+
+	//ダストのモデル
+	Model* dustModel_;
+
+	//ダストのテクスチャハンドル
+	uint32_t dustTextureHandle_;
+
+	//残り火のモデル
+	Model* reFireModel_ = 0;
+
+	//残り火のテクスチャハンドル
+	uint32_t reFireTextureHandle_ = 0;
+
+	tEmitter* temitter{};
 };
 

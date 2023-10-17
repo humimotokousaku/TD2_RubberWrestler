@@ -2,7 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by CG2_0_DirectX_take2.rc
 
-// V‚µ‚¢ƒIƒuƒWƒFƒNƒg‚ÌŸ‚ÌŠù’è’l
+// ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìï¿½ï¿½ÌŠï¿½ï¿½ï¿½l
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS

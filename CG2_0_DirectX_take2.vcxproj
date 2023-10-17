@@ -131,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\IScene.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
+    <ClCompile Include="tEmitter.cpp" />
     <ClCompile Include="utility\ConvertString.cpp" />
     <ClCompile Include="utility\GlobalVariables.cpp" />
   </ItemGroup>
@@ -178,6 +179,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\IScene.h" />
     <ClInclude Include="scene\TitleScene.h" />
+    <ClInclude Include="tEmitter.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformationMatrix.h" />
     <ClInclude Include="utility\ConvertString.h" />

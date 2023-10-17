@@ -5,7 +5,7 @@
 #include "math/Matrix4x4.h"
 #include "math/vector3.h"
 
-class Enemy;
+class tEmitter;
 class GameScene;
 
 class Dust
@@ -24,10 +24,12 @@ public:
 	//void Spawn(std::list<std::unique_ptr<Dust>> dusts,Vector3& translation);
 
 	WorldTransform GetWT() { return worldTransform_; }
+
+	Vector4 GetColor() { return color_; }
 private:
 	WorldTransform worldTransform_;
 
-	Enemy* enemy_;
+	tEmitter* tEmitter_;
 	GameScene* gameScene_;
 
 	Model* model_;
@@ -65,6 +67,9 @@ private:
 
 	//サイズ
 	float size_ = 0.4f;
+
+	//色
+	Vector4 color_ = {};
 };
 
 

@@ -26,6 +26,9 @@ void ReFire::Initialize(const Vector3& position) {
 
 	//消滅までの時間
 	deathtimer_ = GetRandom(20, 40);
+
+	//色の初期化(Vector4)
+	color_ = { 0,0,0,1 };
 }
 
 void ReFire::Update() {
@@ -61,7 +64,7 @@ void ReFire::Update() {
 
 //void Beam::Spawn() {
 //	Beam* newBeam = new Beam();
-//	newDust->Initialize(model_, enemy_->GetWorldPosition(), texturehandle_);
+//	newDust->Initialize(model_, tEmitter_->GetWorldPosition(), texturehandle_);
 //	gameScene_->AddDust(newDust);
 //	//Dust_.push_back(newDust);
 //}

@@ -27,6 +27,9 @@ void Dust::Initialize(const Vector3& position) {
 
 	//消滅までの時間
 	deathtimer_ = GetRandom(40, 80);
+
+	//色の初期化(Vector4)
+	color_ = { 0,0,0,1 };
 }
 
 void Dust::Update() {

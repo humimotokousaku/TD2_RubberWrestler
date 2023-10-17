@@ -189,6 +189,9 @@
     <ClCompile Include="ReFire.cpp">
       <Filter>ソース ファイル\effect</Filter>
     </ClCompile>
+    <ClCompile Include="tEmitter.cpp">
+      <Filter>ソース ファイル\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -333,6 +336,9 @@
       <Filter>ヘッダー ファイル\effect</Filter>
     </ClInclude>
     <ClInclude Include="ReFire.h">
+      <Filter>ヘッダー ファイル\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="tEmitter.h">
       <Filter>ヘッダー ファイル\effect</Filter>
     </ClInclude>
   </ItemGroup>

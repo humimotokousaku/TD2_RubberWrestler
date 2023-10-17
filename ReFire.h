@@ -5,7 +5,7 @@
 #include "math/Matrix4x4.h"
 #include "math/vector3.h"
 
-class Enemy;
+class tEmitter;
 class GameScene;
 
 class ReFire
@@ -21,10 +21,12 @@ public:
 	bool GetIsDead() { return isDead_; }
 
 	WorldTransform GetWT() { return worldTransform_; }
+
+	Vector4 GetColor() { return color_; }
 private:
 	WorldTransform worldTransform_;
 
-	Enemy* enemy_;
+	tEmitter* tEmitter_;
 	GameScene* gameScene_;
 
 	Model* model_;
@@ -59,6 +61,9 @@ private:
 
 	//角度
 	float velocityXZ_ = 0;
+
+	//色
+	Vector4 color_ = {};
 };
 
 

@@ -67,3 +67,15 @@ Vector3 Normalize(const Vector3& v);
 
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+//Vector3型のランダム関数
+Vector3 GetRandomVector3(float min, float max);
+
+//float型のランダム関数
+float GetRandom(float min, float max);
+
+//int型のランダム関数
+int GetRandom(int min, int max);
+
+// スカラー倍
+Vector3 Multiply(const Vector3& v, float scalar);
