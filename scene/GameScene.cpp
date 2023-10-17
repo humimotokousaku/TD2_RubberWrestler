@@ -8,7 +8,6 @@ void GameScene::Initialize() {
 
 	viewProjection_.Initialize();
 
-	modelFighterBody_.reset(Model::CreateModelFromObj("resources/float_Body", "float_Body.obj"));
 	//ダストモデルの読み込み
 	dustModel_.reset(Model::CreateModelFromObj("resources/particle/dust", "dust.obj"));
 	//残り火モデルの読み込み
