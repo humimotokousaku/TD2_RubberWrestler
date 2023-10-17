@@ -27,13 +27,13 @@ private:
 	ViewProjection viewProjection_;
 
 	//ダストのモデル
-	Model* dustModel_;
+	std::unique_ptr<Dust> dustModel_;
 
 	//ダストのテクスチャハンドル
 	uint32_t dustTextureHandle_;
 
 	//残り火のモデル
-	Model* reFireModel_ = 0;
+	std::unique_ptr<ReFire> reFireModel_ = 0;
 
 	//残り火のテクスチャハンドル
 	uint32_t reFireTextureHandle_ = 0;
