@@ -13,7 +13,7 @@
 class tEmitter
 {
 public:
-	void Initialize(const Vector3& position, Model* dustModel, uint32_t& dustTexture, Model* reFireModel, uint32_t& reFireTexture);
+	void Initialize(const Vector3& position, std::unique_ptr<Model> dustModel, uint32_t& dustTexture, std::unique_ptr<Model> reFireModel, uint32_t& reFireTexture);
 
 	void Update();
 
@@ -34,13 +34,13 @@ private:
 	std::list <std::unique_ptr<ReFire>> reFires_;
 
 	//ダストのモデル
-	Model* dustModel_;
+	std::unique_ptr<Model> dustModel_;
+
+	//残り火のモデル
+	std::unique_ptr<Model> reFireModel_ = 0;
 
 	//ダストのテクスチャハンドル
 	uint32_t dustTextureHandle_;
-
-	//残り火のモデル
-	Model* reFireModel_ = 0;
 
 	//残り火のテクスチャハンドル
 	uint32_t reFireTextureHandle_ = 0;
