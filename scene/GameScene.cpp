@@ -12,11 +12,13 @@ void GameScene::Initialize() {
 	dustModel_.reset(Model::CreateModelFromObj("resources/particle/dust", "dust.obj"));
 	//残り火モデルの読み込み
 	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
+
+	tEmitter_->Initialize({ 0,0,0 }, dustModel_, dustTextureHandle_, reFireModel_, reFireTextureHandle_);
 }
 
 void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
-		temitter->OnCollision();
+		tEmitter_->OnCollision();
 	}
 
 	viewProjection_.UpdateViewMatrix();
@@ -24,7 +26,7 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
-	temitter->Draw(viewProjection_);
+	tEmitter_->Draw(viewProjection_);
 }
 
 void GameScene::Finalize() {

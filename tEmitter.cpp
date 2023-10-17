@@ -1,6 +1,6 @@
 #include "tEmitter.h"
 
-void tEmitter::Initialize(const Vector3& position, Model* dustModel, uint32_t& dustTexture, Model* reFireModel, uint32_t& reFireTexture) {
+void tEmitter::Initialize(const Vector3& position, std::unique_ptr<Model> dustModel, uint32_t& dustTexture, std::unique_ptr<Model> reFireModel, uint32_t& reFireTexture) {
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
