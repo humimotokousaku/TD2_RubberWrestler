@@ -494,3 +494,251 @@ Vector3 Multiply(const Vector3& v, float scalar) {
 	Vector3 num = { scalar * v.x, scalar * v.y, scalar * v.z };
 	return num;
 }
+
+
+#pragma region Cubic
+
+float easeInCubic(float x) {
+	return x * x * x;
+}
+
+float easeOutCubic(float x) {
+	return 1 - pow(1 - x, 3);
+}
+
+float easeInOutCubic(float x) {
+	if (x < 0.5f) {
+		return 4 * x * x * x;
+	}
+	else {
+		return 1 - pow(-2 * x + 2, 3) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Quint
+
+// だんだん早くなる(一気に早くなる)
+float easeInQuint(float x) {
+	return x * x * x * x * x;
+}
+
+// だんだん減速(ぎりぎりまで速度が速い)
+float easeOutQuint(float x) {
+	return 1 - pow(1 - x, 5);
+}
+
+// easeInOut(一気に早くなって減速する)
+float easeInOutQuint(float x) {
+	if (x < 0.5) {
+		return 16 * x * x * x * x * x;
+	}
+	else {
+		return 1 - pow(-2 * x + 2, 5) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Circ
+
+float easeInCirc(float x) {
+	return 1 - sqrt(1 - pow(x, 2));
+}
+
+float easeOutCirc(float x) {
+	return sqrt(1 - pow(x - 1, 2));
+}
+
+float easeInOutCirc(float x) {
+	if (x < 0.5f) {
+		return (1 - sqrt(1 - pow(2 * x, 2))) / 2;
+	}
+	else {
+		return (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Back
+
+float easeInBack(float x) {
+	const float c1 = 1.70158f;
+	const float c3 = c1 + 1;
+
+	return c3 * x * x * x - c1 * x * x;
+}
+
+float easeOutBack(float x) {
+	const float c1 = 1.70158f;
+	const float c3 = c1 + 1;
+
+	return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
+}
+
+float easeInOutBack(float x) {
+	const float c1 = 1.70158f;
+	const float c2 = c1 * 1.525f;
+
+	if (x < 0.5f) {
+		return (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2;
+	}
+	else {
+		return (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Bounce
+
+float easeOutBounce(float x) {
+	const float n1 = 7.5625f;
+	const float d1 = 2.75f;
+
+	if (x < 1 / d1) {
+		return float(n1 * x * x);
+	}
+	else if (x < 2 / d1) {
+		return float(n1 * (x -= 1.5 / d1) * x + 0.75f);
+	}
+	else if (x < 2.5 / d1) {
+		return n1 * (x -= 2.25 / d1) * x + 0.9375f;
+	}
+	else {
+		return n1 * (x -= 2.625 / d1) * x + 0.984375f;
+	}
+}
+
+float easeInBounce(float x) {
+	return 1 - easeOutBounce(1 - x);
+}
+
+float easeInOutBounce(float x) {
+	if (x < 0.5f) {
+		return (1 - easeOutBounce(1 - 2 * x)) / 2;
+	}
+	else {
+		return (1 + easeOutBounce(2 * x - 1)) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Elastic
+
+float easeInElastic(float x) {
+	const float c4 = (2 * M_PI) / 3;
+	if (x == 0) {
+		return x = 0;
+	}
+	else {
+		if (x == 1) {
+			return x = 1;
+		}
+		else {
+			return -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
+		}
+	}
+}
+
+float easeOutElastic(float x) {
+	const float c4 = (2 * M_PI) / 3;
+	if (x == 0) {
+		return x = 0;
+	}
+	else {
+		if (x == 1) {
+			return x = 1;
+		}
+		else {
+			return pow(2, -10 * x) * sin((x * 10 - 0.75f) * c4) + 1;
+		}
+	}
+}
+
+float easeInOutElastic(float x) {
+	const float c5 = (2 * M_PI) / 4.5f;
+	if (x == 0) {
+		return x = 0;
+	}
+	else {
+		if (x == 1) {
+			return x = 1;
+		}
+		else {
+			if (x < 0.5f) {
+				return -(pow(2, 20 * x - 10) * sin((20 * x - 11.125f) * c5)) / 2;
+			}
+			else {
+				return (pow(2, -20 * x + 10) * sin((20 * x - 11.125f) * c5)) / 2 + 1;
+			}
+		}
+	}
+}
+
+#pragma endregion
+
+#pragma region Quart
+
+float easeInQuart(float x) {
+	return x * x * x * x;
+}
+
+float easeOutQuart(float x) {
+	return 1 - pow(1 - x, 4);
+}
+
+float easeInOutQuart(float x) {
+	if (x < 0.5f) {
+		return 8 * x * x * x * x;
+	}
+	else {
+		return 1 - pow(-2 * x + 2, 4) / 2;
+	}
+}
+
+#pragma endregion
+
+#pragma region Expo
+
+float easeInExpo(float x) {
+	if (x == 0) {
+		return x = 0;
+	}
+	else {
+		return pow(2, 10 * x - 10);
+	}
+}
+
+float easeOutExpo(float x) {
+	if (x == 1) {
+		return x = 1;
+	}
+	else {
+		return 1 - pow(2, -10 * x);
+	}
+}
+
+float easeInOutExpo(float x) {
+	if (x == 0) {
+		return x = 0;
+	}
+	else {
+		if (x == 1) {
+			return x = 1;
+		}
+		else {
+			if (x < 0.5f) {
+				return pow(2, 20 * x - 10) / 2;
+			}
+			else {
+				return (2 - pow(2, -20 * x + 10)) / 2;
+			}
+		}
+	}
+}
+
+#pragma endregion
