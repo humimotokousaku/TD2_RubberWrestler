@@ -64,7 +64,7 @@ void tEmitter::Draw(const ViewProjection& view) {
 	//残り火を描画
 	for (std::list<std::unique_ptr<ReFire>>::iterator reFireIt = reFires_.begin(); reFireIt != reFires_.end(); reFireIt++) {
 		ReFire* reFire = reFireIt->get();
-		dustModel_->Draw(reFire->GetWT(), view, dustTextureHandle_,kBlendModeNormal,reFire->GetColor());
+		reFireModel_->Draw(reFire->GetWT(), view, reFireTextureHandle_,kBlendModeNormal,reFire->GetColor());
 	}
 }
 

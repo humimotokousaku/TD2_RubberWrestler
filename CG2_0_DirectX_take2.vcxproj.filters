@@ -192,6 +192,9 @@
     <ClCompile Include="tEmitter.cpp">
       <Filter>ソース ファイル\effect</Filter>
     </ClCompile>
+    <ClCompile Include="WhiteSphere.cpp">
+      <Filter>ソース ファイル\effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -339,6 +342,9 @@
       <Filter>ヘッダー ファイル\effect</Filter>
     </ClInclude>
     <ClInclude Include="tEmitter.h">
+      <Filter>ヘッダー ファイル\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteSphere.h">
       <Filter>ヘッダー ファイル\effect</Filter>
     </ClInclude>
   </ItemGroup>

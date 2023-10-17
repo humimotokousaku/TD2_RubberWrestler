@@ -29,7 +29,7 @@ void Dust::Initialize(const Vector3& position) {
 	deathtimer_ = GetRandom(40, 80);
 
 	//色の初期化(Vector4)
-	color_ = { 1,1,1,1 };
+	color_ = { 1,0,0,0.7f };
 }
 
 void Dust::Update() {

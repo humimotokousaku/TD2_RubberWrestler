@@ -13,7 +13,7 @@ void ReFire::Initialize(const Vector3& position) {
 	acceleration_ = Multiply(velocity_, GetRandom(-0.02f, -0.01f));
 
 	//質量をランダムの値で初期化
-	mass_ = GetRandom(0.001f, 0.003f);
+	mass_ = GetRandom(0.0001f, 0.001f);
 
 	//重力に質量を加えて初期化
 	gravity_ = gravity_ * mass_;
@@ -22,18 +22,42 @@ void ReFire::Initialize(const Vector3& position) {
 	isDead_ = false;
 
 	//スケール
-	worldTransform_.scale_ = { 0.1f,0.1f,GetRandom(5.0f,10.0f) };
+	//worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
+	worldTransform_.scale_ = { 0.1f,0.1f,GetRandom(0.5f,1.0f) };
 
 	//消滅までの時間
 	deathtimer_ = GetRandom(20, 40);
 
 	//色の初期化(Vector4)
-	color_ = { 1,1,1,1 };
+	color_ = { 1,1,1,alpha_ };
+
+	//透明度
+	alpha_ = 1;
+
+	//フレーム数
+	flame_ = 0;
+
+	//t
+	t_ = 0;
 }
 
 void ReFire::Update() {
 	//生きている間
 	if (!isDead_) {
+		//だんだん透明になる
+		/*if (t_ <= 1) {
+			t_ += 0.01f;
+		}
+
+		float easedT = easeInOutCubic(t_);
+
+		point.end = (1.0f - easedT) * 300 + easedT * point.start;*/
+		t_ -= 0.02f;
+
+		alpha_ -= t_;
+		
+		color_ = { 1,1,1,alpha_ };
+
 		//減速
 		velocity_ = Add(velocity_, acceleration_);
 

@@ -5,7 +5,7 @@
 #include "math/Matrix4x4.h"
 #include "math/vector3.h"
 
-class ReFire
+class WhiteSphere
 {
 public:
 	//初期化
@@ -74,6 +74,7 @@ private:
 		float start;
 		float end;
 	};
-};
 
+	Point point = {};
+};
 

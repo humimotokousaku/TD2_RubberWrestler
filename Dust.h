@@ -5,9 +5,6 @@
 #include "math/Matrix4x4.h"
 #include "math/vector3.h"
 
-class tEmitter;
-class GameScene;
-
 class Dust
 {
 public:
@@ -28,9 +25,6 @@ public:
 	Vector4 GetColor() { return color_; }
 private:
 	WorldTransform worldTransform_;
-
-	tEmitter* tEmitter_;
-	GameScene* gameScene_;
 
 	Model* model_;
 	uint32_t texturehandle_;
