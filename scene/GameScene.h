@@ -38,6 +38,6 @@ private:
 	//残り火のテクスチャハンドル
 	uint32_t reFireTextureHandle_ = 0;
 
-	tEmitter* tEmitter_{};
+	std::unique_ptr<tEmitter> tEmitter_{};
 };
 
