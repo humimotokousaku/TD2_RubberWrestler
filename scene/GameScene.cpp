@@ -13,7 +13,7 @@ void GameScene::Initialize() {
 	//残り火モデルの読み込み
 	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
 
-	tEmitter_ = std::make_unique<tEmitter>;
+	tEmitter_ = std::make_unique<tEmitter>();
 	tEmitter_->Initialize({ 0,0,0 }, dustModel_, dustTextureHandle_, reFireModel_, reFireTextureHandle_);
 }
 
