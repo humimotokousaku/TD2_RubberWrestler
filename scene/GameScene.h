@@ -6,7 +6,6 @@
 #include "../base/Model.h"
 #include "../object/Sprite.h"
 
-
 class GameManager;
 class GameScene : public IScene
 {
@@ -33,10 +32,16 @@ private:
 	uint32_t dustTextureHandle_;
 
 	//残り火のモデル
-	std::unique_ptr<Model> reFireModel_ = 0;
+	std::unique_ptr<Model> reFireModel_;
 
 	//残り火のテクスチャハンドル
-	uint32_t reFireTextureHandle_ = 0;
+	uint32_t reFireTextureHandle_;
+
+	//球のモデル
+	std::unique_ptr<Model> whiteSphereModel_;
+
+	//球のテクスチャハンドル
+	uint32_t whiteSphere_;
 
 	std::unique_ptr<tEmitter> tEmitter_{};
 };

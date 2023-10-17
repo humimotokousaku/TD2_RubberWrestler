@@ -26,10 +26,10 @@ void ReFire::Initialize(const Vector3& position) {
 	worldTransform_.scale_ = { 0.1f,0.1f,GetRandom(0.5f,1.0f) };
 
 	//消滅までの時間
-	deathtimer_ = GetRandom(20, 40);
+	deathtimer_ = 120;
 
 	//色の初期化(Vector4)
-	color_ = { 1,1,1,alpha_ };
+	color_ = { 1,1,1,1 };
 
 	//透明度
 	alpha_ = 1;
@@ -42,6 +42,7 @@ void ReFire::Initialize(const Vector3& position) {
 }
 
 void ReFire::Update() {
+	flame_++;
 	//生きている間
 	if (!isDead_) {
 		//だんだん透明になる
@@ -52,17 +53,21 @@ void ReFire::Update() {
 		float easedT = easeInOutCubic(t_);
 
 		point.end = (1.0f - easedT) * 300 + easedT * point.start;*/
-		t_ -= 0.02f;
 
-		alpha_ -= t_;
+		if (flame_ >= colorDelay_) {
+			alpha_ -= 0.03f;
+		}
+		
 		
 		color_ = { 1,1,1,alpha_ };
 
-		//減速
-		velocity_ = Add(velocity_, acceleration_);
+		if (std::abs(velocity_.x) >= std::abs(acceleration_.x)) {
+			//減速
+			velocity_ = Add(velocity_, acceleration_);
+		}
 
 		//重力加算
-		velocity_.y = velocity_.y - gravity_;
+		//velocity_.y = velocity_.y - gravity_;
 
 		//速度加算
 		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
@@ -85,10 +90,3 @@ void ReFire::Update() {
 		isDead_ = true;
 	}
 }
-
-//void Beam::Spawn() {
-//	Beam* newBeam = new Beam();
-//	newDust->Initialize(model_, tEmitter_->GetWorldPosition(), texturehandle_);
-//	gameScene_->AddDust(newDust);
-//	//Dust_.push_back(newDust);
-//}

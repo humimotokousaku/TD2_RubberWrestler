@@ -27,7 +27,7 @@ private:
 	uint32_t texturehandle_;
 
 	//速度の値
-	float velocityValue_ = 5;
+	float velocityValue_ = 3;
 
 	//加速度の値
 	Vector3 accelerationValue_;
@@ -68,12 +68,8 @@ private:
 	//t
 	float t_ = {};
 
-	//イージングの地点
-	struct Point
-	{
-		float start;
-		float end;
-	};
+	//遅延
+	const int colorDelay_ = 15;
 };
 
 

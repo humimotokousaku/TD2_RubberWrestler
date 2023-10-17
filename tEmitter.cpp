@@ -13,10 +13,11 @@ void tEmitter::Initialize(const Vector3& position, Model* dustModel, uint32_t& d
 
 	assert(dustModel_);
 	assert(reFireModel_);
+
+	flame = 0;
 }
 
 void tEmitter::Update() {
-
 	//火花の更新
 	for (std::list<std::unique_ptr<Dust>>::iterator dustIt = dusts_.begin(); dustIt != dusts_.end();) {
 		Dust* dust = dustIt->get();
@@ -43,10 +44,6 @@ void tEmitter::Update() {
 		}
 	}
 
-	ImGui::Begin("tEmitterPos");
-	ImGui::Text("%f,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
-	ImGui::End();
-
 	worldTransform_.UpdateMatrix();
 	worldTransform_.TransferMatrix();
 }
@@ -54,11 +51,12 @@ void tEmitter::Update() {
 
 
 void tEmitter::Draw(const ViewProjection& view) {
-
 	//火花を描画
 	for (std::list<std::unique_ptr<Dust>>::iterator dustIt = dusts_.begin(); dustIt != dusts_.end(); dustIt++) {
 		Dust* dust = dustIt->get();
-		dustModel_->Draw(dust->GetWT(), view, dustTextureHandle_,kBlendModeNormal,dust->GetColor());
+		if (dust->GetIsDelay()) {
+			dustModel_->Draw(dust->GetWT(), view, dustTextureHandle_, kBlendModeNormal, dust->GetColor());
+		}
 	}
 
 	//残り火を描画

@@ -7,7 +7,7 @@
 #include "Dust.h"
 #include "ReFire.h"
 
-#define MAXDUST 200
+#define MAXDUST 300
 #define MAXReFire 100
 
 class tEmitter
@@ -44,5 +44,9 @@ private:
 
 	//残り火のテクスチャハンドル
 	uint32_t reFireTextureHandle_ = 0;
+
+	const int delay = 30;
+
+	int flame = 0;
 };
 

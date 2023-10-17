@@ -23,6 +23,8 @@ public:
 	WorldTransform GetWT() { return worldTransform_; }
 
 	Vector4 GetColor() { return color_; }
+
+	bool GetIsDelay() { return isDelay_; }
 private:
 	WorldTransform worldTransform_;
 
@@ -30,7 +32,7 @@ private:
 	uint32_t texturehandle_;
 
 	//速度の値
-	float velocityValue_ = 5;
+	float velocityValue_ = 1.5f;
 
 	//加速度の値
 	Vector3 accelerationValue_;
@@ -64,6 +66,21 @@ private:
 
 	//色
 	Vector4 color_ = {};
+
+	//拡散するフラグ
+	bool isDiffusing_;
+
+	//フレーム数
+	int flame_ = {};
+
+	//拡散するフレーム数
+	int diffusingCount_;
+
+	//遅延
+	const int delay_ = 15;
+
+	//遅延フラグ
+	bool isDelay_;
 };
 
 
