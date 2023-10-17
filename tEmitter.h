@@ -13,7 +13,7 @@
 class tEmitter
 {
 public:
-	void Initialize(const std::vector<Model*>& models, uint32_t& dustTexture, uint32_t& reFireTexture);
+	void Initialize(const Vector3& position, Model* dustModel, uint32_t& dustTexture, Model* reFireModel, uint32_t& reFireTexture);
 
 	void Update();
 

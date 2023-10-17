@@ -29,11 +29,11 @@ private:
 	//ダストのモデル
 	std::unique_ptr<Model> dustModel_;
 
-	//残り火のモデル
-	std::unique_ptr<Model> reFireModel_ = 0;
-
 	//ダストのテクスチャハンドル
 	uint32_t dustTextureHandle_;
+
+	//残り火のモデル
+	std::unique_ptr<Model> reFireModel_ = 0;
 
 	//残り火のテクスチャハンドル
 	uint32_t reFireTextureHandle_ = 0;
