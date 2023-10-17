@@ -6,6 +6,11 @@
 
 #include <optional>
 
+struct AnimationFrame {
+	int frame = 0;
+	int endFrame;
+};
+
 class Player : public ICharacter{
 public:
 	Player();
@@ -97,13 +102,13 @@ private:
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;
 
 	// つかんだ瞬間のフレーム
-	int grabFrame_;
+	AnimationFrame grab_;
 	// 投げた時のフレーム
-	int throwFrame_;
+	AnimationFrame throw_;
 	// 投げた後の待ち時間
-	int waitFrame_;
+	AnimationFrame wait_;
 	// ラリアットした時のフレーム
-	int lariatFrame_;
+	AnimationFrame lariat_;
 
 	// 目標角度
 	float goalAngle_;

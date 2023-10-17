@@ -20,21 +20,22 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	// 基底クラスの初期化
 	ICharacter::Initialize(models);
 
+	//worldTransform_.Initialize();
+	worldTransformBody_.Initialize();
+	worldTransformHead_.Initialize();
+	worldTransformL_arm_.Initialize();
+	worldTransformR_arm_.Initialize();
+
+	// 身体のパーツの親子関係を結ぶ
+	SetParent(&GetWorldTransformBody());
+	worldTransformBody_.parent_ = worldTransform_.parent_;
+
 	// 腕の座標指定
 	worldTransformL_arm_.translation_.x = 1.5f;
 	worldTransformR_arm_.translation_.x = -1.5f;
 	worldTransformL_arm_.translation_.y = 5.0f;
 	worldTransformR_arm_.translation_.y = 5.0f;
 
-	// 身体のパーツの親子関係を結ぶ
-	SetParent(&GetWorldTransformBody());
-	worldTransformBody_.parent_ = worldTransform_.parent_;
-
-	//worldTransform_.Initialize();
-	worldTransformBody_.Initialize();
-	worldTransformHead_.Initialize();
-	worldTransformL_arm_.Initialize();
-	worldTransformR_arm_.Initialize();
 }
 
 // Updateの関数定義
@@ -73,7 +74,7 @@ void Player::Update() {
 			worldTransformBody_.rotation_.x = 0.0f;
 			worldTransformL_arm_.rotation_ = { 0.0f, 0.0f, 0.0f };
 			worldTransformR_arm_.rotation_ = { 0.0f, 0.0f, 0.0f };
-			waitFrame_ = 120;
+			wait_.frame = 120;
 			break;
 			// ラリアット
 		case Behavior::LARIAT:
@@ -118,20 +119,24 @@ void Player::Update() {
 		break;
 		// 待機中
 	case Behavior::WAITING:
-		if (waitFrame_ <= 0) {
+		if (wait_.frame > wait_.endFrame) {
 			behaviorRequest_ = Behavior::LARIAT;
 		}
 
-		waitFrame_--;
+		wait_.frame++;
 
 		// playerの今の状態とinfo
-		ImGui::Text("Behavior:WAITING\nWaitFrame:%d", waitFrame_);
+		ImGui::Text("Behavior:WAITING\nWaitFrame:%d", wait_.frame);
 		break;
 		// ラリアット
 	case Behavior::LARIAT:
 		BehaviorLariatUpdate();
 		break;
 	}
+
+	ImGui::DragFloat3("L_arm.rotate", &worldTransformL_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
+	ImGui::DragFloat3("R_arm.rotate", &worldTransformR_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
+	ImGui::DragFloat3("Body.rotate", &worldTransformBody_.rotation_.x, 0.01f, -6.28f, 6.28f);
 
 	ImGui::End();
 
@@ -275,37 +280,47 @@ void Player::ProcessUserInput() {
 
 // つかむ瞬間
 void Player::BehaviorGrabInitialize() {
-	grabFrame_ = 0;
+	grab_.frame = 0;
+	grab_.endFrame = 25;
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.3f, 0.0f, -1.5f };
 	worldTransformBody_.rotation_.x = -(float)M_PI / 8.0f;
 }
 void Player::BehaviorGrabUpdate() {
-	if (grabFrame_ < 10) {
-		// 腕の挙動
-		worldTransformL_arm_.rotation_.x += 0.05f;
-		worldTransformR_arm_.rotation_.x += 0.05f;
-	}
-	else if (grabFrame_ > 10) {
-		if (worldTransformL_arm_.rotation_.x >= -(float)M_PI / 2.0f) {
-			// 腕の挙動
-			worldTransformL_arm_.rotation_.x -= 0.2f;
-			worldTransformR_arm_.rotation_.x -= 0.2f;
-			worldTransformL_arm_.rotation_.y -= 0.1f;
-			worldTransformR_arm_.rotation_.y += 0.1f;
 
-			// 前景姿勢にする
-			worldTransformBody_.rotation_.x += 0.1f;
-		}
-		else {
+	if (grab_.frame < grab_.endFrame) {
+		worldTransformL_arm_.rotation_.x = 0.3f + (-2.2f - 0.3f) * easeInBack((float)grab_.frame / grab_.endFrame);
+		worldTransformR_arm_.rotation_.x = 0.3f + (-2.2f - 0.3f) * easeInBack((float)grab_.frame / grab_.endFrame);
+
+		worldTransformL_arm_.rotation_.y = 0.0f + (-1.5f - 0.0f) * easeInBack((float)grab_.frame / grab_.endFrame);
+		worldTransformR_arm_.rotation_.y = 0.0f + (1.0f - 0.0f) * easeInBack((float)grab_.frame / grab_.endFrame);
+
+		worldTransformBody_.rotation_.x = -(float)M_PI / 8.0f + (0.8f - (-(float)M_PI / 8.0f)) * easeInBack((float)grab_.frame / grab_.endFrame);
+		// 腕の挙動
+		//worldTransformL_arm_.rotation_.x += 0.05f;
+		//worldTransformR_arm_.rotation_.x += 0.05f;
+	}
+	else {
 			// 振るまいリクエストをリセット
 			behaviorRequest_ = Behavior::GRABING;
-		}
 	}
-	grabFrame_++;
+	//else if (grabFrame_ > 10) {
+	//	if (worldTransformL_arm_.rotation_.x >= -(float)M_PI / 2.0f) {
+	//		// 腕の挙動
+	//		worldTransformL_arm_.rotation_.x -= 0.2f;
+	//		worldTransformR_arm_.rotation_.x -= 0.2f;
+	//		worldTransformL_arm_.rotation_.y -= 0.1f;
+	//		worldTransformR_arm_.rotation_.y += 0.1f;
+
+	//		// 前景姿勢にする
+	//		worldTransformBody_.rotation_.x += 0.1f;
+	//	}
+
+	//}
+	grab_.frame++;
 
 	// playerの今の状態とinfo
-	ImGui::Text("Behavior:GRAB\nGrabFrame:%d", grabFrame_);
+	ImGui::Text("Behavior:GRAB\nGrabFrame:%d", grab_.frame);
 }
 
 // つかんでいる間
@@ -324,50 +339,57 @@ void Player::BehaviorGrabingUpdate() {
 
 // 投げる
 void Player::BehaviorThrowInitialize() {
-	throwFrame_ = 0;
+	throw_.frame = 0;
+	throw_.endFrame = 20;
 }
 void Player::BehaviorThrowUpdate() {
-	if (throwFrame_ < 10) {
+	if (throw_.frame < throw_.endFrame) {
 		// 身体の挙動
-		worldTransformBody_.rotation_.y += 0.1f;
-	}
-	else if (throwFrame_ < 20) {
-		// 腕の挙動
-		worldTransformL_arm_.rotation_.y -= 0.2f;
+		//worldTransformBody_.rotation_.y += 0.1f;
+		worldTransformL_arm_.rotation_.x = 0.3f + (-2.0f - 0.3f) * easeInBack((float)throw_.frame / throw_.endFrame);
+		worldTransformL_arm_.rotation_.y = 0.0f + (-2.5f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
 
-		// 前景姿勢にする
-		worldTransformBody_.rotation_.x += 0.15f;
-		worldTransformBody_.rotation_.y -= 0.15f;
+		worldTransformBody_.rotation_.x = 0.0f + (1.3f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
+		worldTransformBody_.rotation_.y = 0.0f + (-1.3f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
 	}
-	else if (worldTransformBody_.rotation_.y <= 0 && worldTransformBody_.rotation_.x >= 0) {
-		worldTransformBody_.rotation_.x -= 0.15f;
-		worldTransformBody_.rotation_.y += 0.15f;
-	}
+	//else if (throwFrame_ < 20) {
+	//	// 腕の挙動
+	//	worldTransformL_arm_.rotation_.y -= 0.2f;
+
+	//	// 前景姿勢にする
+	//	worldTransformBody_.rotation_.x += 0.15f;
+	//	worldTransformBody_.rotation_.y -= 0.15f;
+	//}
+	//else if (worldTransformBody_.rotation_.y <= 0 && worldTransformBody_.rotation_.x >= 0) {
+	//	worldTransformBody_.rotation_.x -= 0.15f;
+	//	worldTransformBody_.rotation_.y += 0.15f;
+	//}
 	else {
 		// 振るまいリクエストをリセット
 		behaviorRequest_ = Behavior::WAITING;
 	}
 
-	throwFrame_++;
+	throw_.frame++;
 
 	// playerの今の状態とinfo
-	ImGui::Text("Behavior:THROW\nThrowFrame:%d", throwFrame_);
+	ImGui::Text("Behavior:THROW\nThrowFrame:%d", throw_.frame);
 }
 
 // ラリアット
 void Player::BehaviorLariatInitialize() {
-	lariatFrame_ = 0;
+	lariat_.frame = 0;
+	lariat_.endFrame = 60;
 }
 void Player::BehaviorLariatUpdate() {
 
-	if (lariatFrame_ >= 60) {
+	if (lariat_.frame > lariat_.endFrame) {
 		behaviorRequest_ = Behavior::NONE;
 	}
 
-	lariatFrame_++;
+	lariat_.frame++;
 
 	// playerの今の状態とinfo
-	ImGui::Text("Behavior:LARIAT\nLariatFrame:%d", lariatFrame_);
+	ImGui::Text("Behavior:LARIAT\nLariatFrame:%d", lariat_.frame);
 }
 
 /// 各ふるまいに応じた挙動と初期化ここまで
