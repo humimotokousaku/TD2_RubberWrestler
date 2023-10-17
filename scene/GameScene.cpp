@@ -12,9 +12,11 @@ void GameScene::Initialize() {
 	dustModel_.reset(Model::CreateModelFromObj("resources/particle/dust", "dust.obj"));
 	//残り火モデルの読み込み
 	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
+	std::vector<Model*> emitterModels = {
+		dustModel_.get(), reFireModel_.get()};
 
 	tEmitter_ = std::make_unique<tEmitter>();
-	tEmitter_->Initialize({ 0,0,0 }, dustModel_, dustTextureHandle_, reFireModel_, reFireTextureHandle_);
+	tEmitter_->Initialize(emitterModels,dustTextureHandle_,reFireTextureHandle_);
 }
 
 void GameScene::Update() {
