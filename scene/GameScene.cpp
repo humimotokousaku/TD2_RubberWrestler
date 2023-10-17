@@ -2,7 +2,8 @@
 #include "../Manager/GameManager.h"
 
 void GameScene::Initialize() {
-
+	// シーンの切り替え
+	sceneNum = GAME_SCENE;
 	// 基本機能
 	input_ = Input::GetInstance();
 	input_->Initialize();
@@ -25,6 +26,8 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		tEmitter_->OnCollision();
 	}
+	
+	tEmitter_->Update();
 
 	viewProjection_.UpdateViewMatrix();
 	viewProjection_.TransferMatrix();
