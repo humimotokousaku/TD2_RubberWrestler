@@ -55,7 +55,7 @@ void ReFire::Update() {
 		point.end = (1.0f - easedT) * 300 + easedT * point.start;*/
 
 		if (flame_ >= colorDelay_) {
-			alpha_ -= 0.03f;
+			alpha_ -= GetRandom(0.02f,0.04f);
 		}
 		
 		

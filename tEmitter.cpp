@@ -29,6 +29,7 @@ void tEmitter::Update() {
 			dust->Update();
 			dustIt++;
 		}
+		
 	}
 
 	//残り火の更新
