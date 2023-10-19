@@ -49,6 +49,8 @@ private:
 
 	// 自機
 	std::unique_ptr<Player> player_;
+	//敵
+	std::unique_ptr<Enemy> enemy_;
 	// リングのマット
 	std::unique_ptr<RingMat> ringMat_;
 	// 天球
