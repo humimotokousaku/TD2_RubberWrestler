@@ -4,32 +4,57 @@
 #include <math.h>
 
 void Enemy::Initialize(const std::vector<Model*>& models) {
+	// 入力
+	input_ = Input::GetInstance();
+	input_->Initialize();
+
 	// 基底クラスの初期化
 	ICharacter::Initialize(models);
 	InitializeFloatingGimmick();
+
+	//worldTransform_.Initialize();
+	worldTransformBody_.Initialize();
+	worldTransformHead_.Initialize();
+	worldTransformL_arm_.Initialize();
+	worldTransformR_arm_.Initialize();
+
+	// 腕の座標指定
+	worldTransformL_arm_.translation_.x = 1.5f;
+	worldTransformR_arm_.translation_.x = -1.5f;
+	worldTransformL_arm_.translation_.y = 5.0f;
+	worldTransformR_arm_.translation_.y = 5.0f;
+
+	// 身体のパーツの親子関係を結ぶ
+	SetParent(&GetWorldTransformBody());
+	worldTransformBody_.parent_ = worldTransform_.parent_;
 }
 
 void Enemy::Update() {
-	// 速さ
-	const float kSpeed = 0.3f;
-	Vector3 velocity{ 0.0f, 0.0f, kSpeed };
 
-	// 移動ベクトルをカメラの角度だけ回転
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	if (input_->PressKey(DIK_P)) {
+		velocity_.z = 1;
+		velocity_.x = 1.2f;
+	}
 
-	// 移動量
-	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity);
-	// 自機のY軸周り角度(θy)
-	worldTransform_.rotation_.y += 0.03f;
-
-	UpdateFloatingGimmick();
-
+	//移動処理
+	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	worldTransformBody_.translation_ = worldTransform_.translation_;
+	
+	//アップデート
+	worldTransform_.UpdateMatrix();
+	worldTransformBody_.UpdateMatrix();
+	worldTransformHead_.UpdateMatrix();
+	worldTransformL_arm_.UpdateMatrix();
+	worldTransformR_arm_.UpdateMatrix();
 	// 基底クラスの更新処理
 	ICharacter::Update();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	ICharacter::Draw(viewProjection, textureHandle);
+	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone);
+	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone);
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone);
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone);
 }
 
 void Enemy::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
@@ -50,4 +75,29 @@ void Enemy::UpdateFloatingGimmick() {
 	const float floatingAmplitude = 2.0f;
 	// 浮遊を座標に反映
 	worldTransform_.translation_.y = std::abs(std::sin(floatingParameter_)) * floatingAmplitude;
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+void Enemy::SetParent(const WorldTransform* parent) {
+	// 親子関係を結ぶ
+	worldTransformHead_.parent_ = parent;
+	worldTransformL_arm_.parent_ = parent;
+	worldTransformR_arm_.parent_ = parent;
+}
+
+void Enemy::Finalize() {
+	worldTransformBody_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformHead_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformL_arm_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformR_arm_.constBuff_.ReleaseAndGetAddressOf();
 }

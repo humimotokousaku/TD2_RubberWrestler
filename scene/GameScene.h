@@ -8,6 +8,7 @@
 #include "../components/Input.h"
 // gameObject
 #include "../gameObject/Player/Player.h"
+#include "../gameObject/Enemy/Enemy.h"
 #include "../gameObject/Rope.h"
 // object
 #include "../object/Sprite.h"
@@ -44,8 +45,14 @@ private:
 	// 自機
 	std::unique_ptr<Player> player_;
 
+	//敵
+	std::unique_ptr<Enemy> enemy_;
+
 	//ロープ
-	std::unique_ptr<Rope> bottomRope_;
+	std::unique_ptr<Rope> bottomRope_[3];
+	std::unique_ptr<Rope> topRope_[3];
+	std::unique_ptr<Rope> rightRope_[3];
+	std::unique_ptr<Rope> leftRope_[3];
 
 	// カメラ
 	ViewProjection viewProjection_;

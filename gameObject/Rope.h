@@ -18,16 +18,17 @@ public:
 	struct RopeNode {
 		float mass;
 		bool isEdge;
+		bool isHit;
 		WorldTransform worldTransform;
-		Vector3 velocity;
+		Vector3Double velocity;
 	};
 
 	struct Spring {
 		RopeNode* node1;
 		RopeNode* node2;
-		float restLength;
-		float stiffness;
-		float dampingCoefficient;
+		double restLength;
+		double stiffness;
+		double dampingCoefficient;
 		WorldTransform worldTransform;
 	};
 
@@ -55,6 +56,8 @@ public: //ゲッターセッター
 	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListBeginSpring() { return ropeNodes_.begin(); }
 	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListEndSpring() { return ropeNodes_.end(); }
 	inline bool IsEdgeNode(const RopeNode& ropeNode) { return ropeNode.isEdge; }
+	inline bool IsHitNode(const RopeNode* ropeNode) { return ropeNode->isHit; }
+	inline void SetIsHitNode(RopeNode* ropeNode, bool isHit) { ropeNode->isHit = isHit; }
 	inline Vector3 GetWorldPos(const RopeNode& ropeNodes) {
 		// ワールド座標を入れる変数
 		Vector3 worldPos;
@@ -67,7 +70,7 @@ public: //ゲッターセッター
 
 private: //メンバ関数
 
-	Vector3 CalculateElasticForce(Spring* spring);
+	Vector3Double CalculateElasticForce(Spring* spring);
 
 private:
 	int divisionCount_;

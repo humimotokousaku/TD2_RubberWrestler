@@ -15,7 +15,7 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 	startPos_ = startPos;
 	endPos_ = endPos;
 
-	divisionCount_ = 30;
+	divisionCount_ = 50;
 
 	Vector3 direction;
 	direction = startPos_ - endPos_;
@@ -26,13 +26,14 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 
 	for (int i = 0; i < divisionCount_ + 1; i++) {
 		std::unique_ptr<RopeNode> ropeNode = std::make_unique<RopeNode>();
-		ropeNode->mass = 1.0f;
+		ropeNode->mass = 2.0f;
 		if (i == 0 || i == divisionCount_) {
 			ropeNode->isEdge = true;
 		}
 		else {
 			ropeNode->isEdge = false;
 		}
+		ropeNode->isHit = false;
 		ropeNode->velocity = { 0.0f, 0.0f, 0.0f };
 		ropeNode->worldTransform.Initialize();
 		ropeNode->worldTransform.translation_.x = startPos_.x + float(direction.x * i);
@@ -50,9 +51,9 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 		spring->node1 = ropeNodeIt->get();
 		ropeNodeIt++;
 		spring->node2 = ropeNodeIt->get();
-		spring->restLength = (Length(direction) * 0.15f) / 10000.0f;
+		spring->restLength = (Length(direction)) / 100000.0;
 		spring->stiffness = 5000;
-		spring->dampingCoefficient = 0.5f;
+		spring->dampingCoefficient = 0.5;
 		spring->worldTransform.Initialize();
 		Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2;
 		spring->worldTransform.translation_ = pos;
@@ -64,23 +65,27 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 void Rope::Update() {
 	for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
 		Spring* spring = springIt->get();
-		Vector3 force = CalculateElasticForce(spring);
-		Vector3 gravity = { 0.0f, -5.0f, 0.0f };
+		Vector3Double force = CalculateElasticForce(spring);
+		Vector3Double gravity = { 0.0f, -0.1, 0.0f };
 
 		if (!spring->node1->isEdge) {
 			spring->node1->velocity += gravity * spring->node1->mass;
 			spring->node1->velocity += force / spring->node1->mass * kDeltaTime;
-			Vector3 dampingForce1 = -spring->dampingCoefficient * spring->node1->velocity;
+			Vector3Double dampingForce1 = -spring->dampingCoefficient * spring->node1->velocity;
 			spring->node1->velocity += dampingForce1 / spring->node1->mass;
-			spring->node1->worldTransform.translation_ += spring->node1->velocity * kDeltaTime;
+			spring->node1->worldTransform.translation_.x += (float)spring->node1->velocity.x * kDeltaTime;
+			spring->node1->worldTransform.translation_.y += (float)spring->node1->velocity.y * kDeltaTime;
+			spring->node1->worldTransform.translation_.z += (float)spring->node1->velocity.z * kDeltaTime;
 		}
 
 		if (!spring->node2->isEdge) {
 			spring->node2->velocity += gravity * spring->node2->mass;
 			spring->node2->velocity -= force / spring->node2->mass * kDeltaTime;
-			Vector3 dampingForce2 = -spring->dampingCoefficient * spring->node2->velocity;
+			Vector3Double dampingForce2 = -spring->dampingCoefficient * spring->node2->velocity;
 			spring->node2->velocity += dampingForce2 / spring->node2->mass;
-			spring->node2->worldTransform.translation_ += spring->node2->velocity * kDeltaTime;
+			spring->node2->worldTransform.translation_.x += (float)spring->node2->velocity.x * kDeltaTime;
+			spring->node2->worldTransform.translation_.y += (float)spring->node2->velocity.y * kDeltaTime;
+			spring->node2->worldTransform.translation_.z += (float)spring->node2->velocity.z * kDeltaTime;
 		}
 	}
 
@@ -110,15 +115,18 @@ void Rope::Clear() {
 	springs_.clear();
 }
 
-Vector3 Rope::CalculateElasticForce(Spring* spring) {
+Vector3Double Rope::CalculateElasticForce(Spring* spring) {
 	Vector3 diff = spring->node1->worldTransform.translation_ - spring->node2->worldTransform.translation_;
-	float currentLength = Length(diff);
-	float deltaLength = currentLength - spring->restLength;
-	float forceLength = -spring->stiffness * deltaLength;
+	double currentLength = Length(diff);
+	double deltaLength = currentLength - spring->restLength;
+	double forceLength = -spring->stiffness * deltaLength;
 	Vector3 forceDirection = Normalize(diff);
-	Vector3 elasticForce = forceLength * forceDirection;
-	Vector3 relativeVelocity = spring->node1->velocity - spring->node2->velocity;
-	Vector3 dampingForce = -spring->dampingCoefficient * relativeVelocity;
+	Vector3Double elasticForce; 
+	elasticForce.x = forceLength * forceDirection.x;
+	elasticForce.y = forceLength * forceDirection.y;
+	elasticForce.z = forceLength * forceDirection.z;
+	Vector3Double relativeVelocity = spring->node1->velocity - spring->node2->velocity;
+	Vector3Double dampingForce = -spring->dampingCoefficient * relativeVelocity;
 
 	return elasticForce + dampingForce;
 }
