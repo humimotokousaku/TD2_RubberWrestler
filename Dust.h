@@ -74,7 +74,7 @@ private:
 	int diffusingCount_;
 
 	//遅延
-	const int delay_ = 10;
+	const int delay_ = 13;
 
 	//遅延フラグ
 	bool isDelay_;
