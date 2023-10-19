@@ -117,4 +117,7 @@ private:
 
 	// 目標角度
 	float goalAngle_;
+
+	//仮座標
+	Vector3 tRotate_{};
 };

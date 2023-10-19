@@ -45,9 +45,7 @@ void Player::Update() {
 
 	XINPUT_STATE joyState{};
 	// ゲームパッド状態取得(接続されていないときは何もせずに抜ける)
-	/*if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
-		return;
-	}*/
+	Input::GetInstance()->GetJoystickState(0, joyState);
 
 	// 初期化
 	if (behaviorRequest_) {
@@ -235,6 +233,8 @@ void Player::ProcessUserInput() {
 			-1.0f
 		};
 
+		worldTransformBody_.rotation_.y = (float)M_PI;
+
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
 
@@ -251,6 +251,8 @@ void Player::ProcessUserInput() {
 			0.0f
 		};
 
+		worldTransformBody_.rotation_.y = (float)M_PI / 2;
+
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
 
@@ -266,6 +268,8 @@ void Player::ProcessUserInput() {
 			-1.0f, 0.0f,
 			0.0f
 		};
+
+		worldTransformBody_.rotation_.y = 4.71;
 
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
@@ -343,6 +347,7 @@ void Player::BehaviorGrabingUpdate() {
 void Player::BehaviorThrowInitialize() {
 	throw_.frame = 0;
 	throw_.endFrame = 20;
+	tRotate_ = worldTransformBody_.rotation_;
 }
 void Player::BehaviorThrowUpdate() {
 	if (throw_.frame < throw_.endFrame) {
@@ -351,8 +356,10 @@ void Player::BehaviorThrowUpdate() {
 		worldTransformL_arm_.rotation_.x = 0.3f + (-2.0f - 0.3f) * easeInBack((float)throw_.frame / throw_.endFrame);
 		worldTransformL_arm_.rotation_.y = 0.0f + (-2.5f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
 
-		worldTransformBody_.rotation_.x = 0.0f + (1.3f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
-		worldTransformBody_.rotation_.y = 0.0f + (-1.3f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
+		worldTransformBody_.rotation_.x = tRotate_.x + ((tRotate_.x - 1.3f) - tRotate_.x) * easeInBack((float)throw_.frame / throw_.endFrame);
+		worldTransformBody_.rotation_.y = tRotate_.y + ((tRotate_.y - 1.3f) - tRotate_.y) * easeInBack((float)throw_.frame / throw_.endFrame);
+
+		ThrowEnemy();
 	}
 	//else if (throwFrame_ < 20) {
 	//	// 腕の挙動
@@ -429,7 +436,7 @@ void Player::ThrowEnemy() {
 
 void Player::Rotate() {
 	// 回転速さ[ラジアン/frame]
-	const float kRotSpeed = 0.02f;
+	const float kRotSpeed = 0.3f;
 
 	// 押した方向で移動ベクトルを変更
 	if (input_->PressKey(DIK_K)) {
