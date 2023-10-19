@@ -413,3 +413,14 @@ void Player::SetParent(const WorldTransform* parent) {
 }
 
 #pragma endregion
+
+void Player::ThrowEnemy() {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		// 弾の速度
+		const float kThrowSpeed = 1.0f;
+		Vector3 velocity(0, 0, kThrowSpeed);
+
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	}
+}

@@ -75,6 +75,9 @@ public:
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
 
+	//プレイヤーの向いている方向に敵を飛ばす
+	void ThrowEnemy();
+
 private:
 	// 入力
 	Input* input_;
