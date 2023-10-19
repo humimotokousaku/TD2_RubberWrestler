@@ -56,7 +56,7 @@ void GameManager::Initialize() {
 	//GlobalVariables::GetInstance()->LoadFiles();
 
 	//初期シーンの設定
-	sceneNum_ = TITLE_SCENE;
+	sceneNum_ = GAME_SCENE;
 	// シーンごとの初期化
 	sceneArr_[sceneNum_]->Initialize();
 }

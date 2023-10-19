@@ -53,6 +53,10 @@ private:
 	// 天球
 	std::unique_ptr<Skydome> skydome_;
 
+	std::unique_ptr<Sprite> sprite_;
+
+	WorldTransform worldTransform_[2];
+
 	// カメラ
 	ViewProjection viewProjection_;
 };
