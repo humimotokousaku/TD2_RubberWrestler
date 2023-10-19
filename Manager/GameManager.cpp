@@ -53,7 +53,7 @@ void GameManager::Initialize() {
 	imGuiManager_->Initialize(winApp_->GetHwnd());
 
 	// ブローバル変数の読み込み
-	//GlobalVariables::GetInstance()->LoadFiles();
+	GlobalVariables::GetInstance()->LoadFiles();
 
 	//初期シーンの設定
 	sceneNum_ = GAME_SCENE;
@@ -119,7 +119,7 @@ void GameManager::BeginFrame() {
 	// ImGui
 	imGuiManager_->PreDraw();
 	// グローバル変数の更新
-	//GlobalVariables::GetInstance()->Update();
+	GlobalVariables::GetInstance()->Update();
 }
 
 void GameManager::EndFrame() {
