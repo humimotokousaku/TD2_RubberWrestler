@@ -352,7 +352,7 @@ void Player::BehaviorGrabingInitialize() {
 void Player::BehaviorGrabingUpdate() {
 	// 移動処理
 	ProcessUserInput();
-	tempBodyWorldTransform_ = worldTransformBody_;
+
 	// playerの今の状態とinfo
 	ImGui::Text("Behavior:GRABING\nPRESS SPACEorR_TRIGGER");
 }
@@ -361,15 +361,16 @@ void Player::BehaviorGrabingUpdate() {
 void Player::BehaviorThrowInitialize() {
 	throw_.frame = 0;
 	throw_.endFrame = 20;
-
+	tempBodyWorldTransform_ = worldTransformBody_;
 }
+
 void Player::BehaviorThrowUpdate() {
 	if (throw_.frame < throw_.endFrame) {
 		// 身体の挙動
 		worldTransformL_arm_.rotation_.x = 0.3f + (-2.0f - 0.3f) * easeInBack((float)throw_.frame / throw_.endFrame);
 		worldTransformL_arm_.rotation_.y = 0.0f + (-2.5f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
 
-		worldTransformBody_.rotation_.y = tempBodyWorldTransform_.rotation_.y + (tempBodyWorldTransform_.rotation_.y - (6.28f * 3) - tempBodyWorldTransform_.rotation_.y) * easeInBack((float)throw_.frame / throw_.endFrame);
+		worldTransformBody_.rotation_.y = tempBodyWorldTransform_.rotation_.y + (tempBodyWorldTransform_.rotation_.y - (6.28f * 4) - tempBodyWorldTransform_.rotation_.y) * easeInBack((float)throw_.frame / throw_.endFrame);
 	}
 	else {
 		// 振るまいリクエストをリセット

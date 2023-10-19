@@ -1,7 +1,7 @@
 {
     "Player": {
-        "Grab_endFrame": 25,
+        "Grab_endFrame": 20,
         "Lariat_endFrame": 60,
-        "Throw_endFrame": 40
+        "Throw_endFrame": 71
     }
 }
