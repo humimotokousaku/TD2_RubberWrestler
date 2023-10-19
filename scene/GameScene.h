@@ -8,6 +8,7 @@
 #include "../components/Input.h"
 // gameObject
 #include "../gameObject/Player/Player.h"
+#include "../gameObject/Enemy/Enemy.h"
 #include "../gameObject/Ring/Mat/RingMat.h"
 #include "../Skydome.h"
 // object
