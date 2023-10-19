@@ -35,6 +35,10 @@ void GameScene::Initialize() {
 	player_->Initialize(playerModels);
 	player_->SetViewProjection(&viewProjection_);
 
+	//敵の生成
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Initialize(playerModels);
+
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();
 	ringMat_->Initialize(modelRingMat_.get());
