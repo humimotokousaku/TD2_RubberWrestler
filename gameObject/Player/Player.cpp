@@ -43,11 +43,11 @@ void Player::Update() {
 	// 基底クラスの更新処理
 	ICharacter::Update();
 
-	XINPUT_STATE joyState;
-	// ゲームパッド状態取得
-	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+	XINPUT_STATE joyState{};
+	// ゲームパッド状態取得(接続されていないときは何もせずに抜ける)
+	/*if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 		return;
-	}
+	}*/
 
 	// 初期化
 	if (behaviorRequest_) {
@@ -274,6 +274,8 @@ void Player::ProcessUserInput() {
 		worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 		worldTransformBody_.translation_ = worldTransform_.translation_;
 	}
+
+	Rotate();
 }
 
 /// 各ふるまいに応じた挙動と初期化ここから
@@ -416,11 +418,24 @@ void Player::SetParent(const WorldTransform* parent) {
 
 void Player::ThrowEnemy() {
 	if (input_->TriggerKey(DIK_SPACE)) {
-		// 弾の速度
+		// 投げ飛ばす速度
 		const float kThrowSpeed = 1.0f;
 		Vector3 velocity(0, 0, kThrowSpeed);
 
 		//速度ベクトルを自機の向きに合わせて回転させる
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	}
+}
+
+void Player::Rotate() {
+	// 回転速さ[ラジアン/frame]
+	const float kRotSpeed = 0.02f;
+
+	// 押した方向で移動ベクトルを変更
+	if (input_->PressKey(DIK_K)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+	else if (input_->PressKey(DIK_L)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
 	}
 }

@@ -78,6 +78,8 @@ public:
 	//プレイヤーの向いている方向に敵を飛ばす
 	void ThrowEnemy();
 
+	//キーボードで回転させる
+	void Rotate();
 private:
 	// 入力
 	Input* input_;

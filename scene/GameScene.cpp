@@ -58,6 +58,9 @@ void GameScene::Update() {
 	// 自機
 	player_->Update();
 
+	//敵
+	enemy_->Update();
+
 	// リングのマット
 	ringMat_->Update();
 
@@ -67,6 +70,7 @@ void GameScene::Update() {
 
 void GameScene::Draw() {
 	player_->Draw(viewProjection_, WHITE);
+	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
 	skydome_->Draw(viewProjection_, BACKGROUND);
 }
