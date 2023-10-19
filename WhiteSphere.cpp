@@ -27,7 +27,7 @@ void WhiteSphere::Initialize(const Vector3& position) {
 	flame_ = 0;
 
 	//t
-	t_ = 0;
+	t_ = 0.015f;
 }
 
 void WhiteSphere::Update() {
@@ -37,7 +37,7 @@ void WhiteSphere::Update() {
 
 		alpha_ -= t_;
 
-		color_ = { 1,1,1,alpha_ };
+		color_.w -= alpha_;
 
 		worldTransform_.UpdateMatrix();
 	}
