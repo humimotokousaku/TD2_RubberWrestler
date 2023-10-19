@@ -44,7 +44,7 @@ void Dust::Initialize(const Vector3& position) {
 	alpha_ = 1;
 
 	//透明度調整
-	alphaValue_ = GetRandom(0.01f, 0.02f);
+	alphaValue_ = GetRandom(0.001f, 0.1f);
 
 	//パーティクルの状態
 	particleState_ = GetRandom(0, 2);
