@@ -26,7 +26,15 @@ public:
 	// 浮遊ギミック更新
 	void UpdateFloatingGimmick();
 
+	// パーツの親子関係
+	void SetParent(const WorldTransform* parent);
+
+	void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
+
+	void SetWorldTransform(const WorldTransform& worldTransform);
 private:
 	// 浮遊ギミックの媒介変数
 	float floatingParameter_;
+
+	Vector3 velocity_;
 };

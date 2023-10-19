@@ -30,14 +30,18 @@ void GameScene::Initialize() {
 	viewProjection_.translation_.z = -40;
 	viewProjection_.rotation_.x = 3.14f / 10.0f;
 
+	//敵の生成
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Initialize(playerModels);
+
 	// 自機の生成
 	player_ = std::make_unique<Player>();
 	player_->Initialize(playerModels);
 	player_->SetViewProjection(&viewProjection_);
+	player_->SetEnemy(enemy_.get());
+	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
-	//敵の生成
-	enemy_ = std::make_unique<Enemy>();
-	enemy_->Initialize(playerModels);
+	
 
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();
@@ -57,6 +61,10 @@ void GameScene::Update() {
 
 	// 自機
 	player_->Update();
+
+	Velocity_ = player_->GetVelocity();
+
+	enemy_->SetVelocity(Velocity_);
 
 	//敵
 	enemy_->Update();

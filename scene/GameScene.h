@@ -62,5 +62,7 @@ private:
 
 	// カメラ
 	ViewProjection viewProjection_;
+
+	Vector3 Velocity_{};
 };
 

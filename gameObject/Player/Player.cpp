@@ -6,6 +6,8 @@
 #define _USE_MATH_DEFINES
 #include "math.h"
 
+#include "../Enemy/Enemy.h"
+
 #pragma region Default Method
 
 Player::Player() {}
@@ -216,16 +218,16 @@ void Player::ProcessUserInput() {
 
 			// 移動量
 			worldTransform_.translation_.y = 0;
-			worldTransform_.translation_ = Add(worldTransform_.translation_, move);
-			worldTransformBody_.translation_ = worldTransform_.translation_;
+			worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, move);
+			//worldTransformBody_.translation_ = worldTransform_.translation_;
 
 			// 目標角度の算出
 			goalAngle_ = std::atan2(move.x, move.z);
 		}
 	}
 	// 最短角度補間
-	worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, goalAngle_, 0.1f);
-	worldTransformBody_.rotation_.y = worldTransform_.rotation_.y;
+	worldTransformBody_.rotation_.y = LerpShortAngle(worldTransformBody_.rotation_.y, goalAngle_, 0.1f);
+	//worldTransformBody_.rotation_.y = worldTransform_.rotation_.y;
 
 	worldTransform_.UpdateMatrix();
 
@@ -254,8 +256,6 @@ void Player::ProcessUserInput() {
 			-1.0f
 		};
 
-		worldTransformBody_.rotation_.y = (float)M_PI;
-
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
 
@@ -271,8 +271,6 @@ void Player::ProcessUserInput() {
 			1.0f, 0.0f,
 			0.0f
 		};
-
-		worldTransformBody_.rotation_.y = (float)M_PI / 2;
 
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
@@ -290,8 +288,6 @@ void Player::ProcessUserInput() {
 			0.0f
 		};
 
-		worldTransformBody_.rotation_.y = 4.71;
-
 		// 移動量の速さを反映
 		move = Multiply(speed, Normalize(move));
 
@@ -299,8 +295,6 @@ void Player::ProcessUserInput() {
 		worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 		worldTransformBody_.translation_ = worldTransform_.translation_;
 	}
-
-	Rotate();
 }
 
 /// 各ふるまいに応じた挙動と初期化ここから
@@ -312,6 +306,8 @@ void Player::BehaviorGrabInitialize() {
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.3f, 0.0f, -1.5f };
 	worldTransformBody_.rotation_.x = -(float)M_PI / 8.0f;
+
+	enemy_->SetParent(&GetWorldTransformBody());
 }
 
 void Player::BehaviorGrabUpdate() {
@@ -378,10 +374,15 @@ void Player::BehaviorThrowUpdate() {
 		worldTransformL_arm_.rotation_.y = 0.0f + (-2.5f - 0.0f) * easeInBack((float)throw_.frame / throw_.endFrame);
 
 		worldTransformBody_.rotation_.y = tempBodyWorldTransform_.rotation_.y + (tempBodyWorldTransform_.rotation_.y - (6.28f * 3) - tempBodyWorldTransform_.rotation_.y) * easeInBack((float)throw_.frame / throw_.endFrame);
+	
+		ThrowEnemy();
 	}
 	else {
 		// 振るまいリクエストをリセット
 		behaviorRequest_ = Behavior::WAITING;
+
+		enemy_->SetParent(nullptr);
+		enemy_->SetWorldTransform(GetWorldTransformBody());
 	}
 
 	throw_.frame++;
@@ -438,14 +439,12 @@ void Player::ApplyGlobalVariables() {
 #pragma endregion
 
 void Player::ThrowEnemy() {
-	if (input_->TriggerKey(DIK_SPACE)) {
-		// 投げ飛ばす速度
-		const float kThrowSpeed = 1.0f;
-		Vector3 velocity(0, 0, kThrowSpeed);
+	// 投げ飛ばす速度
+	const float kThrowSpeed = 1.0f;
+	throwVelocity_ = { 0, 0, kThrowSpeed };
 
-		//速度ベクトルを自機の向きに合わせて回転させる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
-	}
+	//速度ベクトルを自機の向きに合わせて回転させる
+	throwVelocity_ = TransformNormal(throwVelocity_, worldTransform_.matWorld_);
 }
 
 void Player::Rotate() {

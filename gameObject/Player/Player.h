@@ -12,6 +12,8 @@ struct AnimationFrame {
 	int endFrame;
 };
 
+class Enemy;
+
 class Player : public ICharacter{
 public:
 	Player();
@@ -84,6 +86,12 @@ public:
 
 	//キーボードで回転させる
 	void Rotate();
+
+	Vector3 GetVelocity() { return throwVelocity_; }
+
+	//void SetEnemyPearent(const WorldTransform* worldTransform) { enemy_->SetWorldTransform(*worldTransform); }
+
+	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 private:
 	// 入力
 	Input* input_;
@@ -127,4 +135,9 @@ private:
 	GlobalVariables* globalVariables_;
 	// ファイルの名前
 	const char* groupName = "Player";
+
+	//投げ飛ばす速度
+	Vector3 throwVelocity_{};
+
+	Enemy* enemy_;
 };
