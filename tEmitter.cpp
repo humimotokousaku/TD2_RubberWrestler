@@ -22,7 +22,7 @@ void tEmitter::Update() {
 	for (std::list<std::unique_ptr<Dust>>::iterator dustIt = dusts_.begin(); dustIt != dusts_.end();) {
 		Dust* dust = dustIt->get();
 
-		if (dust->GetIsDead()) {
+		if (dust->GetIsDead() && dust->GetIsDelay()) {
 			dustIt = dusts_.erase(dustIt);
 		}
 		else {
