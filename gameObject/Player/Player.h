@@ -2,6 +2,7 @@
 #include "../../base/Model.h"
 #include "../../base/WorldTransform.h"
 #include "../../components/Input.h"
+#include "../../utility/GlobalVariables.h"
 #include "../ICharacter.h"
 
 #include <optional>
@@ -75,6 +76,9 @@ public:
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
 
+	// 調整項目
+	void ApplyGlobalVariables();
+
 	//プレイヤーの向いている方向に敵を飛ばす
 	void ThrowEnemy();
 
@@ -87,7 +91,6 @@ private:
 	// カメラのビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
 	// ワールド変換データ
-	//WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
 	WorldTransform worldTransformHead_;
 	WorldTransform worldTransformL_arm_;
@@ -115,9 +118,13 @@ private:
 	// ラリアットした時のフレーム
 	AnimationFrame lariat_;
 
+	// 身体の向きを保存
+	WorldTransform tempBodyWorldTransform_;
+
 	// 目標角度
 	float goalAngle_;
 
-	//仮座標
-	Vector3 tRotate_{};
+	GlobalVariables* globalVariables_;
+	// ファイルの名前
+	const char* groupName = "Player";
 };
