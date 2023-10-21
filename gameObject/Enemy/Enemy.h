@@ -31,7 +31,15 @@ public:
 
 	void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
 
-	void SetWorldTransform(const WorldTransform& worldTransform);
+	Vector3 GetTranslation() { return worldTransform_.translation_; }
+
+	void SetTranslation(Vector3 translation) {
+		worldTransform_.translation_ = translation;
+		worldTransform_.translation_.x += 3;
+	worldTransform_.UpdateMatrix();
+	}
+
+	void SetWorldTransform(WorldTransform worldTransform);
 private:
 	// 浮遊ギミックの媒介変数
 	float floatingParameter_;

@@ -152,6 +152,9 @@ void Player::Update() {
 	ImGui::DragFloat3("R_arm.rotate", &worldTransformR_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
 	ImGui::DragFloat3("Body.rotate", &worldTransformBody_.rotation_.x, 0.01f, -6.28f, 6.28f);
 	ImGui::Text("Buffer_Body.rotate%f  %f  %f", tempBodyWorldTransform_.rotation_.x, tempBodyWorldTransform_.rotation_.y, tempBodyWorldTransform_.rotation_.z);
+	ImGui::Text("Body.translation%f  %f  %f", worldTransformBody_.translation_.x, worldTransformBody_.translation_.y, worldTransformBody_.translation_.z);
+	ImGui::Text("Buffer.translation%f  %f  %f", worldTransformBuffer_.translation_.x, worldTransformBuffer_.translation_.y, worldTransformBuffer_.translation_.z);
+	ImGui::Text("worldTransform.translation%f  %f  %f", enemy_->GetTranslation().x, enemy_->GetTranslation().y, enemy_->GetTranslation().z);
 	ImGui::End();
 
 	worldTransformBody_.UpdateMatrix();
@@ -217,17 +220,19 @@ void Player::ProcessUserInput() {
 			move = TransformNormal(move, rotateMatrix);
 
 			// 移動量
-			worldTransform_.translation_.y = 0;
+
 			worldTransformBody_.translation_ = Add(worldTransformBody_.translation_, move);
-			//worldTransformBody_.translation_ = worldTransform_.translation_;
+			worldTransformBody_.translation_.y = 0;
+			worldTransform_.translation_ = worldTransformBody_.translation_;
 
 			// 目標角度の算出
 			goalAngle_ = std::atan2(move.x, move.z);
 		}
 	}
+	worldTransform_.translation_ = worldTransformBody_.translation_;
 	// 最短角度補間
 	worldTransformBody_.rotation_.y = LerpShortAngle(worldTransformBody_.rotation_.y, goalAngle_, 0.1f);
-	//worldTransformBody_.rotation_.y = worldTransform_.rotation_.y;
+	worldTransform_.rotation_.y = worldTransformBody_.rotation_.y;
 
 	worldTransform_.UpdateMatrix();
 
@@ -365,6 +370,7 @@ void Player::BehaviorGrabingUpdate() {
 void Player::BehaviorThrowInitialize() {
 	throw_.frame = 0;
 	throw_.endFrame = 20;
+	worldTransformBuffer_ = worldTransformBody_;
 
 }
 void Player::BehaviorThrowUpdate() {
@@ -378,11 +384,13 @@ void Player::BehaviorThrowUpdate() {
 		ThrowEnemy();
 	}
 	else {
+		enemy_->SetParent(nullptr);
+		//enemy_->SetWorldTransform(worldTransformBuffer_);
+		worldTransform_.UpdateMatrix();
+		enemy_->SetTranslation(worldTransformBody_.translation_);
+		
 		// 振るまいリクエストをリセット
 		behaviorRequest_ = Behavior::WAITING;
-
-		enemy_->SetParent(nullptr);
-		enemy_->SetWorldTransform(GetWorldTransformBody());
 	}
 
 	throw_.frame++;
@@ -444,7 +452,7 @@ void Player::ThrowEnemy() {
 	throwVelocity_ = { 0, 0, kThrowSpeed };
 
 	//速度ベクトルを自機の向きに合わせて回転させる
-	throwVelocity_ = TransformNormal(throwVelocity_, worldTransform_.matWorld_);
+	throwVelocity_ = TransformNormal(throwVelocity_, worldTransformBody_.matWorld_);
 }
 
 void Player::Rotate() {

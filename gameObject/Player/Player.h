@@ -104,6 +104,8 @@ private:
 	WorldTransform worldTransformL_arm_;
 	WorldTransform worldTransformR_arm_;
 
+	WorldTransform worldTransformBuffer_;
+
 	// 行動パターン
 	enum class Behavior {
 		NONE,	 // 何もつかんでいない

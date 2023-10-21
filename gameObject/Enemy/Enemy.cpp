@@ -57,8 +57,10 @@ void Enemy::SetParent(const WorldTransform* parent) {
 	worldTransform_.parent_ = parent;
 
 	worldTransform_.translation_.x = 3;
+	worldTransform_.translation_.z = 0;
 }
 
-void Enemy::SetWorldTransform(const WorldTransform& worldTransform) {
+void Enemy::SetWorldTransform(WorldTransform worldTransform) {
 	worldTransform_ = worldTransform;
+	worldTransform_.translation_.x +=  3;
 }
