@@ -29,6 +29,8 @@ void tEmitter::Update() {
 			dust->Update();
 			dustIt++;
 		}
+		worldTransform_.UpdateMatrix();
+		worldTransform_.TransferMatrix();
 	}
 
 	//残り火の更新
@@ -42,10 +44,11 @@ void tEmitter::Update() {
 			reFire->Update();
 			reFireIt++;
 		}
+		worldTransform_.UpdateMatrix();
+		worldTransform_.TransferMatrix();
 	}
 
-	worldTransform_.UpdateMatrix();
-	worldTransform_.TransferMatrix();
+	
 }
 
 

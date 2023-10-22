@@ -8,7 +8,7 @@
 #include "ReFire.h"
 
 #define MAXDUST 300
-#define MAXReFire 100
+#define MAXReFire 150
 
 class tEmitter
 {

@@ -67,9 +67,6 @@ private:
 	//色
 	Vector4 color_ = {};
 
-	//拡散するフラグ
-	bool isDiffusing_;
-
 	//フレーム数
 	int flame_ = {};
 
@@ -77,10 +74,28 @@ private:
 	int diffusingCount_;
 
 	//遅延
-	const int delay_ = 10;
+	const int delay_ = 13;
 
 	//遅延フラグ
 	bool isDelay_;
+
+	//透明度
+	float alpha_ = {};
+
+	//透明度調整
+	float alphaValue_ = {};
+
+	//遅延
+	const int colorDelay_ = 50;
+
+	enum ParticleState {
+		DIFFUSING,   // 拡散する
+		STATIONARY,  // 留まる
+		FALLING      // そのまま落ちる
+	};
+
+	//particleの状態
+	int particleState_;
 };
 
 
