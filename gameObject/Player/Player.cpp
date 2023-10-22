@@ -454,7 +454,7 @@ void Player::ThrowEnemy() {
 	throwVelocity_ = { 0, 0, kThrowSpeed };
 
 	//速度ベクトルを自機の向きに合わせて回転させる
-	throwVelocity_ = TransformNormal(throwVelocity_, worldTransformBody_.matWorld_);
+	throwVelocity_ = TransformNormal(throwVelocity_, worldTransform_.matWorld_);
 }
 
 void Player::Rotate() {
