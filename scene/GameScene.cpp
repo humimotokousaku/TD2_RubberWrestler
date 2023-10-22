@@ -78,7 +78,7 @@ void GameScene::Update() {
 	// 自機
 	player_->Update();
 
-	Velocity_ = player_->GetVelocity();
+	Velocity_ = player_->GetThrowVelocity();
 
 	enemy_->SetVelocity(Velocity_);
 

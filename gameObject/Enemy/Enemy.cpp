@@ -10,17 +10,17 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 }
 
 void Enemy::Update() {
-	//// 速さ
-	//const float kSpeed = 0.3f;
-	////velocity_ = { 0.0f, 0.0f, kSpeed };
+	// 速さ
+	const float kSpeed = 0.3f;
+	//velocity_ = { 0.0f, 0.0f, kSpeed };
 
-	//// 移動ベクトルをカメラの角度だけ回転
+	// 移動ベクトルをカメラの角度だけ回転
 	//velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);
 
-	//// 移動量
-	//worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
-	//// 自機のY軸周り角度(θy)
-	////worldTransform_.rotation_.y += 0.03f;
+	// 移動量
+	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	// 自機のY軸周り角度(θy)
+	//worldTransform_.rotation_.y += 0.03f;
 
 	//UpdateFloatingGimmick();
 

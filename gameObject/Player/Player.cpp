@@ -300,6 +300,8 @@ void Player::ProcessUserInput() {
 		worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 		worldTransformBody_.translation_ = worldTransform_.translation_;
 	}
+
+	Rotate();
 }
 
 /// 各ふるまいに応じた挙動と初期化ここから
@@ -460,10 +462,10 @@ void Player::Rotate() {
 	const float kRotSpeed = 0.3f;
 
 	// 押した方向で移動ベクトルを変更
-	if (input_->PressKey(DIK_K)) {
-		worldTransform_.rotation_.y += kRotSpeed;
+	if (input_->PressKey(DIK_Q)) {
+		worldTransformBody_.rotation_.y += kRotSpeed;
 	}
-	else if (input_->PressKey(DIK_L)) {
-		worldTransform_.rotation_.y -= kRotSpeed;
+	else if (input_->PressKey(DIK_E)) {
+		worldTransformBody_.rotation_.y -= kRotSpeed;
 	}
 }
