@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	//FPSを60に固定する処理///////////////////////////////////////////////////
+	//FPSを120に固定する処理///////////////////////////////////////////////////
 	auto startTime = std::chrono::high_resolution_clock::now();
 
 	auto endTime = std::chrono::high_resolution_clock::now();
