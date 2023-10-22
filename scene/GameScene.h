@@ -18,7 +18,6 @@
 
 #include <memory>
 
-
 class GameManager;
 class GameScene : public IScene
 {
