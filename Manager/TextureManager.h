@@ -22,7 +22,9 @@ enum TextureName {
 	TITLE,
 	GAMEOVER,
 	GAMECLEAR,
-	BACKGROUND
+	BACKGROUND,
+	DUST,
+	REFIRE,
 };
 
 class TextureManager
