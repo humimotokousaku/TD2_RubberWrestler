@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include <random>
 
 Matrix4x4  MakeIdentity4x4() {
 	Matrix4x4 result{};
