@@ -53,10 +53,6 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	// シーンの切り替え
-	if (input_->TriggerKey(DIK_RETURN)) {
-		sceneNum = GAMEOVER_SCENE;
-	}
 	viewProjection_.UpdateMatrix();
 
 	// 自機
@@ -74,6 +70,15 @@ void GameScene::Update() {
 
 	// 天球
 	skydome_->Update();
+
+	// シーンの切り替え
+	if (input_->TriggerKey(DIK_RETURN)) {
+		SceneTransition::sceneChangeType_ = FADE_IN;
+	}
+
+	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
+		sceneNum = GAMEOVER_SCENE;
+	}
 }
 
 void GameScene::Draw() {

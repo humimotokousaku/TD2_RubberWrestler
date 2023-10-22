@@ -18,6 +18,10 @@ void TitleScene::Initialize() {
 
 void TitleScene::Update() {
 	if (input_->TriggerKey(DIK_RETURN)) {
+		SceneTransition::sceneChangeType_ = FADE_IN;
+	}
+
+	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
 		sceneNum = GAME_SCENE;
 	}
 
@@ -25,7 +29,7 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-	titleName_->Draw(worldTransform_, 0, kBlendModeNone);
+	titleName_->Draw(worldTransform_, TITLE, kBlendModeNone);
 }
 
 void TitleScene::Finalize() {

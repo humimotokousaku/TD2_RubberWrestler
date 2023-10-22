@@ -9,6 +9,8 @@
 #include "../base/ViewProjection.h"
 #include "../base/Model.h"
 
+#include "../SceneTransition.h"
+
 #include <memory>
 
 class GameManager;

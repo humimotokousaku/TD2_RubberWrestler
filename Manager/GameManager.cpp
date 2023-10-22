@@ -55,8 +55,11 @@ void GameManager::Initialize() {
 	// ブローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
 
+	sceneTransition_ = SceneTransition::GetInstance();
+	sceneTransition_->Initialize(false);
+
 	//初期シーンの設定
-	sceneNum_ = GAME_SCENE;
+	sceneNum_ = TITLE_SCENE;
 	// シーンごとの初期化
 	sceneArr_[sceneNum_]->Initialize();
 }
@@ -90,6 +93,7 @@ void GameManager::Run() {
 			///
 			/// 更新処理
 			/// 
+			sceneTransition_->Update();
 			sceneArr_[sceneNum_]->Update();
 
 			// ImGuiのパラメータを入れている
@@ -98,7 +102,10 @@ void GameManager::Run() {
 			///
 			/// 描画処理
 			/// 
+
 			sceneArr_[sceneNum_]->Draw();
+			// フェードインとフェードアウト
+			sceneTransition_->Draw(UVCHEKER, kBlendModeNormal);
 
 			// 描画後の処理
 			EndFrame();
