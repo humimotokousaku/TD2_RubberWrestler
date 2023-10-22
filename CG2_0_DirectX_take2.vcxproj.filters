@@ -100,6 +100,12 @@
     <Filter Include="ソース ファイル\gameObject\Ring\Mat">
       <UniqueIdentifier>{56ee53e8-7fa1-4ba6-aaad-76bc2eab6784}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\particle">
+      <UniqueIdentifier>{153c7709-3819-4d61-91db-a0908f2618e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\particle">
+      <UniqueIdentifier>{8bc8b20a-72dd-4ec1-baf7-909a0246a91c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
