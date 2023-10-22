@@ -64,5 +64,29 @@ private:
 	ViewProjection viewProjection_;
 
 	Vector3 Velocity_{};
+
+	//ダストのモデル
+	std::unique_ptr<Model> dustModel_;
+
+	//ダストのテクスチャハンドル
+	uint32_t dustTextureHandle_;
+
+	//残り火のモデル
+	std::unique_ptr<Model> reFireModel_;
+
+	//残り火のテクスチャハンドル
+	uint32_t reFireTextureHandle_;
+
+	//球のモデル
+	std::unique_ptr<Model> whiteSphereModel_;
+
+	//球のテクスチャハンドル
+	uint32_t whiteSphere_;
+
+	std::unique_ptr<tEmitter> tEmitter_{};
+
+
+	const double targetFPS = 120.0;
+	const double targetFrameTime = 1.0 / targetFPS;
 };
 
