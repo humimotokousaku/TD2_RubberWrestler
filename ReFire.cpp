@@ -1,92 +1,75 @@
-#include "ReFire.h"
-#include <assert.h>
+#pragma once
+#include "base/Model.h"
+#include "base/ViewProjection.h"
+#include "base/WorldTransform.h"
+#include "math/Matrix4x4.h"
+#include "math/vector3.h"
 
-void ReFire::Initialize(const Vector3& position) {
-	//WorldTransformの初期化
-	worldTransform_.Initialize();
-	worldTransform_.translation_ = position;
+class ReFire
+{
+public:
+	//初期化
+	void Initialize(const Vector3& position);
 
-	//速度をランダムの値で初期化
-	velocity_ = { GetRandomVector3(-velocityValue_,velocityValue_) };
+	//更新
+	void Update();
 
-	//加速度をランダムの値で初期化
-	acceleration_ = Multiply(velocity_, GetRandom(-0.02f, -0.01f));
+	//生存フラグ
+	bool GetIsDead() { return isDead_; }
 
-	//質量をランダムの値で初期化
-	mass_ = GetRandom(0.0001f, 0.001f);
+	WorldTransform GetWT() { return worldTransform_; }
 
-	//重力に質量を加えて初期化
-	gravity_ = gravity_ * mass_;
+	Vector4 GetColor() { return color_; }
+private:
+	WorldTransform worldTransform_;
 
-	//デスフラグ
-	isDead_ = false;
+	Model* model_;
+	uint32_t texturehandle_;
 
-	//スケール
-	//worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
-	worldTransform_.scale_ = { 0.1f,0.1f,GetRandom(0.5f,1.0f) };
+	//速度の値
+	float velocityValue_ = 3;
 
-	//消滅までの時間
-	deathtimer_ = 120;
+	//加速度の値
+	Vector3 accelerationValue_;
 
-	//色の初期化(Vector4)
-	color_ = { 1,1,1,1 };
+	//速度
+	Vector3 velocity_;
+
+	//加速度
+	Vector3 acceleration_;
+
+	//質量
+	float mass_;
+
+	//重力
+	float gravity_ = 1.0f;
+
+	//生存時間
+	static const int32_t kLifeTime = 0;
+
+	// デスタイマー
+	int32_t deathtimer_ = 0;
+
+	// デスフラグ
+	bool isDead_ = false;
+
+	//角度
+	float velocityXZ_ = 0;
+
+	//色
+	Vector4 color_ = {};
 
 	//透明度
-	alpha_ = 1;
+	float alpha_ = {};
 
 	//フレーム数
-	flame_ = 0;
+	int flame_ = {};
 
 	//t
-	t_ = 0;
-}
+	float t_ = {};
 
-void ReFire::Update() {
-	flame_++;
-	//生きている間
-	if (!isDead_) {
-		//だんだん透明になる
-		/*if (t_ <= 1) {
-			t_ += 0.01f;
-		}
-
-		float easedT = easeInOutCubic(t_);
-
-		point.end = (1.0f - easedT) * 300 + easedT * point.start;*/
-
-		if (flame_ >= colorDelay_) {
-			alpha_ -= GetRandom(0.02f, 0.04f);
-		}
+	//遅延
+	const int colorDelay_ = 15;
+};
 
 
-		color_ = { 1,1,1,alpha_ };
-
-		if (std::abs(velocity_.x) >= std::abs(acceleration_.x)) {
-			//減速
-			velocity_ = Add(velocity_, acceleration_);
-		}
-
-		//重力加算
-		//velocity_.y = velocity_.y - gravity_;
-
-		//速度加算
-		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
-
-		// Y軸周り角度(0y)
-		worldTransform_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
-
-		velocityXZ_ = std::sqrt(velocity_.x * velocity_.x + velocity_.z * velocity_.z);
-		// X軸周り角度(0x)
-		worldTransform_.rotation_.x = std::atan2(-velocity_.y, velocityXZ_);
-
-		worldTransform_.UpdateMatrix();
-	}
-	// 時間経過でデス
-	if (--deathtimer_ <= 0) {
-		isDead_ = true;
-	}
-
-	if (velocity_.x <= acceleration_.x && velocity_.y <= acceleration_.y && velocity_.z <= acceleration_.z) {
-		isDead_ = true;
-	}
-}
