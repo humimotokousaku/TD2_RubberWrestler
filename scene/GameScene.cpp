@@ -57,7 +57,7 @@ void GameScene::Initialize() {
 	viewProjection_.translation_.z = -50.0f;
 
 	tEmitter_ = std::make_unique<tEmitter>();
-	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
+	tEmitter_->Initialize(player_->GetWorldPosition(), dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
 
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();
@@ -104,15 +104,15 @@ void GameScene::Update() {
 	//////////////////////////////////////////////////////////////////////////
 
 	if (input_->TriggerKey(DIK_SPACE)) {
-		tEmitter_->OnCollision();
+		tEmitter_->OnCollision(player_->GetWorldPosition());
 	}
 
 	tEmitter_->Update();
 }
 
 void GameScene::Draw() {
-	tEmitter_->Draw(viewProjection_);
 	player_->Draw(viewProjection_, WHITE);
+	tEmitter_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
 	skydome_->Draw(viewProjection_, BACKGROUND);

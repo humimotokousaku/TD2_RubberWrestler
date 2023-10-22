@@ -19,11 +19,11 @@ public:
 
 	void Draw(const ViewProjection& view);
 
-	void OnCollision();
+	void OnCollision(const Vector3& position);
 
-	void SpawnDusts();
+	void SpawnDusts(const Vector3& position);
 
-	void SpawnReFire();
+	void SpawnReFire(const Vector3& position);
 private:
 	WorldTransform worldTransform_;
 

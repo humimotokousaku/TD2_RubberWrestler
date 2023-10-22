@@ -3,7 +3,7 @@
 void tEmitter::Initialize(const Vector3& position, Model* dustModel, uint32_t& dustTexture, Model* reFireModel, uint32_t& reFireTexture) {
 
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {};
+	worldTransform_.translation_ = position;
 
 	dustModel_ = dustModel;
 	dustTextureHandle_ = dustTexture;
@@ -69,23 +69,23 @@ void tEmitter::Draw(const ViewProjection& view) {
 	}
 }
 
-void tEmitter::OnCollision() {
+void tEmitter::OnCollision(const Vector3& position) {
 	for (int i = 0; i < MAXDUST; i++) {
-		SpawnDusts();
+		SpawnDusts(position);
 	}
 	for (int i = 0; i < MAXReFire; i++) {
-		SpawnReFire();
+		SpawnReFire(position);
 	}
 }
 
-void tEmitter::SpawnDusts() {
+void tEmitter::SpawnDusts(const Vector3& position) {
 	std::unique_ptr<Dust> newDust = std::make_unique<Dust>();
-	newDust->Initialize(worldTransform_.translation_);
+	newDust->Initialize(position);
 	dusts_.push_back(std::move(newDust));
 }
 
-void tEmitter::SpawnReFire() {
+void tEmitter::SpawnReFire(const Vector3& position) {
 	std::unique_ptr<ReFire> newReFire = std::make_unique<ReFire>();
-	newReFire->Initialize(worldTransform_.translation_);
+	newReFire->Initialize(position);
 	reFires_.push_back(std::move(newReFire));
 }
