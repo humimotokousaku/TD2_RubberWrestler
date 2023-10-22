@@ -41,7 +41,20 @@ void GameScene::Initialize() {
 	player_->SetEnemy(enemy_.get());
 	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
-	
+	//ダストモデルの読み込み
+	dustModel_.reset(Model::CreateModelFromObj("resources/particle/dust", "dust.obj"));
+	//残り火モデルの読み込み
+	reFireModel_.reset(Model::CreateModelFromObj("resources/particle/reFire", "reFire.obj"));
+	//球モデルの読み込み
+	whiteSphereModel_.reset(Model::CreateModelFromObj("resources/particle/dust", "dust.obj"));
+
+	dustTextureHandle_ = DUST;
+	reFireTextureHandle_ = REFIRE;
+
+	viewProjection_.translation_.z = -50.0f;
+
+	tEmitter_ = std::make_unique<tEmitter>();
+	tEmitter_->Initialize({ 0,0,0 }, dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
 
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();
