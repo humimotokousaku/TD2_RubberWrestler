@@ -8,6 +8,7 @@
 #include "../base/WorldTransform.h"
 #include "../base/ViewProjection.h"
 #include "../base/Model.h"
+#include "../object/Cube.h"
 
 #include <memory>
 

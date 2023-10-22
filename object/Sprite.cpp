@@ -64,7 +64,7 @@ void Sprite::Initialize(bool isBackGround) {
 	viewProjection_.constMap->projection = MakeOrthographicMatrix(0.0f, 0.0f, float(WinApp::kClientWidth_), float(WinApp::kClientHeight_), 0.0f, 100.0f);
 }
 
-void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum) {
+void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum, Vector4 color) {
 	// このスプライトが背景なら
 	if (isBackGround_) {
 		worldTransform.translation_.z = 10000;
@@ -75,6 +75,10 @@ void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum) {
 	// 更新
 	worldTransform.UpdateMatrix();
 
+	// 引数の色を反映
+	materialData_->color = color;
+
+	// uvTransformの計算
 	uvTransformMatrix_ = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeRotateZMatrix(uvTransform_.rotate.z));
 	uvTransformMatrix_ = Multiply(uvTransformMatrix_, MakeTranslateMatrix(uvTransform_.translate));
@@ -96,6 +100,12 @@ void Sprite::Draw(WorldTransform worldTransform, int textureNum, int blendNum) {
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_.Get()->GetGPUVirtualAddress());
+
+	// worldTransformの場所を設定
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff_->GetGPUVirtualAddress());
+
+	// viewProjectionの場所を設定
+	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(4, viewProjection_.constBuff_->GetGPUVirtualAddress());
 
 	// worldTransformの場所を設定
 	DirectXCommon::GetInstance()->GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff_->GetGPUVirtualAddress());
