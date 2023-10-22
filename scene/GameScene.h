@@ -11,6 +11,8 @@
 #include "../gameObject/Enemy/Enemy.h"
 #include "../gameObject/Ring/Mat/RingMat.h"
 #include "../Skydome.h"
+#include "../tEmitter.h"
+
 // object
 #include "../object/Sprite.h"
 
