@@ -11,6 +11,6 @@ void ICharacter::Update() {
 
 void ICharacter::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
 	for (Model* model : models_) {
-		model->Draw(worldTransform_, viewProjection, textureHandle,kBlendModeNone);
+		model->Draw(worldTransform_, viewProjection, textureHandle,kBlendModeNone, { 1,1,1,1 });
 	}
 }

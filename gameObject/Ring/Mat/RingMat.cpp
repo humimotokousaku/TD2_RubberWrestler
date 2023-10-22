@@ -15,5 +15,5 @@ void RingMat::Update() {
 }
 
 void RingMat::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone);
+	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone,{1,1,1,1});
 }

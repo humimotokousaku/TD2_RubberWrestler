@@ -25,7 +25,7 @@ void GameOver::Update() {
 }
 
 void GameOver::Draw() {
-	gameOver_->Draw(worldTransform_,GAMEOVER,kBlendModeNone);
+	gameOver_->Draw(worldTransform_,GAMEOVER,kBlendModeNone, { 1,1,1,1 });
 }
 
 void GameOver::Finalize() {

@@ -27,7 +27,7 @@ void TitleScene::Update() {
 
 	//// 座標をコピーしてオフセット分ずらす
 	//viewProjection_.translation_ = Add(worldTransform_.translation_, offset);
-	XINPUT_STATE joyState;
+XINPUT_STATE joyState{};
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		//// デッドゾーンの設定
 		SHORT rightThumbX = Input::GetInstance()->ApplyDeadzone(joyState.Gamepad.sThumbRX);
