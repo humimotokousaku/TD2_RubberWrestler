@@ -108,6 +108,7 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+	tEmitter_->Draw(viewProjection_);
 	player_->Draw(viewProjection_, WHITE);
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
