@@ -44,5 +44,9 @@ private:
 	uint32_t whiteSphere_;
 
 	std::unique_ptr<tEmitter> tEmitter_{};
+
+
+	const double targetFPS = 60.0;
+	const double targetFrameTime = 1.0 / targetFPS;
 };
 
