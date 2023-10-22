@@ -41,7 +41,7 @@ void GameScene::Initialize() {
 	player_->SetEnemy(enemy_.get());
 	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
-	
+	enemy_->SetPlayer(player_.get());
 
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();

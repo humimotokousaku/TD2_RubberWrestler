@@ -10,19 +10,17 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 }
 
 void Enemy::Update() {
-	//// 速さ
-	//const float kSpeed = 0.3f;
-	////velocity_ = { 0.0f, 0.0f, kSpeed };
+	// 速さ
+	const float kSpeed = 0.3f;
+	velocity_ = { 0.0f, 0.0f, kSpeed };
 
-	//// 移動ベクトルをカメラの角度だけ回転
-	//velocity_ = TransformNormal(velocity_, worldTransform_.matWorld_);
+	// 移動ベクトルをカメラの角度だけ回転
+	velocity_ = TransformNormal(velocity_, throwDir_);
 
-	//// 移動量
-	//worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
-	//// 自機のY軸周り角度(θy)
-	////worldTransform_.rotation_.y += 0.03f;
-
-	//UpdateFloatingGimmick();
+	if (player_->GetIsThrow()) {
+		// 移動量
+		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	}
 
 	// 基底クラスの更新処理
 	ICharacter::Update();
@@ -55,12 +53,12 @@ void Enemy::UpdateFloatingGimmick() {
 void Enemy::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
-
+	worldTransform_.rotation_ = player_->GetPlayerBodyRotation();
 	worldTransform_.translation_.x = 3;
 	worldTransform_.translation_.z = 0;
 }
 
 void Enemy::SetWorldTransform(WorldTransform worldTransform) {
 	worldTransform_ = worldTransform;
-	worldTransform_.translation_.x +=  3;
+	worldTransform_.translation_.x += 3;
 }

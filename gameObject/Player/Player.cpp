@@ -89,6 +89,8 @@ void Player::Update() {
 			worldTransformBody_.rotation_ = tempBodyWorldTransform_.rotation_;
 			wait_.frame = 0;
 			wait_.endFrame = 120;
+			isThrow_ = true;
+			enemy_->SetRotation(worldTransformBody_.rotation_);
 			break;
 			// ラリアット
 		case Behavior::LARIAT:
@@ -148,12 +150,14 @@ void Player::Update() {
 		break;
 	}
 
+	if (isThrow_) {
+	}
+
 	ImGui::DragFloat3("L_arm.rotate", &worldTransformL_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
 	ImGui::DragFloat3("R_arm.rotate", &worldTransformR_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
 	ImGui::DragFloat3("Body.rotate", &worldTransformBody_.rotation_.x, 0.01f, -6.28f, 6.28f);
 	ImGui::Text("Buffer_Body.rotate%f  %f  %f", tempBodyWorldTransform_.rotation_.x, tempBodyWorldTransform_.rotation_.y, tempBodyWorldTransform_.rotation_.z);
 	ImGui::Text("Body.translation%f  %f  %f", worldTransformBody_.translation_.x, worldTransformBody_.translation_.y, worldTransformBody_.translation_.z);
-	ImGui::Text("Buffer.translation%f  %f  %f", worldTransformBuffer_.translation_.x, worldTransformBuffer_.translation_.y, worldTransformBuffer_.translation_.z);
 	ImGui::Text("worldTransform.translation%f  %f  %f", enemy_->GetTranslation().x, enemy_->GetTranslation().y, enemy_->GetTranslation().z);
 	ImGui::End();
 
@@ -215,9 +219,9 @@ void Player::ProcessUserInput() {
 			move = Multiply(speed, Normalize(move));
 
 			// 回転行列
-			Matrix4x4 rotateMatrix = MakeRotateMatrix(viewProjection_->rotation_);
+			//Matrix4x4 rotateMatrix = MakeRotateMatrix(viewProjection_->rotation_);
 			// 移動ベクトルをカメラの角度だけ回転
-			move = TransformNormal(move, rotateMatrix);
+			move = TransformNormal(move, worldTransform_.matWorld_);
 
 			// 移動量
 
@@ -232,7 +236,7 @@ void Player::ProcessUserInput() {
 	worldTransform_.translation_ = worldTransformBody_.translation_;
 	// 最短角度補間
 	worldTransformBody_.rotation_.y = LerpShortAngle(worldTransformBody_.rotation_.y, goalAngle_, 0.1f);
-	worldTransform_.rotation_.y = worldTransformBody_.rotation_.y;
+	//worldTransform_.rotation_.y = worldTransformBody_.rotation_.y;
 
 	worldTransform_.UpdateMatrix();
 
@@ -310,9 +314,10 @@ void Player::BehaviorGrabInitialize() {
 	grab_.endFrame = 25;
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.3f, 0.0f, -1.5f };
-	worldTransformBody_.rotation_.x = -(float)M_PI / 8.0f;
 
 	enemy_->SetParent(&GetWorldTransformBody());
+	// 敵の体の向きを変える
+	enemy_->SetRotation(worldTransform_.rotation_);
 }
 
 void Player::BehaviorGrabUpdate() {
@@ -356,7 +361,7 @@ void Player::BehaviorGrabUpdate() {
 void Player::BehaviorGrabingInitialize() {
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.0f,0.0f,0.0f };
-	worldTransformBody_.rotation_.x = 0.05f;
+	worldTransformBody_.rotation_.x = 0.0f;
 }
 void Player::BehaviorGrabingUpdate() {
 	// 移動処理
@@ -370,8 +375,7 @@ void Player::BehaviorGrabingUpdate() {
 void Player::BehaviorThrowInitialize() {
 	throw_.frame = 0;
 	throw_.endFrame = 20;
-	worldTransformBuffer_ = worldTransformBody_;
-
+	enemy_->SetThrowDir(worldTransformBody_.matWorld_);
 }
 void Player::BehaviorThrowUpdate() {
 	if (throw_.frame < throw_.endFrame) {
@@ -381,11 +385,9 @@ void Player::BehaviorThrowUpdate() {
 
 		worldTransformBody_.rotation_.y = tempBodyWorldTransform_.rotation_.y + (tempBodyWorldTransform_.rotation_.y - (6.28f * 3) - tempBodyWorldTransform_.rotation_.y) * easeInBack((float)throw_.frame / throw_.endFrame);
 	
-		ThrowEnemy();
 	}
 	else {
 		enemy_->SetParent(nullptr);
-		//enemy_->SetWorldTransform(worldTransformBuffer_);
 		worldTransform_.UpdateMatrix();
 		enemy_->SetTranslation(worldTransformBody_.translation_);
 		
@@ -404,6 +406,7 @@ void Player::BehaviorLariatInitialize() {
 	lariat_.frame = 0;
 	lariat_.endFrame = 60;
 	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,1.2f };
+	isThrow_ = false;
 }
 
 void Player::BehaviorLariatUpdate() {

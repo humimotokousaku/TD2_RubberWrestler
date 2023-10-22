@@ -2,6 +2,7 @@
 #include "../ICharacter.h"
 #include "../../base/Model.h"
 #include "../../base/WorldTransform.h"
+#include "../Player/Player.h"
 
 class Enemy : public ICharacter {
 public:
@@ -26,6 +27,8 @@ public:
 	// 浮遊ギミック更新
 	void UpdateFloatingGimmick();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
 
@@ -33,10 +36,18 @@ public:
 
 	Vector3 GetTranslation() { return worldTransform_.translation_; }
 
+	void SetThrowDir(Matrix4x4 throwDir) {
+		throwDir_ = throwDir;
+		worldTransform_.rotation_ = player_->GetPlayerBodyRotation();
+	}
+
+	void SetRotation(Vector3 rotation) { worldTransform_.rotation_ = rotation; }
+
 	void SetTranslation(Vector3 translation) {
 		worldTransform_.translation_ = translation;
-		worldTransform_.translation_.x += 3;
-	worldTransform_.UpdateMatrix();
+		//worldTransform_.translation_.x = 0;
+		worldTransform_.translation_.y = 0;
+		worldTransform_.UpdateMatrix();
 	}
 
 	void SetWorldTransform(WorldTransform worldTransform);
@@ -45,4 +56,8 @@ private:
 	float floatingParameter_;
 
 	Vector3 velocity_;
+
+	Player* player_;
+
+	Matrix4x4 throwDir_;
 };
