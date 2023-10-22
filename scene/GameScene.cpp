@@ -1,5 +1,8 @@
 #include "GameScene.h"
 #include "../Manager/GameManager.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 void GameScene::Initialize() {
 	// シーンの切り替え
