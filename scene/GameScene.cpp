@@ -59,6 +59,8 @@ void GameScene::Initialize() {
 	tEmitter_ = std::make_unique<tEmitter>();
 	tEmitter_->Initialize(player_->GetWorldPosition(), dustModel_.get(), dustTextureHandle_, reFireModel_.get(), reFireTextureHandle_);
 
+	enemy_->SetPlayer(player_.get());
+
 	// リングのマットの生成
 	ringMat_ = std::make_unique<RingMat>();
 	ringMat_->Initialize(modelRingMat_.get());
@@ -69,10 +71,6 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	// シーンの切り替え
-	if (input_->TriggerKey(DIK_RETURN)) {
-		sceneNum = GAMEOVER_SCENE;
-	}
 	viewProjection_.UpdateMatrix();
 
 	// 自機
@@ -108,6 +106,15 @@ void GameScene::Update() {
 	}
 
 	tEmitter_->Update();
+
+	// シーンの切り替え
+	if (input_->TriggerKey(DIK_RETURN)) {
+		SceneTransition::sceneChangeType_ = FADE_IN;
+	}
+
+	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
+		sceneNum = GAMEOVER_SCENE;
+	}
 }
 
 void GameScene::Draw() {

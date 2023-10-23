@@ -18,6 +18,10 @@ void TitleScene::Initialize() {
 
 void TitleScene::Update() {
 	if (input_->TriggerKey(DIK_RETURN)) {
+		SceneTransition::sceneChangeType_ = FADE_IN;
+	}
+
+	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
 		sceneNum = GAME_SCENE;
 	}
 

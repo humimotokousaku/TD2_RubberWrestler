@@ -10,6 +10,8 @@
 #include "../base/Model.h"
 #include "../object/Cube.h"
 
+#include "../SceneTransition.h"
+
 #include <memory>
 
 class GameManager;

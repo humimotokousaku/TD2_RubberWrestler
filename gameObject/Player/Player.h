@@ -71,6 +71,8 @@ public:
 	const WorldTransform& GetWorldTransformBody() { return worldTransformBody_; }
 	const WorldTransform& GetWorldTransformBase() { return worldTransform_; }
 
+	bool GetIsThrow() { return isThrow_; }
+
 	void SetViewProjection(const ViewProjection* viewProjection) {
 		viewProjection_ = viewProjection;
 	}
@@ -90,7 +92,9 @@ public:
 	//投げる速度を取得する関数
 	Vector3 GetThrowVelocity() { return throwVelocity_; }
 
-	//void SetEnemyPearent(const WorldTransform* worldTransform) { enemy_->SetWorldTransform(*worldTransform); }
+	Vector3 GetPlayerBodyRotation() { return worldTransformBody_.rotation_; }
+
+	//Matrix4x4 GetPlayerBodyRotation() { return worldTransformBody_.matWorld_; }
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 private:
@@ -105,7 +109,7 @@ private:
 	WorldTransform worldTransformL_arm_;
 	WorldTransform worldTransformR_arm_;
 
-	WorldTransform worldTransformBuffer_;
+	//WorldTransform worldTransformBuffer_;
 
 	// 行動パターン
 	enum class Behavior {
@@ -143,4 +147,6 @@ private:
 	Vector3 throwVelocity_{};
 
 	Enemy* enemy_;
+
+	bool isThrow_;
 };

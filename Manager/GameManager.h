@@ -22,6 +22,8 @@
 #include "../components/camera/DebugCamera.h"
 #include "../components/Input.h"
 
+#include "../SceneTransition.h"
+
 #pragma endregion
 
 class GameManager
@@ -78,5 +80,7 @@ private:
 	IScene* sceneArr_[4];
 	int sceneNum_;
 	int preSceneNum_;
+
+	SceneTransition* sceneTransition_;
 };
 
