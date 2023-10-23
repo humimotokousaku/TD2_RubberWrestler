@@ -92,15 +92,15 @@ void GameScene::Update() {
 	skydome_->Update();
 
 	//FPSを120に固定する処理///////////////////////////////////////////////////
-	auto startTime = std::chrono::high_resolution_clock::now();
+	//auto startTime = std::chrono::high_resolution_clock::now();
 
-	auto endTime = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> frameTime = endTime - startTime;
+	//auto endTime = std::chrono::high_resolution_clock::now();
+	//std::chrono::duration<double> frameTime = endTime - startTime;
 
-	// もしフレーム時間が目標のフレーム時間よりも短い場合、スリープでウェイトを入れる
-	if (frameTime.count() < targetFrameTime) {
-		std::this_thread::sleep_for(std::chrono::duration<double>(targetFrameTime - frameTime.count()));
-	}
+	//// もしフレーム時間が目標のフレーム時間よりも短い場合、スリープでウェイトを入れる
+	//if (frameTime.count() < targetFrameTime) {
+	//	std::this_thread::sleep_for(std::chrono::duration<double>(targetFrameTime - frameTime.count()));
+	//}
 	//////////////////////////////////////////////////////////////////////////
 
 	if (input_->TriggerKey(DIK_SPACE)) {
