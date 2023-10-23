@@ -61,10 +61,12 @@ void Dust::Update() {
 	//生きている間
 	if (!isDead_) {
 		alpha_ -= 0.01f;
-		color_ = { 1,0,0,alpha_ };
+		color_ = { 1,1,1,alpha_ };
 		switch (particleState_)
 		{
 		case DIFFUSING:   // 拡散する
+			worldTransform_.scale_ = { 0.2f,0.2f,0.2f };
+
 			diffusingCount_++;
 			//重力を加算
 			velocity_.y = velocity_.y - gravity_ * 2;
@@ -74,6 +76,7 @@ void Dust::Update() {
 			break;
 
 		case STATIONARY:  // 留まる
+			worldTransform_.scale_ = { 0.2f,0.2f,0.2f };
 			diffusingCount_++;
 			if (diffusingCount_ >= 20) {
 				velocity_ = Multiply(velocity_, 0.98f);
