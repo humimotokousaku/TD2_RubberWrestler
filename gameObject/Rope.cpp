@@ -16,6 +16,9 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 	endPos_ = endPos;
 
 	divisionCount_ = 50;
+	isHitRope_ = false;
+	isParent_ = false;
+	externalForce_ = { 0.0f, -0.1, 0.0f };
 
 	Vector3 direction;
 	direction = startPos_ - endPos_;
@@ -53,7 +56,7 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 		spring->node2 = ropeNodeIt->get();
 		spring->restLength = (Length(direction)) / 100000.0;
 		spring->stiffness = 5000;
-		spring->dampingCoefficient = 0.5;
+		spring->dampingCoefficient = 0.25;
 		spring->worldTransform.Initialize();
 		Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2;
 		spring->worldTransform.translation_ = pos;
@@ -63,43 +66,47 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 }
 
 void Rope::Update() {
-	for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
-		Spring* spring = springIt->get();
-		Vector3Double force = CalculateElasticForce(spring);
-		Vector3Double gravity = { 0.0f, -0.1, 0.0f };
+	if (!isParent_) {
+		for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
+			Spring* spring = springIt->get();
+			Vector3Double force = CalculateElasticForce(spring);
 
-		if (!spring->node1->isEdge) {
-			spring->node1->velocity += gravity * spring->node1->mass;
-			spring->node1->velocity += force / spring->node1->mass * kDeltaTime;
-			Vector3Double dampingForce1 = -spring->dampingCoefficient * spring->node1->velocity;
-			spring->node1->velocity += dampingForce1 / spring->node1->mass;
-			spring->node1->worldTransform.translation_.x += (float)spring->node1->velocity.x * kDeltaTime;
-			spring->node1->worldTransform.translation_.y += (float)spring->node1->velocity.y * kDeltaTime;
-			spring->node1->worldTransform.translation_.z += (float)spring->node1->velocity.z * kDeltaTime;
+			if (!spring->node1->isEdge) {
+				spring->node1->velocity += externalForce_ * spring->node1->mass;
+				spring->node1->velocity += force / spring->node1->mass * kDeltaTime;
+				Vector3Double dampingForce1 = -spring->dampingCoefficient * spring->node1->velocity;
+				spring->node1->velocity += dampingForce1 / spring->node1->mass;
+				spring->node1->worldTransform.translation_.x += (float)spring->node1->velocity.x * kDeltaTime;
+				spring->node1->worldTransform.translation_.y += (float)spring->node1->velocity.y * kDeltaTime;
+				spring->node1->worldTransform.translation_.z += (float)spring->node1->velocity.z * kDeltaTime;
+			}
+
+			if (!spring->node2->isEdge) {
+				spring->node2->velocity += externalForce_ * spring->node2->mass;
+				spring->node2->velocity -= force / spring->node2->mass * kDeltaTime;
+				Vector3Double dampingForce2 = -spring->dampingCoefficient * spring->node2->velocity;
+				spring->node2->velocity += dampingForce2 / spring->node2->mass;
+				spring->node2->worldTransform.translation_.x += (float)spring->node2->velocity.x * kDeltaTime;
+				spring->node2->worldTransform.translation_.y += (float)spring->node2->velocity.y * kDeltaTime;
+				spring->node2->worldTransform.translation_.z += (float)spring->node2->velocity.z * kDeltaTime;
+			}
 		}
-
-		if (!spring->node2->isEdge) {
-			spring->node2->velocity += gravity * spring->node2->mass;
-			spring->node2->velocity -= force / spring->node2->mass * kDeltaTime;
-			Vector3Double dampingForce2 = -spring->dampingCoefficient * spring->node2->velocity;
-			spring->node2->velocity += dampingForce2 / spring->node2->mass;
-			spring->node2->worldTransform.translation_.x += (float)spring->node2->velocity.x * kDeltaTime;
-			spring->node2->worldTransform.translation_.y += (float)spring->node2->velocity.y * kDeltaTime;
-			spring->node2->worldTransform.translation_.z += (float)spring->node2->velocity.z * kDeltaTime;
+		for (auto ropeNodeIt = ropeNodes_.begin(); ropeNodeIt != ropeNodes_.end(); ropeNodeIt++) {
+			RopeNode* ropeNode = ropeNodeIt->get();
+			ropeNode->worldTransform.UpdateMatrix();
+		}
+		for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
+			Spring* spring = springIt->get();
+			Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2.0f;
+			spring->worldTransform.translation_ = pos;
+			spring->worldTransform.UpdateMatrix();
 		}
 	}
-
-	for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
-		Spring* spring = springIt->get();
-		Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2.0f;
-		spring->worldTransform.translation_ = pos;
-		spring->worldTransform.UpdateMatrix();
-	}
-
-
-	for (auto ropeNodeIt = ropeNodes_.begin(); ropeNodeIt != ropeNodes_.end(); ropeNodeIt++) {
-		RopeNode* ropeNode = ropeNodeIt->get();
-		ropeNode->worldTransform.UpdateMatrix();
+	else {
+		for (auto springIt = springs_.begin(); springIt != springs_.end(); springIt++) {
+			Spring* spring = springIt->get();
+			spring->worldTransform.UpdateMatrix();
+		}
 	}
 }
 
@@ -139,7 +146,42 @@ void Rope::TestSpring() {
 			RopeNode* ropeNode = ropeNodeIt->get();
 
 			ropeNode->worldTransform.translation_.y = 20;
-			ropeNode->worldTransform.translation_.z = 10;
+			ropeNode->worldTransform.translation_.z = 40;
 		}
 	}
+}
+
+void Rope::SetParent(Rope* parentRope) {
+	auto SpringIt = this->GetListBeginSpring();
+	for (auto parentRopeSpringIt = parentRope->GetListBeginSpring(); parentRopeSpringIt != parentRope->GetListEndSpring(); parentRopeSpringIt++, SpringIt++) {
+		Rope::Spring* springNode = SpringIt->get();
+		const Rope::Spring* parentSpringNode = parentRopeSpringIt->get();
+
+		springNode->worldTransform.parent_ = &parentSpringNode->worldTransform;
+
+		springNode->worldTransform.scale_.x = 1.0f;
+		springNode->worldTransform.scale_.y = 1.0f;
+		springNode->worldTransform.scale_.z = 1.0f;
+	}
+	isParent_ = true;
+}
+
+bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode, bool isTopOrBot) {
+	Vector3 worldPos;
+	worldPos.x = ropeNode->worldTransform.matWorld_.m[3][0];
+	worldPos.y = ropeNode->worldTransform.matWorld_.m[3][1];
+	worldPos.z = ropeNode->worldTransform.matWorld_.m[3][2];
+	//詳細
+	float ropeFactor = 0.25f;
+	float swingWidthSubtract = 0.9f;
+	float ropeSize = 0.5f;
+	float enemyWidth = 1;
+	isTopOrBot;
+	//
+	if (worldPos.x - ropeSize <= enemyPos.x + enemyWidth && enemyPos.x - enemyWidth <= worldPos.x + ropeSize) {
+		if (worldPos.z - ropeSize <= enemyPos.z + enemyWidth && enemyPos.z - enemyWidth <= worldPos.z + ropeSize) {
+			return true;
+		}
+	}
+	return false;
 }

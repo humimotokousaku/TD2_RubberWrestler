@@ -53,11 +53,20 @@ public:
 
 public: //ゲッターセッター
 
-	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListBeginSpring() { return ropeNodes_.begin(); }
-	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListEndSpring() { return ropeNodes_.end(); }
+	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListBeginRopeNode() { return ropeNodes_.begin(); }
+	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListEndRopeNode() { return ropeNodes_.end(); }
+	inline std::list<std::unique_ptr<Spring>>::iterator GetListBeginSpring() { return springs_.begin(); }
+	inline std::list<std::unique_ptr<Spring>>::iterator GetListEndSpring() { return springs_.end(); }
+	inline Vector3Double GetSxternalForce() { return externalForce_; }
+	inline void SetSxternalForce(Vector3 externalForce) { 
+		externalForce_.x = externalForce.x;
+		externalForce_.y = externalForce.y;
+		externalForce_.z = externalForce.z; }
 	inline bool IsEdgeNode(const RopeNode& ropeNode) { return ropeNode.isEdge; }
 	inline bool IsHitNode(const RopeNode* ropeNode) { return ropeNode->isHit; }
 	inline void SetIsHitNode(RopeNode* ropeNode, bool isHit) { ropeNode->isHit = isHit; }
+	inline bool IsHitRope() { return isHitRope_; }
+	inline void SetIsHitRope(bool isHit) { isHitRope_ = isHit; }
 	inline Vector3 GetWorldPos(const RopeNode& ropeNodes) {
 		// ワールド座標を入れる変数
 		Vector3 worldPos;
@@ -68,6 +77,8 @@ public: //ゲッターセッター
 		return worldPos;
 	}
 
+	void SetParent(Rope* parentRope);
+
 private: //メンバ関数
 
 	Vector3Double CalculateElasticForce(Spring* spring);
@@ -76,12 +87,16 @@ private:
 	int divisionCount_;
 	Vector3 startPos_;
 	Vector3 endPos_;
+	Vector3Double externalForce_;
 	std::list<std::unique_ptr<RopeNode>> ropeNodes_;
 	std::list<std::unique_ptr<Spring>> springs_;
 	Model* model_;
 
 	const float kDeltaTime = 1.0f / 60.0f;
+	bool isHitRope_;
+	bool isParent_;
 };
 
+bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode, bool isTopOrBot);
 
 

@@ -40,20 +40,83 @@ void GameScene::Initialize() {
 	//ロープのテスト生成
 	for (int i = 0; i < 3; i++) {
 		bottomRope_[i] = std::make_unique<Rope>();
-		bottomRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 2.5f + 2.5f * i, -20.0f }, { 20.0f, 2.5f + 2.5f * i, -20.0f });
+		switch (i)
+		{
+		case 0:
+			bottomRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, -20.0f });
+			break;
+		case 1:
+			bottomRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			break;
+		case 2:
+			bottomRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			break;
+		default:
+			break;
+		}
 	}
+	bottomRope_[1]->SetParent(bottomRope_[0].get());
+	bottomRope_[2]->SetParent(bottomRope_[0].get());
+
 	for (int i = 0; i < 3; i++) {
 		topRope_[i] = std::make_unique<Rope>();
-		topRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 2.5f + 2.5f * i, 20.0f }, { 20.0f, 2.5f + 2.5f * i, 20.0f });
+		switch (i)
+		{
+		case 0:
+			topRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, 20.0f }, { 20.0f, 5.0f, 20.0f });
+			break;
+		case 1:
+			topRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			break;
+		case 2:
+			topRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			break;
+		default:
+			break;
+		}
 	}
+	topRope_[1]->SetParent(topRope_[0].get());
+	topRope_[2]->SetParent(topRope_[0].get());
+
 	for (int i = 0; i < 3; i++) {
 		rightRope_[i] = std::make_unique<Rope>();
-		rightRope_[i]->Initialize(modelUvSphere_.get(), { 20.0f, 2.5f + 2.5f * i, -20.0f }, { 20.0f, 2.5f + 2.5f * i, 20.0f });
+		switch (i)
+		{
+		case 0:
+			rightRope_[i]->Initialize(modelUvSphere_.get(), { 20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, 20.0f });
+			break;
+		case 1:
+			rightRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			break;
+		case 2:
+			rightRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			break;
+		default:
+			break;
+		}
 	}
+	rightRope_[1]->SetParent(rightRope_[0].get());
+	rightRope_[2]->SetParent(rightRope_[0].get());
+
 	for (int i = 0; i < 3; i++) {
 		leftRope_[i] = std::make_unique<Rope>();
-		leftRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 2.5f + 2.5f * i, -20.0f }, { -20.0f, 2.5f + 2.5f * i, 20.0f });
+		switch (i)
+		{
+		case 0:
+			leftRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, -20.0f }, { -20.0f, 5.0f, 20.0f });
+			break;
+		case 1:
+			leftRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			break;
+		case 2:
+			leftRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			break;
+		default:
+			break;
+		}
 	}
+	leftRope_[1]->SetParent(leftRope_[0].get());
+	leftRope_[2]->SetParent(leftRope_[0].get());
 }
 
 void GameScene::Update() {
@@ -72,119 +135,67 @@ void GameScene::Update() {
 	//ロープ
 	for (int i = 0; i < 3; i++) {
 		bottomRope_[i]->Update();
-	}
-	for (int i = 0; i < 3; i++) {
 		topRope_[i]->Update();
-	}
-	for (int i = 0; i < 3; i++) {
 		rightRope_[i]->Update();
-	}
-	for (int i = 0; i < 3; i++) {
 		leftRope_[i]->Update();
 	}
-	
-	for (int i = 0; i < 3; i++) {
-		if (input_->TriggerKey(DIK_LSHIFT)) {
-			bottomRope_[i]->TestSpring();
-		}
+
+	//ロープの一部に力を加えてテスト
+	if (input_->TriggerKey(DIK_O)) {
+		topRope_[0]->TestSpring();
 	}
 
 	//ロープの当たり判定
 	//下のロープ
-	float ropeFactor = 25;
-	float swingWidthSubtract = 0.9f;
-	int ropeSize = 3;
-	int enemyWidth = 1;
-	for (int i = 0; i < 3; i++) {
-		for (auto ropeNodeIt = bottomRope_[i]->GetListBeginSpring(); ropeNodeIt != bottomRope_[i]->GetListEndSpring(); ropeNodeIt++) {
-			Rope::RopeNode* ropeNode = ropeNodeIt->get();
+	for (auto ropeNodeIt = bottomRope_[0]->GetListBeginRopeNode(); ropeNodeIt != bottomRope_[0]->GetListEndRopeNode(); ropeNodeIt++) {
+		Rope::RopeNode* ropeNode = ropeNodeIt->get();
 
-			if (enemy_->GetWorldPosition().z - enemyWidth <= bottomRope_[i]->GetWorldPos(*ropeNode).z
-					&& bottomRope_[i]->GetWorldPos(*ropeNode).x - ropeSize < enemy_->GetWorldPosition().x
-					&& enemy_->GetWorldPosition().x < bottomRope_[i]->GetWorldPos(*ropeNode).x + ropeSize
-					&& !bottomRope_[i]->IsEdgeNode(*ropeNode) && !bottomRope_[i]->IsHitNode(ropeNode)) {
-				bottomRope_[i]->SetIsHitNode(ropeNode, true);
-			}
-			if (bottomRope_[i]->IsHitNode(ropeNode)) {
-				ropeNode->worldTransform.translation_.z = enemy_->GetWorldTransform().translation_.z - enemyWidth;
-				enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x, enemy_->GetEnemySpeed().y, enemy_->GetEnemySpeed().z + 0.005f });
-				
-				if (enemy_->GetEnemySpeed().z >= 0.0f) {
-					bottomRope_[i]->SetIsHitNode(ropeNode, false);
-					float differenceHittingPosition = enemy_->GetWorldPosition().z - enemy_->GetPrePosition().z;
-					enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x * swingWidthSubtract, 0, -differenceHittingPosition / ropeFactor});
-				}
-			}
+		if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode, true)) {
+			bottomRope_[0]->SetSxternalForce(enemy_->GetSpeed());
+			enemy_->SetSpeed({ 0, 0, 0 });
+			enemy_->SetEnemyPos({ 0, 0, 0 });
+			enemy_->SetParent(&ropeNode->worldTransform);
+			enemy_->UpDateMatrix();
 		}
+
 	}
 	//上のロープ
-	for (int i = 0; i < 3; i++) {
-		for (auto ropeNodeIt = topRope_[i]->GetListBeginSpring(); ropeNodeIt != topRope_[i]->GetListEndSpring(); ropeNodeIt++) {
-			Rope::RopeNode* ropeNode = ropeNodeIt->get();
+	for (auto ropeNodeIt = topRope_[0]->GetListBeginRopeNode(); ropeNodeIt != topRope_[0]->GetListEndRopeNode(); ropeNodeIt++) {
+		Rope::RopeNode* ropeNode = ropeNodeIt->get();
 
-			if (enemy_->GetWorldPosition().z + enemyWidth >= topRope_[i]->GetWorldPos(*ropeNode).z
-					&& topRope_[i]->GetWorldPos(*ropeNode).x - ropeSize < enemy_->GetWorldPosition().x
-					&& enemy_->GetWorldPosition().x < topRope_[i]->GetWorldPos(*ropeNode).x + ropeSize
-					&& !topRope_[i]->IsEdgeNode(*ropeNode) && !topRope_[i]->IsHitNode(ropeNode)) {
-				topRope_[i]->SetIsHitNode(ropeNode, true);
-			}
-			if (topRope_[i]->IsHitNode(ropeNode)) {
-				ropeNode->worldTransform.translation_.z = enemy_->GetWorldTransform().translation_.z + enemyWidth;
-				enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x, 0, enemy_->GetEnemySpeed().z - 0.005f });
+		if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode, true)) {
+			topRope_[0]->SetSxternalForce(enemy_->GetSpeed());
+			enemy_->SetSpeed({ 0, 0, 0 });
+			enemy_->SetEnemyPos({ 0, 0, 0 });
+			enemy_->SetParent(&ropeNode->worldTransform);
+			enemy_->UpDateMatrix();
+		}
 
-				if (enemy_->GetEnemySpeed().z <= 0.0f) {
-					topRope_[i]->SetIsHitNode(ropeNode, false);
-					float differenceHittingPosition = enemy_->GetWorldPosition().z - enemy_->GetPrePosition().z;
-					enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x * swingWidthSubtract, enemy_->GetEnemySpeed().y, -differenceHittingPosition / ropeFactor });
-				}
-			}
+	}
+	//左のロープ
+	for (auto ropeNodeIt = leftRope_[0]->GetListBeginRopeNode(); ropeNodeIt != leftRope_[0]->GetListEndRopeNode(); ropeNodeIt++) {
+		Rope::RopeNode* ropeNode = ropeNodeIt->get();
+
+		if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode, true)) {
+			leftRope_[0]->SetSxternalForce(enemy_->GetSpeed());
+			enemy_->SetSpeed({ 0, 0, 0 });
+			enemy_->SetEnemyPos({ 0, 0, 0 });
+			enemy_->SetParent(&ropeNode->worldTransform);
+			enemy_->UpDateMatrix();
 		}
 	}
 	//右のロープ
-	for (int i = 0; i < 3; i++) {
-		for (auto ropeNodeIt = rightRope_[i]->GetListBeginSpring(); ropeNodeIt != rightRope_[i]->GetListEndSpring(); ropeNodeIt++) {
-			Rope::RopeNode* ropeNode = ropeNodeIt->get();
+	for (auto ropeNodeIt = rightRope_[0]->GetListBeginRopeNode(); ropeNodeIt != rightRope_[0]->GetListEndRopeNode(); ropeNodeIt++) {
+		Rope::RopeNode* ropeNode = ropeNodeIt->get();
 
-			if (enemy_->GetWorldPosition().x + enemyWidth >= rightRope_[i]->GetWorldPos(*ropeNode).x
-					&& rightRope_[i]->GetWorldPos(*ropeNode).z - ropeSize < enemy_->GetWorldPosition().z
-					&& enemy_->GetWorldPosition().z < rightRope_[i]->GetWorldPos(*ropeNode).z + ropeSize
-					&& !rightRope_[i]->IsEdgeNode(*ropeNode) && !rightRope_[i]->IsHitNode(ropeNode)) {
-				rightRope_[i]->SetIsHitNode(ropeNode, true);
-			}
-			if (rightRope_[i]->IsHitNode(ropeNode)) {
-				ropeNode->worldTransform.translation_.x = enemy_->GetWorldTransform().translation_.x + enemyWidth;
-				enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x - 0.005f , enemy_->GetEnemySpeed().y, enemy_->GetEnemySpeed().z});
-
-				if (enemy_->GetEnemySpeed().x <= 0.0f) {
-					rightRope_[i]->SetIsHitNode(ropeNode, false);
-					float differenceHittingPosition = enemy_->GetWorldPosition().x - enemy_->GetPrePosition().x;
-					enemy_->SetEnemySpeed({ -differenceHittingPosition / ropeFactor , 0, enemy_->GetEnemySpeed().z * swingWidthSubtract });
-				}
-			}
+		if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode, true)) {
+			rightRope_[0]->SetSxternalForce(enemy_->GetSpeed());
+			enemy_->SetSpeed({ 0, 0, 0 });
+			enemy_->SetEnemyPos({ 0, 0, 0 });
+			enemy_->SetParent(&ropeNode->worldTransform);
+			enemy_->UpDateMatrix();
 		}
-	}
-	//左のロープ
-	for (int i = 0; i < 3; i++) {
-		for (auto ropeNodeIt = leftRope_[i]->GetListBeginSpring(); ropeNodeIt != leftRope_[i]->GetListEndSpring(); ropeNodeIt++) {
-			Rope::RopeNode* ropeNode = ropeNodeIt->get();
 
-			if (enemy_->GetWorldPosition().x - enemyWidth <= leftRope_[i]->GetWorldPos(*ropeNode).x
-					&& leftRope_[i]->GetWorldPos(*ropeNode).z - ropeSize < enemy_->GetWorldPosition().z
-					&& enemy_->GetWorldPosition().z < leftRope_[i]->GetWorldPos(*ropeNode).z + ropeSize
-					&& !leftRope_[i]->IsEdgeNode(*ropeNode) && !leftRope_[i]->IsHitNode(ropeNode)) {
-				leftRope_[i]->SetIsHitNode(ropeNode, true);
-			}
-			if (leftRope_[i]->IsHitNode(ropeNode)) {
-				ropeNode->worldTransform.translation_.x = enemy_->GetWorldTransform().translation_.x - enemyWidth;
-				enemy_->SetEnemySpeed({ enemy_->GetEnemySpeed().x + 0.005f , enemy_->GetEnemySpeed().y, enemy_->GetEnemySpeed().z});
-
-				if (enemy_->GetEnemySpeed().x >= 0.0f) {
-					leftRope_[i]->SetIsHitNode(ropeNode, false);
-					float differenceHittingPosition = enemy_->GetWorldPosition().x - enemy_->GetPrePosition().x;
-					enemy_->SetEnemySpeed({ -differenceHittingPosition / ropeFactor , 0, enemy_->GetEnemySpeed().z * swingWidthSubtract });
-				}
-			}
-		}
 	}
 }
 

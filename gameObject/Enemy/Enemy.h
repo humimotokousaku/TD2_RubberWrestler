@@ -34,15 +34,21 @@ public:
 	// 自機のワールド座標
 	Vector3 GetWorldPosition();
 	inline Vector3 GetPrePosition() { return prePos_; }
-	inline Vector3 GetEnemySpeed() { return velocity_; }
-	inline void SetEnemySpeed(Vector3 velocity) { velocity_ = velocity; }
+	inline void SetPrePosition(Vector3 pos) { prePos_ = pos; }
+	inline Vector3 GetSpeed() { return velocity_; }
+	inline void SetSpeed(Vector3 velocity) { velocity_ = velocity; }
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 	const WorldTransform& GetWorldTransformBody() { return worldTransformBody_; }
+	void SetEnemyPos(Vector3 pos) {
+		worldTransform_.translation_ = pos;
+		worldTransform_.UpdateMatrix();
+	}
 	const WorldTransform& GetWorldTransformBase() { return worldTransform_; }
 
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
-
+	void SetParentRope(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
+	void UpDateMatrix();
 private:
 	
 	Input* input_;

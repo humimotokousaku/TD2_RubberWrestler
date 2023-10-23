@@ -24,6 +24,8 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransformL_arm_.translation_.y = 5.0f;
 	worldTransformR_arm_.translation_.y = 5.0f;
 
+	velocity_ = {0, 0, 0};
+
 	// 身体のパーツの親子関係を結ぶ
 	SetParent(&GetWorldTransformBody());
 	worldTransformBody_.parent_ = worldTransform_.parent_;
@@ -32,8 +34,13 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 void Enemy::Update() {
 
 	if (input_->PressKey(DIK_P)) {
-		velocity_.z = 1;
-		velocity_.x = 1.2f;
+		//velocity_.z = 1;
+		velocity_.x = 1.0f;
+	}
+	if (input_->PressKey(DIK_R)) {
+		worldTransform_.translation_.x = 0;
+		worldTransform_.translation_.y = 0;
+		worldTransform_.translation_.z = 0;
 	}
 
 	//移動処理
@@ -55,6 +62,17 @@ void Enemy::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
 	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone);
 	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone);
 	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone);
+}
+
+void Enemy::UpDateMatrix() {
+	//アップデート
+	worldTransform_.UpdateMatrix();
+	worldTransformBody_.UpdateMatrix();
+	worldTransformHead_.UpdateMatrix();
+	worldTransformL_arm_.UpdateMatrix();
+	worldTransformR_arm_.UpdateMatrix();
+	// 基底クラスの更新処理
+	ICharacter::Update();
 }
 
 void Enemy::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
