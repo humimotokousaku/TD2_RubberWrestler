@@ -14,6 +14,8 @@
 // object
 #include "../object/Sprite.h"
 
+#include "../FollowCamera.h"
+
 #include <memory>
 
 
@@ -60,7 +62,17 @@ private:
 
 	WorldTransform worldTransform_[2];
 
+	// 追従カメラ
+	enum CameraType {
+		CAMERA1,
+		CAMERA2
+	};
+
+	const static int kMaxFollowCamera_ = 2;
+	std::unique_ptr<FollowCamera> followCamera_[kMaxFollowCamera_];
+
 	// カメラ
+	ViewProjection mainCamera_;
 	ViewProjection viewProjection_;
 
 	Vector3 Velocity_{};

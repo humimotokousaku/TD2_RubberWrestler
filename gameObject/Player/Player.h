@@ -96,6 +96,8 @@ public:
 	//Matrix4x4 GetPlayerBodyRotation() { return worldTransformBody_.matWorld_; }
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+
+	int GetCameraArr() { return cameraArr_; }
 private:
 	// 入力
 	Input* input_;
@@ -148,4 +150,7 @@ private:
 	Enemy* enemy_;
 
 	bool isThrow_;
+
+	// 使用するカメラを指定
+	int cameraArr_;
 };
