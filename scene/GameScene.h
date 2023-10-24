@@ -41,6 +41,7 @@ private:
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
 	std::unique_ptr<Model> modelUvSphere_;
+	std::unique_ptr<Model> modelCube_;
 
 	// 自機
 	std::unique_ptr<Player> player_;

@@ -18,6 +18,7 @@ void GameScene::Initialize() {
 	modelFighterL_arm_.reset(Model::CreateModelFromObj("resources/float_L_arm", "float_L_arm.obj"));
 	modelFighterR_arm_.reset(Model::CreateModelFromObj("resources/float_R_arm", "float_R_arm.obj"));
 	modelUvSphere_.reset(Model::CreateModelFromObj("resources/uvSphere", "uvSphere.obj"));
+	modelCube_.reset(Model::CreateModelFromObj("resources/Rope", "Rope.obj"));
 	std::vector<Model*> playerModels = {
 		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
 		modelFighterR_arm_.get() };
@@ -38,18 +39,19 @@ void GameScene::Initialize() {
 	enemy_->Initialize(playerModels);
 
 	//ロープのテスト生成
+	float ropeInterval = 5.0f;
 	for (int i = 0; i < 3; i++) {
 		bottomRope_[i] = std::make_unique<Rope>();
 		switch (i)
 		{
 		case 0:
-			bottomRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, -20.0f });
+			bottomRope_[i]->Initialize(modelCube_.get(), { -20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, -20.0f });
 			break;
 		case 1:
-			bottomRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			bottomRope_[i]->Initialize(modelCube_.get(), { 0, ropeInterval, 0 }, { 0, ropeInterval, 0 });
 			break;
 		case 2:
-			bottomRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			bottomRope_[i]->Initialize(modelCube_.get(), { 0, -ropeInterval, 0 }, { 0, -ropeInterval, 0 });
 			break;
 		default:
 			break;
@@ -63,13 +65,13 @@ void GameScene::Initialize() {
 		switch (i)
 		{
 		case 0:
-			topRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, 20.0f }, { 20.0f, 5.0f, 20.0f });
+			topRope_[i]->Initialize(modelCube_.get(), { -20.0f, 5.0f, 20.0f }, { 20.0f, 5.0f, 20.0f });
 			break;
 		case 1:
-			topRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			topRope_[i]->Initialize(modelCube_.get(), { 0, ropeInterval, 0 }, { 0, ropeInterval, 0 });
 			break;
 		case 2:
-			topRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			topRope_[i]->Initialize(modelCube_.get(), { 0, -ropeInterval, 0 }, { 0, -ropeInterval, 0 });
 			break;
 		default:
 			break;
@@ -83,13 +85,13 @@ void GameScene::Initialize() {
 		switch (i)
 		{
 		case 0:
-			rightRope_[i]->Initialize(modelUvSphere_.get(), { 20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, 20.0f });
+			rightRope_[i]->Initialize(modelCube_.get(), { 20.0f, 5.0f, -20.0f }, { 20.0f, 5.0f, 20.0f });
 			break;
 		case 1:
-			rightRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			rightRope_[i]->Initialize(modelCube_.get(), { 0, ropeInterval, 0 }, { 0, ropeInterval, 0 });
 			break;
 		case 2:
-			rightRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			rightRope_[i]->Initialize(modelCube_.get(), { 0, -ropeInterval, 0 }, { 0, -ropeInterval, 0 });
 			break;
 		default:
 			break;
@@ -103,13 +105,13 @@ void GameScene::Initialize() {
 		switch (i)
 		{
 		case 0:
-			leftRope_[i]->Initialize(modelUvSphere_.get(), { -20.0f, 5.0f, -20.0f }, { -20.0f, 5.0f, 20.0f });
+			leftRope_[i]->Initialize(modelCube_.get(), { -20.0f, 5.0f, -20.0f }, { -20.0f, 5.0f, 20.0f });
 			break;
 		case 1:
-			leftRope_[i]->Initialize(modelUvSphere_.get(), { 0, 2.5f, 0 }, { 0, 2.5f, 0 });
+			leftRope_[i]->Initialize(modelCube_.get(), { 0, ropeInterval, 0 }, { 0, ropeInterval, 0 });
 			break;
 		case 2:
-			leftRope_[i]->Initialize(modelUvSphere_.get(), { 0, -2.5f, 0 }, { 0, -2.5f, 0 });
+			leftRope_[i]->Initialize(modelCube_.get(), { 0, -ropeInterval, 0 }, { 0, -ropeInterval, 0 });
 			break;
 		default:
 			break;
@@ -163,22 +165,41 @@ void GameScene::Update() {
 			enemy_->SetParentRope(&ropeNode->worldTransform);
 			enemy_->SetSpeed({ 0, 0, 0 });
 			enemy_->SetEnemyPos({ enemyPos.x, -1.5f, enemyPos.z });
-			enemy_->SetPairingTimeCounter(0);
+			enemy_->SetPairingTimeCounter(1);
 			enemy_->UpDateMatrix();
+
+			if (enemy_->GetReboundCount() == 0) {
+				enemy_->SetReboundCount(1);
+			}
+			else if (enemy_->GetReboundCount() == 1) {
+				enemy_->SetReboundCount(2);
+			}
+			else if (enemy_->GetReboundCount() == 2) {
+				enemy_->SetReboundCount(3);
+			}
 		}
 
 		else if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode) && enemy_->IsParent()) {
 			enemy_->SetPairingTimeCounter(enemy_->GetPairingTimeCounter() + 1);
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
-				velocity.x = (float)ropeNode->externalForce_.x * 1.00f * -1 / 30;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.0f * -1 / 30;
 				velocity.y = 0;
 				velocity.z = (float)ropeNode->externalForce_.z * 1.05f * -1 / 30;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z + 10 });
-				enemy_->SetSpeed(velocity);
 				bottomRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
+				if (enemy_->GetReboundCount() == 3) {
+					Vector3 playerDirection = player_->GetWorldPosition() - enemy_->GetWorldPosition();
+					velocity = Normalize(playerDirection);
+					velocity *= 2;
+
+					enemy_->SetSpeed(velocity);
+				}
+				else {
+					enemy_->SetSpeed(velocity);
+				}
 			}
 		}
 
@@ -196,22 +217,41 @@ void GameScene::Update() {
 			enemy_->SetParentRope(&ropeNode->worldTransform);
 			enemy_->SetSpeed({ 0, 0, 0 });
 			enemy_->SetEnemyPos({ enemyPos.x, -1.5f, enemyPos.z });
-			enemy_->SetPairingTimeCounter(0);
+			enemy_->SetPairingTimeCounter(1);
 			enemy_->UpDateMatrix();
+
+			if (enemy_->GetReboundCount() == 0) {
+				enemy_->SetReboundCount(1);
+			}
+			else if (enemy_->GetReboundCount() == 1) {
+				enemy_->SetReboundCount(2);
+			}
+			else if (enemy_->GetReboundCount() == 2) {
+				enemy_->SetReboundCount(3);
+			}
 		}
 		else if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode) && enemy_->IsParent()) {
 			enemy_->SetPairingTimeCounter(enemy_->GetPairingTimeCounter() + 1);
 
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
-				velocity.x = (float)ropeNode->externalForce_.x * 1.00f * -1 / 30;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.0f * -1 / 30;
 				velocity.y = 0;
 				velocity.z = (float)ropeNode->externalForce_.z * 1.05f * -1 / 30;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z - 10 });
-				enemy_->SetSpeed(velocity);
 				topRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
+				if (enemy_->GetReboundCount() == 3) {
+					Vector3 playerDirection = player_->GetWorldPosition() - enemy_->GetWorldPosition();
+					velocity = Normalize(playerDirection);
+					velocity *= 2;
+
+					enemy_->SetSpeed(velocity);
+				}
+				else {
+					enemy_->SetSpeed(velocity);
+				}
 			}
 		}
 
@@ -229,8 +269,18 @@ void GameScene::Update() {
 			enemy_->SetParentRope(&ropeNode->worldTransform);
 			enemy_->SetSpeed({ 0, 0, 0 });
 			enemy_->SetEnemyPos({ enemyPos.x, -1.5f, enemyPos.z });
-			enemy_->SetPairingTimeCounter(0);
+			enemy_->SetPairingTimeCounter(1);
 			enemy_->UpDateMatrix();
+
+			if (enemy_->GetReboundCount() == 0) {
+				enemy_->SetReboundCount(1);
+			}
+			else if (enemy_->GetReboundCount() == 1) {
+				enemy_->SetReboundCount(2);
+			}
+			else if (enemy_->GetReboundCount() == 2) {
+				enemy_->SetReboundCount(3);
+			}
 		}
 		else if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode) && enemy_->IsParent()) {
 			enemy_->SetPairingTimeCounter(enemy_->GetPairingTimeCounter() + 1);
@@ -239,12 +289,21 @@ void GameScene::Update() {
 				Vector3 velocity;
 				velocity.x = (float)ropeNode->externalForce_.x * 1.05f * -1 / 30;
 				velocity.y = 0;
-				velocity.z = (float)ropeNode->externalForce_.z * 1.00f * -1 / 30;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.0f * -1 / 30;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x + 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
-				enemy_->SetSpeed(velocity);
 				leftRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
+				if (enemy_->GetReboundCount() == 3) {
+					Vector3 playerDirection = player_->GetWorldPosition() - enemy_->GetWorldPosition();
+					velocity = Normalize(playerDirection);
+					velocity *= 2;
+
+					enemy_->SetSpeed(velocity);
+				}
+				else {
+					enemy_->SetSpeed(velocity);
+				}
 			}
 		}
 	}
@@ -261,8 +320,18 @@ void GameScene::Update() {
 			enemy_->SetParentRope(&ropeNode->worldTransform);
 			enemy_->SetSpeed({ 0, 0, 0 });
 			enemy_->SetEnemyPos({ enemyPos.x, -1.5f, enemyPos.z });
-			enemy_->SetPairingTimeCounter(0);
+			enemy_->SetPairingTimeCounter(1);
 			enemy_->UpDateMatrix();
+
+			if (enemy_->GetReboundCount() == 0) {
+				enemy_->SetReboundCount(1);
+			}
+			else if (enemy_->GetReboundCount() == 1) {
+				enemy_->SetReboundCount(2);
+			}
+			else if (enemy_->GetReboundCount() == 2) {
+				enemy_->SetReboundCount(3);
+			}
 		}
 		else if (IsHitEnemy(enemy_->GetWorldPosition(), ropeNode) && enemy_->IsParent()) {
 			enemy_->SetPairingTimeCounter(enemy_->GetPairingTimeCounter() + 1);
@@ -271,12 +340,21 @@ void GameScene::Update() {
 				Vector3 velocity;
 				velocity.x = (float)ropeNode->externalForce_.x * 1.05f * -1 / 30;
 				velocity.y = 0;
-				velocity.z = (float)ropeNode->externalForce_.z * 1.00f * -1 / 30;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.0f * -1 / 30;
 				enemy_->SetParentRope(nullptr);
-				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x - 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z});
-				enemy_->SetSpeed(velocity);
+				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x - 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
 				rightRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
+				if (enemy_->GetReboundCount() == 3) {
+					Vector3 playerDirection = player_->GetWorldPosition() - enemy_->GetWorldPosition();
+					velocity = Normalize(playerDirection);
+					velocity *= 2;
+
+					enemy_->SetSpeed(velocity);
+				}
+				else {
+					enemy_->SetSpeed(velocity);
+				}
 			}
 		}
 
@@ -287,16 +365,16 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_, UVCHEKER);
 	enemy_->Draw(viewProjection_, WHITE);
 	for (int i = 0; i < 3; i++) {
-		bottomRope_[i]->Draw(viewProjection_, UVCHEKER);
+		bottomRope_[i]->Draw(viewProjection_, ROPE);
 	}
 	for (int i = 0; i < 3; i++) {
-		topRope_[i]->Draw(viewProjection_, UVCHEKER);
+		topRope_[i]->Draw(viewProjection_, ROPE);
 	}
 	for (int i = 0; i < 3; i++) {
-		rightRope_[i]->Draw(viewProjection_, UVCHEKER);
+		rightRope_[i]->Draw(viewProjection_, ROPE);
 	}
 	for (int i = 0; i < 3; i++) {
-		leftRope_[i]->Draw(viewProjection_, UVCHEKER);
+		leftRope_[i]->Draw(viewProjection_, ROPE);
 	}
 }
 

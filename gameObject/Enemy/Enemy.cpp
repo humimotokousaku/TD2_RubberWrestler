@@ -25,6 +25,7 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransformR_arm_.translation_.y = 5.0f;
 
 	velocity_ = {0, 0, 0};
+	reboundCount_ = 0;
 
 	// 身体のパーツの親子関係を結ぶ
 	SetParent(&GetWorldTransformBody());

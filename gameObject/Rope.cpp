@@ -60,7 +60,9 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 		spring->worldTransform.Initialize();
 		Vector3 pos = (spring->node1->worldTransform.translation_ + spring->node2->worldTransform.translation_) / 2;
 		spring->worldTransform.translation_ = pos;
-		spring->worldTransform.scale_ *= 0.5f;
+		spring->worldTransform.scale_.x = 0.6f;
+		spring->worldTransform.scale_.y = 0.4f;
+		spring->worldTransform.scale_.z = 0.6f;
 		springs_.push_back(std::move(spring));
 	}
 }

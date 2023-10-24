@@ -140,6 +140,7 @@ void Player::Update() {
 
 	ImGui::End();
 
+	worldTransform_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();

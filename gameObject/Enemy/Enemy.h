@@ -35,6 +35,8 @@ public:
 	Vector3 GetWorldPosition();
 	inline int GetPairingTimeCounter() { return pairingTimeCounter_; }
 	inline void SetPairingTimeCounter(int frame) { pairingTimeCounter_ = frame; }
+	inline int GetReboundCount() { return reboundCount_; }
+	inline void SetReboundCount(int reboundCount) { reboundCount_ = reboundCount; }
 	inline Vector3 GetPrePosition() { return prePos_; }
 	inline void SetPrePosition(Vector3 pos) { prePos_ = pos; }
 	inline Vector3 GetParentPosition() { return parentPos_; }
@@ -68,7 +70,8 @@ private:
 	Vector3 prePos_;
 	Vector3 parentPos_;
 	int pairingTimeCounter_;
-	
+	int reboundCount_;
+
 	//WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
 	WorldTransform worldTransformHead_;
