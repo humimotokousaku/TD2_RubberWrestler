@@ -19,7 +19,7 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransformR_arm_.Initialize();
 
 	// 身体のパーツの親子関係を結ぶ
-	SetParent(&GetWorldTransformBody());
+	SetBodyParent(&GetWorldTransformBody());
 	worldTransformBody_.parent_ = &worldTransform_;
 
 	// 腕の座標指定
@@ -110,6 +110,13 @@ void Enemy::SetParent(const WorldTransform* parent) {
 	worldTransform_.rotation_ = player_->GetPlayerBodyRotation();
 	worldTransform_.translation_.x = 3;
 	worldTransform_.translation_.z = 0;
+}
+
+void Enemy::SetBodyParent(const WorldTransform* parent) {
+	// 親子関係を結ぶ
+	worldTransformHead_.parent_ = parent;
+	worldTransformL_arm_.parent_ = parent;
+	worldTransformR_arm_.parent_ = parent;
 }
 
 void Enemy::SetWorldTransform(WorldTransform worldTransform) {

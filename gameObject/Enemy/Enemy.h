@@ -34,6 +34,7 @@ public:
 
 	// パーツの親子関係
 	void SetParent(const WorldTransform* parent);
+	void SetBodyParent(const WorldTransform* parent);
 
 	void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
 
