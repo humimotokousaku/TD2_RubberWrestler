@@ -58,7 +58,14 @@ private:
 	// 天球
 	std::unique_ptr<Skydome> skydome_;
 
-	std::unique_ptr<Sprite> sprite_;
+	// UIのテクスチャ
+
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
+	// つかみの文字
+	std::unique_ptr<Sprite> guideText_Grab_;
+	// 投げの文字
+	std::unique_ptr<Sprite> guideText_Throw_;
 
 	WorldTransform worldTransform_[2];
 

@@ -112,7 +112,10 @@ void Player::Update() {
 		// 移動処理
 		ProcessUserInput();
 		// Rトリガーを押したらつかむ
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || input_->TriggerKey(DIK_SPACE)) {
+		//if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || input_->TriggerKey(DIK_SPACE)) {
+		//	behaviorRequest_ = Behavior::GRAB;
+		//}
+		if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::GRAB;
 		}
 
@@ -127,7 +130,7 @@ void Player::Update() {
 	case Behavior::GRABING:
 		BehaviorGrabingUpdate();
 		// Rトリガーを押したら投げる
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || input_->TriggerKey(DIK_SPACE)) {
+		if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::THROW;
 		}
 		break;

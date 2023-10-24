@@ -17,7 +17,7 @@ void TitleScene::Initialize() {
 }
 
 void TitleScene::Update() {
-	if (input_->TriggerKey(DIK_RETURN)) {
+	if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 		SceneTransition::sceneChangeType_ = FADE_IN;
 	}
 

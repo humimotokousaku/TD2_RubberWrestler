@@ -37,8 +37,6 @@ void GameScene::Initialize() {
 	mainCamera_.translation_.z = -40;
 	mainCamera_.rotation_.x = 3.14f / 10.0f;
 
-
-
 	//敵の生成
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->Initialize(playerModels);
@@ -96,7 +94,7 @@ void GameScene::Update() {
 	skydome_->Update();
 
 	// シーンの切り替え
-	if (input_->TriggerKey(DIK_RETURN)) {
+	if (input_->GamePadTrigger(XINPUT_GAMEPAD_RIGHT_SHOULDER) || input_->TriggerKey(DIK_RETURN)) {
 		SceneTransition::sceneChangeType_ = FADE_IN;
 	}
 
@@ -115,10 +113,6 @@ void GameScene::Update() {
 			viewProjection_.TransferMatrix();
 		}
 	}
-	// どちらのカメラもActiveじゃなかったらメインカメラを使う
-	//if (!followCamera_[CAMERA1]->GetActive() && !followCamera_[CAMERA2]->GetActive()) {
-	//	viewProjection_ = mainCamera_;
-	//}
 
 	if (player_->GetCameraArr() == 0) {
 		followCamera_[CAMERA1]->SetActive(false);
