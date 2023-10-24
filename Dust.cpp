@@ -56,10 +56,9 @@ void Dust::Update() {
 		isDelay_ = true;
 	}
 
-
-
 	//生きている間
 	if (!isDead_) {
+
 		alpha_ -= 0.01f;
 		color_ = { 1,1,1,alpha_ };
 		switch (particleState_)

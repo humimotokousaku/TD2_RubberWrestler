@@ -30,7 +30,7 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	// 身体のパーツの親子関係を結ぶ
 	SetParent(&GetWorldTransformBody());
-	worldTransformBody_.parent_ = worldTransform_.parent_;
+	worldTransformBody_.parent_ = &worldTransform_;
 
 	// 腕の座標指定
 	worldTransformL_arm_.translation_.x = 1.5f;

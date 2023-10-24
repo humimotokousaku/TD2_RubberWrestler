@@ -51,6 +51,8 @@ public:
 	}
 
 	void SetWorldTransform(WorldTransform worldTransform);
+
+	Vector3 GetWorldPosition();
 private:
 	// 浮遊ギミックの媒介変数
 	float floatingParameter_;

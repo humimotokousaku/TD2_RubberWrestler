@@ -16,13 +16,22 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	// 自機
-	modelFighterBody_.reset(Model::CreateModelFromObj("resources/float_Body", "float_Body.obj"));
-	modelFighterHead_.reset(Model::CreateModelFromObj("resources/float_Head", "float_Head.obj"));
-	modelFighterL_arm_.reset(Model::CreateModelFromObj("resources/float_L_arm", "float_L_arm.obj"));
-	modelFighterR_arm_.reset(Model::CreateModelFromObj("resources/float_R_arm", "float_R_arm.obj"));
+	modelFighterBody_.reset(Model::CreateModelFromObj("resources/player/float_Body", "float_Body.obj"));
+	modelFighterHead_.reset(Model::CreateModelFromObj("resources/player/float_Head", "float_Head.obj"));
+	modelFighterL_arm_.reset(Model::CreateModelFromObj("resources/player/float_L_arm", "float_L_arm.obj"));
+	modelFighterR_arm_.reset(Model::CreateModelFromObj("resources/player/float_R_arm", "float_R_arm.obj"));
 	std::vector<Model*> playerModels = {
 		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
 		modelFighterR_arm_.get()};
+
+	modelEnemyBody_.reset(Model::CreateModelFromObj("resources/enemy/float_Body", "float_Body.obj"));
+	modelEnemyHead_.reset(Model::CreateModelFromObj("resources/enemy/float_Head", "float_Head.obj"));
+	modelEnemyL_arm_.reset(Model::CreateModelFromObj("resources/enemy/float_L_arm", "float_L_arm.obj"));
+	modelEnemyR_arm_.reset(Model::CreateModelFromObj("resources/enemy/float_R_arm", "float_R_arm.obj"));
+	std::vector<Model*> enemyModels = {
+		modelEnemyBody_.get(), modelEnemyHead_.get(), modelEnemyL_arm_.get(),
+		modelEnemyR_arm_.get() };
+
 	// リングのマット
 	modelRingMat_.reset(Model::CreateModelFromObj("resources/ring", "Ground.obj"));
 	// 天球
@@ -35,7 +44,7 @@ void GameScene::Initialize() {
 
 	//敵の生成
 	enemy_ = std::make_unique<Enemy>();
-	enemy_->Initialize(playerModels);
+	enemy_->Initialize(enemyModels);
 
 	// 自機の生成
 	player_ = std::make_unique<Player>();
@@ -102,7 +111,7 @@ void GameScene::Update() {
 	//////////////////////////////////////////////////////////////////////////*/
 
 	if (input_->TriggerKey(DIK_SPACE)) {
-		tEmitter_->OnCollision(player_->GetWorldPosition());
+		tEmitter_->OnCollision(enemy_->GetWorldPosition());
 	}
 
 	tEmitter_->Update();
