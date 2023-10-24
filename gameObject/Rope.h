@@ -21,6 +21,7 @@ public:
 		bool isHit;
 		WorldTransform worldTransform;
 		Vector3Double velocity;
+		Vector3Double externalForce_;
 	};
 
 	struct Spring {
@@ -57,11 +58,11 @@ public: //ゲッターセッター
 	inline std::list<std::unique_ptr<RopeNode>>::iterator GetListEndRopeNode() { return ropeNodes_.end(); }
 	inline std::list<std::unique_ptr<Spring>>::iterator GetListBeginSpring() { return springs_.begin(); }
 	inline std::list<std::unique_ptr<Spring>>::iterator GetListEndSpring() { return springs_.end(); }
-	inline Vector3Double GetSxternalForce() { return externalForce_; }
-	inline void SetSxternalForce(Vector3 externalForce) { 
-		externalForce_.x = externalForce.x;
-		externalForce_.y = externalForce.y;
-		externalForce_.z = externalForce.z; }
+	inline Vector3Double GetSxternalForce(RopeNode* ropeNode) { return ropeNode->externalForce_; }
+	inline void SetSxternalForce(RopeNode* ropeNode, Vector3 externalForce) {
+		ropeNode->externalForce_.x = externalForce.x;
+		ropeNode->externalForce_.y = externalForce.y;
+		ropeNode->externalForce_.z = externalForce.z; }
 	inline bool IsEdgeNode(const RopeNode& ropeNode) { return ropeNode.isEdge; }
 	inline bool IsHitNode(const RopeNode* ropeNode) { return ropeNode->isHit; }
 	inline void SetIsHitNode(RopeNode* ropeNode, bool isHit) { ropeNode->isHit = isHit; }
@@ -87,7 +88,6 @@ private:
 	int divisionCount_;
 	Vector3 startPos_;
 	Vector3 endPos_;
-	Vector3Double externalForce_;
 	std::list<std::unique_ptr<RopeNode>> ropeNodes_;
 	std::list<std::unique_ptr<Spring>> springs_;
 	Model* model_;
@@ -97,6 +97,6 @@ private:
 	bool isParent_;
 };
 
-bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode, bool isTopOrBot);
+bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode);
 
 

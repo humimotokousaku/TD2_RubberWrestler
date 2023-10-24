@@ -1,4 +1,6 @@
 #pragma once
+#include <math.h>
+
 struct Vector3 final {
 	float x;
 	float y;
@@ -10,6 +12,10 @@ struct Vector3Double final {
 	double y;
 	double z;
 };
+
+float Distance(Vector3 vec1, Vector3 vec2);
+
+float Magnitude(Vector3 vec);
 
 //グローバル算術演算子のオーバーロード
 inline Vector3 operator+(const Vector3& num1, const Vector3& num2) {
@@ -238,4 +244,11 @@ inline Vector3Double operator/=(Vector3Double& num1, const double num2) {
 	num1.z = num1.z / num2;
 
 	return num1;
+}
+
+inline bool operator==(Vector3 vec1, Vector3 vec2) {
+	if (vec1.x == vec2.x && vec1.y == vec2.y && vec1.z == vec2.z) {
+		return true;
+	}
+	return false;
 }

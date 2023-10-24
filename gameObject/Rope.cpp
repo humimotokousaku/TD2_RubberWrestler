@@ -18,7 +18,6 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 	divisionCount_ = 50;
 	isHitRope_ = false;
 	isParent_ = false;
-	externalForce_ = { 0.0f, -0.1, 0.0f };
 
 	Vector3 direction;
 	direction = startPos_ - endPos_;
@@ -38,6 +37,7 @@ void Rope::Initialize(Model* model, Vector3 startPos, Vector3 endPos) {
 		}
 		ropeNode->isHit = false;
 		ropeNode->velocity = { 0.0f, 0.0f, 0.0f };
+		ropeNode->externalForce_ = { 0.0f, -0.1f, 0.0f };
 		ropeNode->worldTransform.Initialize();
 		ropeNode->worldTransform.translation_.x = startPos_.x + float(direction.x * i);
 		ropeNode->worldTransform.translation_.y = startPos_.y + float(direction.y * i);
@@ -72,7 +72,7 @@ void Rope::Update() {
 			Vector3Double force = CalculateElasticForce(spring);
 
 			if (!spring->node1->isEdge) {
-				spring->node1->velocity += externalForce_ * spring->node1->mass;
+				spring->node1->velocity += spring->node1->externalForce_ * spring->node1->mass;
 				spring->node1->velocity += force / spring->node1->mass * kDeltaTime;
 				Vector3Double dampingForce1 = -spring->dampingCoefficient * spring->node1->velocity;
 				spring->node1->velocity += dampingForce1 / spring->node1->mass;
@@ -82,7 +82,7 @@ void Rope::Update() {
 			}
 
 			if (!spring->node2->isEdge) {
-				spring->node2->velocity += externalForce_ * spring->node2->mass;
+				spring->node2->velocity += spring->node2->externalForce_ * spring->node2->mass;
 				spring->node2->velocity -= force / spring->node2->mass * kDeltaTime;
 				Vector3Double dampingForce2 = -spring->dampingCoefficient * spring->node2->velocity;
 				spring->node2->velocity += dampingForce2 / spring->node2->mass;
@@ -166,21 +166,20 @@ void Rope::SetParent(Rope* parentRope) {
 	isParent_ = true;
 }
 
-bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode, bool isTopOrBot) {
+bool IsHitEnemy(Vector3 enemyPos, Rope::RopeNode* ropeNode) {
 	Vector3 worldPos;
 	worldPos.x = ropeNode->worldTransform.matWorld_.m[3][0];
 	worldPos.y = ropeNode->worldTransform.matWorld_.m[3][1];
 	worldPos.z = ropeNode->worldTransform.matWorld_.m[3][2];
 	//詳細
-	float ropeFactor = 0.25f;
-	float swingWidthSubtract = 0.9f;
-	float ropeSize = 0.5f;
-	float enemyWidth = 1;
-	isTopOrBot;
+	float ropeSize = 0.1f;
+	float enemyWidth = 0.5f;
 	//
 	if (worldPos.x - ropeSize <= enemyPos.x + enemyWidth && enemyPos.x - enemyWidth <= worldPos.x + ropeSize) {
 		if (worldPos.z - ropeSize <= enemyPos.z + enemyWidth && enemyPos.z - enemyWidth <= worldPos.z + ropeSize) {
-			return true;
+			if (!ropeNode->isEdge) {
+				return true;
+			}
 		}
 	}
 	return false;

@@ -28,14 +28,15 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 
 	// 身体のパーツの親子関係を結ぶ
 	SetParent(&GetWorldTransformBody());
-	worldTransformBody_.parent_ = worldTransform_.parent_;
+	worldTransformBody_.parent_ = &worldTransform_;
 }
 
 void Enemy::Update() {
+	prePos_ = GetWorldPosition();
 
 	if (input_->PressKey(DIK_P)) {
-		//velocity_.z = 1;
-		velocity_.x = 1.0f;
+		velocity_.z = 0.8f;
+		velocity_.x = 1.1f;
 	}
 	if (input_->PressKey(DIK_R)) {
 		worldTransform_.translation_.x = 0;

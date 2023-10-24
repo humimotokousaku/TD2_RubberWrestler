@@ -33,10 +33,15 @@ public:
 
 	// 自機のワールド座標
 	Vector3 GetWorldPosition();
+	inline int GetPairingTimeCounter() { return pairingTimeCounter_; }
+	inline void SetPairingTimeCounter(int frame) { pairingTimeCounter_ = frame; }
 	inline Vector3 GetPrePosition() { return prePos_; }
 	inline void SetPrePosition(Vector3 pos) { prePos_ = pos; }
+	inline Vector3 GetParentPosition() { return parentPos_; }
+	inline void SetParentPosition(Vector3 pos) { parentPos_ = pos; }
 	inline Vector3 GetSpeed() { return velocity_; }
 	inline void SetSpeed(Vector3 velocity) { velocity_ = velocity; }
+	inline bool IsParent() { return worldTransform_.parent_; }
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 	const WorldTransform& GetWorldTransformBody() { return worldTransformBody_; }
 	void SetEnemyPos(Vector3 pos) {
@@ -61,6 +66,8 @@ private:
 
 	//ロープに当たる前の位置
 	Vector3 prePos_;
+	Vector3 parentPos_;
+	int pairingTimeCounter_;
 	
 	//WorldTransform worldTransformBase_;
 	WorldTransform worldTransformBody_;
