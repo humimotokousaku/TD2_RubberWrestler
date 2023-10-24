@@ -122,7 +122,7 @@ void GameScene::Draw() {
 	tEmitter_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
-	//skydome_->Draw(viewProjection_, BACKGROUND);
+	skydome_->Draw(viewProjection_, BACKGROUND);
 }
 
 void GameScene::Finalize() {
