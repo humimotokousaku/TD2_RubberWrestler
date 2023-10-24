@@ -27,12 +27,12 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransformR_arm_.translation_.x = -1.5f;
 	worldTransformL_arm_.translation_.y = 5.0f;
 	worldTransformR_arm_.translation_.y = 5.0f;
+
+	pairingTimeCounter_ = 0;
 }
 
 void Enemy::Update() {
 	// 速さ
-	const float kSpeed = 0.3f;
-	velocity_ = { 0.0f, 0.0f, kSpeed };
 	prePos_ = GetWorldPosition();
 
 	if (input_->PressKey(DIK_P)) {
@@ -44,16 +44,12 @@ void Enemy::Update() {
 		worldTransform_.translation_.y = 0;
 		worldTransform_.translation_.z = 0;
 	}
-	// 移動ベクトルをカメラの角度だけ回転
-	velocity_ = TransformNormal(velocity_, throwDir_);
 
 	//移動処理
 	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 	worldTransformBody_.translation_ = worldTransform_.translation_;*/
-	if (player_->GetIsThrow()) {
-		// 移動量
-		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
-	}
+	// 移動量
+	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 	//アップデート
 	worldTransform_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();
