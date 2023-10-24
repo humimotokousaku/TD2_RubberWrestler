@@ -23,7 +23,15 @@ void GameClear::Initialize() {
 
 	// クリアの文字
 	gameClear_ = new Sprite();
-	gameClear_->Initialize(false);
+	gameClear_->Initialize(Vector3(0, 0, 0), Vector3(384 * 2, 128 * 2, 0), false);
+
+	worldTransform_.translation_ = { 256,100,0 };
+
+	guidePad_A_ = std::make_unique<Sprite>();
+	guidePad_A_->Initialize(Vector3(0, 0, 0), Vector3(64, 64, 0), false);
+
+	UI_worldTransform_.Initialize();
+	UI_worldTransform_.translation_ = { 640,500,0 };
 }
 
 void GameClear::Update() {
@@ -40,6 +48,8 @@ void GameClear::Update() {
 }
 
 void GameClear::Draw() {
+	// UI
+	guidePad_A_->Draw(UI_worldTransform_, GUIDE_PAD_A, kBlendModeNone);
 	// クリア文字
 	gameClear_->Draw(worldTransform_,GAMECLEAR, kBlendModeNone);
 }

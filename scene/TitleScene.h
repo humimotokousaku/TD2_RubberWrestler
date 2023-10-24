@@ -26,7 +26,10 @@ public:
 private:
 	Input* input_;
 	WorldTransform worldTransform_;
+	WorldTransform UI_worldTransform_;
 
 	// タイトルの文字
 	Sprite* titleName_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
 };

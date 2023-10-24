@@ -6,7 +6,7 @@ Sprite::~Sprite() {
 	viewProjection_.constBuff_.ReleaseAndGetAddressOf();
 }
 
-void Sprite::Initialize(bool isBackGround) {
+void Sprite::Initialize(Vector3 leftTop, Vector3 rightBottom,bool isBackGround) {
 	CreateVertexResource();
 	indexResource_ = CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(uint32_t) * 6).Get();
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
@@ -23,16 +23,16 @@ void Sprite::Initialize(bool isBackGround) {
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 
 	// 矩形のデータ
-	vertexData_[0].position = { 0.0f, 360.0f, 0.0f, 1.0f };// 左下
+	vertexData_[0].position = { leftTop.x, rightBottom.y, 0.0f, 1.0f };// 左下
 	vertexData_[0].texcoord = { 0.0f,1.0f };
 	vertexData_[0].normal = { 0.0f,0.0f,-1.0f };
-	vertexData_[1].position = { 0.0f, 0.0f, 0.0f, 1.0f };// 左上
+	vertexData_[1].position = { leftTop.x, leftTop.y, 0.0f, 1.0f };// 左上
 	vertexData_[1].texcoord = { 0.0f,0.0f };
 	vertexData_[1].normal = { 0.0f,0.0f,-1.0f };
-	vertexData_[2].position = { 640.0f, 360.0f, 0.0f, 1.0f };// 右下
+	vertexData_[2].position = { rightBottom.x, rightBottom.y, 0.0f, 1.0f };// 右下
 	vertexData_[2].texcoord = { 1.0f,1.0f };
 	vertexData_[2].normal = { 0.0f,0.0f,-1.0f };
-	vertexData_[3].position = { 640.0f, 0.0f, 0.0f, 1.0f };// 右上
+	vertexData_[3].position = { rightBottom.x, leftTop.y, 0.0f, 1.0f };// 右上
 	vertexData_[3].texcoord = { 1.0f,0.0f };
 	vertexData_[3].normal = { 0.0f,0.0f,-1.0f };
 	// インデックスの情報

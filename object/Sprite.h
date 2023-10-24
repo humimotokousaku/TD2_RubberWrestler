@@ -25,7 +25,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="isBackGround">この画像を背景にするか前景にするか</param>
-	void Initialize(bool isBackGround);
+	void Initialize(Vector3 leftTop, Vector3 rightBottom,bool isBackGround);
 
 	/// <summary>
 	/// 描画処理

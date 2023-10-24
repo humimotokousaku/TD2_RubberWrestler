@@ -23,6 +23,10 @@ private:
 	Input* input_;
 
 	WorldTransform worldTransform_;
+	WorldTransform UI_worldTransform_;
+
 	Sprite* gameOver_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
 };
 

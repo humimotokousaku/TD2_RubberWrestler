@@ -28,6 +28,10 @@ private:
 	SoundData soundData1_;
 
 	WorldTransform worldTransform_;
+	WorldTransform UI_worldTransform_;
+
 	Sprite* gameClear_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
 };
 

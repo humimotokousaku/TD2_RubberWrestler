@@ -28,11 +28,6 @@ void GameScene::Initialize() {
 	// 天球
 	modelSkydome_.reset(Model::CreateModelFromObj("resources/skydome", "skydome.obj"));
 
-	// カメラの位置と向き
-	//viewProjection_.translation_.y = 11;
-	//viewProjection_.translation_.z = -40;
-	//viewProjection_.rotation_.x = 3.14f / 10.0f;
-
 	mainCamera_.translation_.y = 11;
 	mainCamera_.translation_.z = -40;
 	mainCamera_.rotation_.x = 3.14f / 10.0f;
@@ -71,6 +66,22 @@ void GameScene::Initialize() {
 	// 最初はmainカメラ
 	viewProjection_ = mainCamera_;
 	player_->SetViewProjection(&viewProjection_);
+
+
+	// UI
+	guidePad_A_ = std::make_unique<Sprite>();
+	guidePad_A_->Initialize(Vector3(0,0), Vector3(64,64),false);
+
+	guideText_Grab_ = std::make_unique<Sprite>();
+	//guideText_Grab_->Initialize(false);
+
+	guideText_Throw_ = std::make_unique<Sprite>();
+	//guideText_Throw_->Initialize(false);
+
+	for (int i = 0; i < kMaxUI; i++) {
+		UI_worldTransform_[i].Initialize();	
+	}
+	UI_worldTransform_[0].translation_ = { 0,0,0 };
 }
 
 void GameScene::Update() {
@@ -139,6 +150,10 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+	// UI
+	guidePad_A_->Draw(UI_worldTransform_[0], GUIDE_PAD_A, kBlendModeNone);
+
+	// 3Dモデル
 	player_->Draw(viewProjection_, WHITE);
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);

@@ -25,6 +25,7 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[GAMEOVER] = LoadTexture("resources/Guide/Text/gameOver.png");
 	mipImages_[GAMECLEAR] = LoadTexture("resources/Guide/Text/gameClear.png");
 	mipImages_[BACKGROUND] = LoadTexture("resources/skydome/forest.jpg");
+	mipImages_[GUIDE_PAD_A] = LoadTexture("resources/Guide/GamePad/Guide_Pad_A.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {
