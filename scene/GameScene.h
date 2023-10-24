@@ -12,6 +12,7 @@
 #include "../gameObject/Ring/Mat/RingMat.h"
 #include "../Skydome.h"
 #include "../tEmitter.h"
+#include "../gameObject/Rope.h"
 
 // object
 #include "../object/Sprite.h"
@@ -45,6 +46,8 @@ private:
 	std::unique_ptr<Model> modelFighterHead_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+	std::unique_ptr<Model> modelUvSphere_;
+	std::unique_ptr<Model> modelCube_;
 
 	// 敵の3Dモデル
 	std::unique_ptr<Model> modelEnemyBody_;
@@ -78,6 +81,13 @@ private:
 
 	const static int kMaxFollowCamera_ = 2;
 	std::unique_ptr<FollowCamera> followCamera_[kMaxFollowCamera_];
+
+
+	//ロープ
+	std::unique_ptr<Rope> bottomRope_[3];
+	std::unique_ptr<Rope> topRope_[3];
+	std::unique_ptr<Rope> rightRope_[3];
+	std::unique_ptr<Rope> leftRope_[3];
 
 	// カメラ
 	ViewProjection mainCamera_;

@@ -65,7 +65,11 @@ private:
 	// Sprite
 	Microsoft::WRL::ComPtr<ID3D12Resource> transformationMatrixResource_;
 	TransformationMatrix* transformationMatrixData_;
-
 	bool isBackGround_ = false;
 	ViewProjection viewProjection_;
+
 };
+//>>>>>>>>> Temporary merge branch 2
+//	ViewProjection viewProjection_;
+//>>>>>>>>> Temporary merge branch 2
+

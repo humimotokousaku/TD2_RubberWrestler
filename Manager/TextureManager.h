@@ -22,6 +22,7 @@ enum TextureName {
 	TITLE,
 	GAMEOVER,
 	GAMECLEAR,
+	ROPE,
 	BACKGROUND,
 	DUST,
 	REFIRE,

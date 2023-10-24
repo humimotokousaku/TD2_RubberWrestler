@@ -4,6 +4,10 @@
 #include <math.h>
 
 void Enemy::Initialize(const std::vector<Model*>& models) {
+	// 入力
+	input_ = Input::GetInstance();
+	input_->Initialize();
+
 	// 基底クラスの初期化
 	ICharacter::Initialize(models);
 	InitializeFloatingGimmick();
@@ -29,21 +33,55 @@ void Enemy::Update() {
 	// 速さ
 	const float kSpeed = 0.3f;
 	velocity_ = { 0.0f, 0.0f, kSpeed };
+	prePos_ = GetWorldPosition();
 
+	if (input_->PressKey(DIK_P)) {
+		velocity_.z = 0.8f;
+		velocity_.x = 1.1f;
+	}
+	if (input_->PressKey(DIK_R)) {
+		worldTransform_.translation_.x = 0;
+		worldTransform_.translation_.y = 0;
+		worldTransform_.translation_.z = 0;
+	}
 	// 移動ベクトルをカメラの角度だけ回転
 	velocity_ = TransformNormal(velocity_, throwDir_);
 
+	//移動処理
+	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
+	worldTransformBody_.translation_ = worldTransform_.translation_;*/
 	if (player_->GetIsThrow()) {
 		// 移動量
 		worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 	}
+	//アップデート
+	worldTransform_.UpdateMatrix();
+	worldTransformBody_.UpdateMatrix();
+	worldTransformHead_.UpdateMatrix();
+	worldTransformL_arm_.UpdateMatrix();
+	worldTransformR_arm_.UpdateMatrix();
+	
 
 	// 基底クラスの更新処理
 	ICharacter::Update();
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	ICharacter::Draw(viewProjection, textureHandle);
+	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone,{1,1,1,1});
+	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+}
+
+void Enemy::UpDateMatrix() {
+	//アップデート
+	worldTransform_.UpdateMatrix();
+	worldTransformBody_.UpdateMatrix();
+	worldTransformHead_.UpdateMatrix();
+	worldTransformL_arm_.UpdateMatrix();
+	worldTransformR_arm_.UpdateMatrix();
+	// 基底クラスの更新処理
+	ICharacter::Update();
 }
 
 void Enemy::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
@@ -88,4 +126,11 @@ Vector3 Enemy::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Enemy::Finalize() {
+	worldTransformBody_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformHead_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformL_arm_.constBuff_.ReleaseAndGetAddressOf();
+	worldTransformR_arm_.constBuff_.ReleaseAndGetAddressOf();
 }

@@ -50,6 +50,11 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	globalVariables_->AddItem(groupName, "Lariat_endFrame", lariat_.endFrame);
 
 	cameraArr_ = 0;
+
+	worldTransformBody_.UpdateMatrix();
+	worldTransformHead_.UpdateMatrix();
+	worldTransformL_arm_.UpdateMatrix();
+	worldTransformR_arm_.UpdateMatrix();
 }
 
 // Updateの関数定義
@@ -160,6 +165,7 @@ void Player::Update() {
 	ImGui::Text("enemy.translation%f  %f  %f", enemy_->GetTranslation().x, enemy_->GetTranslation().y, enemy_->GetTranslation().z);
 	ImGui::End();
 
+	worldTransform_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
