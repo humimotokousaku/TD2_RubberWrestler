@@ -1,5 +1,7 @@
 #include "GameScene.h"
 #include "../Manager/GameManager.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 void GameScene::Initialize() {
 	// シーンの切り替え
@@ -11,6 +13,7 @@ void GameScene::Initialize() {
 
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
+	mainCamera_.Initialize();
 
 	// 自機
 	modelFighterBody_.reset(Model::CreateModelFromObj("resources/float_Body", "float_Body.obj"));
@@ -19,16 +22,22 @@ void GameScene::Initialize() {
 	modelFighterR_arm_.reset(Model::CreateModelFromObj("resources/float_R_arm", "float_R_arm.obj"));
 	std::vector<Model*> playerModels = {
 		modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(),
-		modelFighterR_arm_.get()};
+		modelFighterR_arm_.get() };
 	// リングのマット
 	modelRingMat_.reset(Model::CreateModelFromObj("resources/ring", "Ground.obj"));
 	// 天球
 	modelSkydome_.reset(Model::CreateModelFromObj("resources/skydome", "skydome.obj"));
 
 	// カメラの位置と向き
-	viewProjection_.translation_.y = 11;
-	viewProjection_.translation_.z = -40;
-	viewProjection_.rotation_.x = 3.14f / 10.0f;
+	//viewProjection_.translation_.y = 11;
+	//viewProjection_.translation_.z = -40;
+	//viewProjection_.rotation_.x = 3.14f / 10.0f;
+
+	mainCamera_.translation_.y = 11;
+	mainCamera_.translation_.z = -40;
+	mainCamera_.rotation_.x = 3.14f / 10.0f;
+
+
 
 	//敵の生成
 	enemy_ = std::make_unique<Enemy>();
@@ -37,7 +46,6 @@ void GameScene::Initialize() {
 	// 自機の生成
 	player_ = std::make_unique<Player>();
 	player_->Initialize(playerModels);
-	player_->SetViewProjection(&viewProjection_);
 	player_->SetEnemy(enemy_.get());
 	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
@@ -50,10 +58,26 @@ void GameScene::Initialize() {
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize(modelSkydome_.get());
+
+	// 追従カメラの生成
+	for (int i = 0; i < kMaxFollowCamera_; i++) {
+		followCamera_[i] = std::make_unique<FollowCamera>();
+		followCamera_[i]->SetTarget(&player_->GetWorldTransform());
+	}
+
+	// 1カメ
+	followCamera_[0]->Initialize(Vector3({ 0.0f, 2.0f, -20.0f }), Vector3(0, -(float)M_PI / 3, 0));
+	// 2カメ
+	followCamera_[1]->Initialize(Vector3({ 0.0f, 2.0f, -30.0f }), Vector3((float)M_PI / 2, (float)M_PI / 2, 0));
+
+	// 最初はmainカメラ
+	viewProjection_ = mainCamera_;
+	player_->SetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {
 	viewProjection_.UpdateMatrix();
+	mainCamera_.UpdateMatrix();
 
 	// 自機
 	player_->Update();
@@ -79,6 +103,45 @@ void GameScene::Update() {
 	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
 		sceneNum = GAMEOVER_SCENE;
 	}
+
+	// Activeになっているカメラを使う
+	for (int i = 0; i < kMaxFollowCamera_; i++) {
+		if (followCamera_[i]->GetActive()) {
+			followCamera_[i]->Update();
+			viewProjection_.matView = followCamera_[i]->GetViewProjection().matView;
+			viewProjection_.matProjection = followCamera_[i]->GetViewProjection().matProjection;
+			viewProjection_ = followCamera_[i]->GetViewProjection();
+			viewProjection_.UpdateMatrix();
+			viewProjection_.TransferMatrix();
+		}
+	}
+	// どちらのカメラもActiveじゃなかったらメインカメラを使う
+	//if (!followCamera_[CAMERA1]->GetActive() && !followCamera_[CAMERA2]->GetActive()) {
+	//	viewProjection_ = mainCamera_;
+	//}
+
+	if (player_->GetCameraArr() == 0) {
+		followCamera_[CAMERA1]->SetActive(false);
+		followCamera_[CAMERA2]->SetActive(false);
+		viewProjection_ = mainCamera_;
+	}
+	if (player_->GetCameraArr() == 1) {
+		followCamera_[CAMERA2]->SetActive(false);
+		followCamera_[CAMERA1]->SetActive(true);
+	}
+	if (player_->GetCameraArr() == 2) {
+		followCamera_[CAMERA1]->SetActive(false);
+		followCamera_[CAMERA2]->SetActive(true);
+	}
+
+	//// 片方がActiveならfalseにする
+	//if (followCamera_[CAMERA1]->GetActive()) {
+	//	followCamera_[CAMERA2]->SetActive(false);
+	//}
+	//else if (followCamera_[CAMERA2]->GetActive()) {
+	//	followCamera_[CAMERA1]->SetActive(false);
+	//}
+
 }
 
 void GameScene::Draw() {
@@ -86,6 +149,14 @@ void GameScene::Draw() {
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
 	skydome_->Draw(viewProjection_, BACKGROUND);
+
+	ImGui::Begin("camera");
+	ImGui::Checkbox("isActive0", &followCamera_[0]->isActive_);
+	ImGui::Checkbox("isActive1", &followCamera_[1]->isActive_);
+	ImGui::Text("translation0:%f  %f  %f", followCamera_[0]->GetViewProjection().translation_.x, followCamera_[0]->GetViewProjection().translation_.y, followCamera_[0]->GetViewProjection().translation_.z);
+	ImGui::Text("translation1:%f  %f  %f", followCamera_[1]->GetViewProjection().translation_.x, followCamera_[1]->GetViewProjection().translation_.y, followCamera_[1]->GetViewProjection().translation_.z);
+	ImGui::Text("view.translation0:%f  %f  %f", viewProjection_.translation_.x, viewProjection_.translation_.y, viewProjection_.translation_.z);
+	ImGui::End();
 }
 
 void GameScene::Finalize() {
