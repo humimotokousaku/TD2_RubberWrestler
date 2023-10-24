@@ -89,7 +89,8 @@ public:
 	//キーボードで回転させる
 	void Rotate();
 
-	Vector3 GetVelocity() { return throwVelocity_; }
+	//投げる速度を取得する関数
+	Vector3 GetThrowVelocity() { return throwVelocity_; }
 
 	Vector3 GetPlayerBodyRotation() { return worldTransformBody_.rotation_; }
 

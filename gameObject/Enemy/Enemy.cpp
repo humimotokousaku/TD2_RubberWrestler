@@ -7,6 +7,22 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	// 基底クラスの初期化
 	ICharacter::Initialize(models);
 	InitializeFloatingGimmick();
+
+	//worldTransform_.Initialize();
+	worldTransformBody_.Initialize();
+	worldTransformHead_.Initialize();
+	worldTransformL_arm_.Initialize();
+	worldTransformR_arm_.Initialize();
+
+	// 身体のパーツの親子関係を結ぶ
+	SetParent(&GetWorldTransformBody());
+	worldTransformBody_.parent_ = &worldTransform_;
+
+	// 腕の座標指定
+	worldTransformL_arm_.translation_.x = 1.5f;
+	worldTransformR_arm_.translation_.x = -1.5f;
+	worldTransformL_arm_.translation_.y = 5.0f;
+	worldTransformR_arm_.translation_.y = 5.0f;
 }
 
 void Enemy::Update() {
@@ -61,4 +77,15 @@ void Enemy::SetParent(const WorldTransform* parent) {
 void Enemy::SetWorldTransform(WorldTransform worldTransform) {
 	worldTransform_ = worldTransform;
 	worldTransform_.translation_.x += 3;
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }

@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include <random>
 
 Matrix4x4  MakeIdentity4x4() {
 	Matrix4x4 result{};
@@ -460,6 +461,47 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 		v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
 		v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] };
 	return result;
+}
+
+//Vector3型のランダム関数
+Vector3 GetRandomVector3(float min, float max) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> dis(min, max);
+
+	Vector3 randomVector{};
+	randomVector.x = dis(gen);
+	randomVector.y = dis(gen);
+	randomVector.z = dis(gen);
+
+	return randomVector;
+}
+
+//float型のランダム関数
+float GetRandom(float min, float max) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> dis(min, max);
+
+	return dis(gen);
+}
+
+//int型のランダム関数
+int GetRandom(int min, int max) {
+	static int flag;
+
+	if (flag == 0) {
+		srand((int)time(NULL));
+		flag = 1;
+	}
+
+	return min + (int)(rand() * (max - min + 1.0) / (1.0 + RAND_MAX));
+}
+
+//スカラー倍
+Vector3 Multiply(const Vector3& v, float scalar) {
+	Vector3 num = { scalar * v.x, scalar * v.y, scalar * v.z };
+	return num;
 }
 
 float Lerp(const float& a, const float& b, float t) {

@@ -25,6 +25,8 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[GAMEOVER] = LoadTexture("resources/Guide/Text/gameOver.png");
 	mipImages_[GAMECLEAR] = LoadTexture("resources/Guide/Text/gameClear.png");
 	mipImages_[BACKGROUND] = LoadTexture("resources/skydome/forest.jpg");
+	mipImages_[DUST] = LoadTexture("resources/particle/dust/dust.png");
+	mipImages_[REFIRE] = LoadTexture("resources/particle/refire/reFire.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

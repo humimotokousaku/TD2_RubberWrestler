@@ -175,10 +175,10 @@ void Player::Update() {
 
 // Drawの関数定義
 void Player::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone);
-	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone);
-	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone);
-	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone);
+	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
 }
 
 void Player::Finalize() {
@@ -303,6 +303,8 @@ void Player::ProcessUserInput() {
 		worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 		worldTransformBody_.translation_ = worldTransform_.translation_;
 	}
+
+	Rotate();
 }
 
 /// 各ふるまいに応じた挙動と初期化ここから
@@ -446,7 +448,7 @@ void Player::ThrowEnemy() {
 	throwVelocity_ = { 0, 0, kThrowSpeed };
 
 	//速度ベクトルを自機の向きに合わせて回転させる
-	throwVelocity_ = TransformNormal(throwVelocity_, worldTransformBody_.matWorld_);
+	throwVelocity_ = TransformNormal(throwVelocity_, worldTransform_.matWorld_);
 }
 
 void Player::Rotate() {
@@ -454,10 +456,10 @@ void Player::Rotate() {
 	const float kRotSpeed = 0.3f;
 
 	// 押した方向で移動ベクトルを変更
-	if (input_->PressKey(DIK_K)) {
-		worldTransform_.rotation_.y += kRotSpeed;
+	if (input_->PressKey(DIK_Q)) {
+		worldTransformBody_.rotation_.y += kRotSpeed;
 	}
-	else if (input_->PressKey(DIK_L)) {
-		worldTransform_.rotation_.y -= kRotSpeed;
+	else if (input_->PressKey(DIK_E)) {
+		worldTransformBody_.rotation_.y -= kRotSpeed;
 	}
 }

@@ -41,7 +41,7 @@ void GameClear::Update() {
 
 void GameClear::Draw() {
 	// クリア文字
-	gameClear_->Draw(worldTransform_,GAMECLEAR, kBlendModeNone);
+	gameClear_->Draw(worldTransform_,GAMECLEAR, kBlendModeNone, { 1,1,1,1 });
 }
 
 void GameClear::Finalize() {

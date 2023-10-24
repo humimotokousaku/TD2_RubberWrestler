@@ -80,4 +80,3 @@ public:
 	Transform uvTransform_;
 	Matrix4x4 uvTransformMatrix_;
 };
-
