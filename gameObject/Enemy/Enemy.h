@@ -34,6 +34,9 @@ public:
 
 	void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
 
+	const WorldTransform& GetWorldTransformBody() { return worldTransformBody_; }
+	const WorldTransform& GetWorldTransformBase() { return worldTransform_; }
+
 	Vector3 GetTranslation() { return worldTransform_.translation_; }
 
 	void SetThrowDir(Matrix4x4 throwDir) {
@@ -62,4 +65,9 @@ private:
 	Player* player_;
 
 	Matrix4x4 throwDir_;
+
+	WorldTransform worldTransformBody_;
+	WorldTransform worldTransformHead_;
+	WorldTransform worldTransformL_arm_;
+	WorldTransform worldTransformR_arm_;
 };

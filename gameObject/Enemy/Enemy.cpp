@@ -7,6 +7,22 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	// 基底クラスの初期化
 	ICharacter::Initialize(models);
 	InitializeFloatingGimmick();
+
+	//worldTransform_.Initialize();
+	worldTransformBody_.Initialize();
+	worldTransformHead_.Initialize();
+	worldTransformL_arm_.Initialize();
+	worldTransformR_arm_.Initialize();
+
+	// 身体のパーツの親子関係を結ぶ
+	SetParent(&GetWorldTransformBody());
+	worldTransformBody_.parent_ = &worldTransform_;
+
+	// 腕の座標指定
+	worldTransformL_arm_.translation_.x = 1.5f;
+	worldTransformR_arm_.translation_.x = -1.5f;
+	worldTransformL_arm_.translation_.y = 5.0f;
+	worldTransformR_arm_.translation_.y = 5.0f;
 }
 
 void Enemy::Update() {
