@@ -26,17 +26,21 @@ public:
 	void Finalize()override;
 private:
 	Input* input_;
+	// タイトル文字の位置
 	WorldTransform worldTransform_;
-
+	// 背景の位置
+	WorldTransform backGroundWorldTransform_;
+	// UIの数
+	const static int kMaxUI = 2;
+	WorldTransform UI_worldTransform_[kMaxUI];
 
 	// タイトルの文字
 	Sprite* titleName_;
+	// 背景
+	std::unique_ptr<Sprite> backGround_;
 	// GamePadのAボタン
 	std::unique_ptr<Sprite> guidePad_A_;
 
 	// GamePadのAボタン
 	std::unique_ptr<Sprite> guideText_Press_;
-	// UIの数
-	const static int kMaxUI = 2;
-	WorldTransform UI_worldTransform_[kMaxUI];
 };

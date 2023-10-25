@@ -31,6 +31,9 @@ private:
 	// UIの数
 	const static int kMaxUI = 2;
 	WorldTransform UI_worldTransform_[kMaxUI];
+	// 背景の位置
+	WorldTransform backGroundWorldTransform_;
+
 
 	Sprite* gameClear_;
 	// GamePadのAボタン
@@ -38,5 +41,7 @@ private:
 
 	// GamePadのAボタン
 	std::unique_ptr<Sprite> guideText_Press_;
+	// 背景
+	std::unique_ptr<Sprite> backGround_;
 };
 
