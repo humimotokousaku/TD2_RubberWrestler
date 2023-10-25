@@ -47,6 +47,12 @@ public:
 	// トリガー処理
 	bool GamePadTrigger(int GAMEPAD_NUM);
 
+	// 離した瞬間
+	bool GamePadRelease(int GAMEPAD_NUM);
+
+	// 押している間
+	bool GamePadPress(int GAMEPAD_NUM);
+
 private:
 	/// 
 	/// Keyboard

@@ -118,5 +118,17 @@ private:
 
 	const double targetFPS = 120.0;
 	const double targetFrameTime = 1.0 / targetFPS;
+
+	// UIのテクスチャ
+
+    // GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
+	// つかみの文字
+	std::unique_ptr<Sprite> guideText_Grab_;
+	// 投げの文字
+	std::unique_ptr<Sprite> guideText_Throw_;
+	// UIの数
+	const static int kMaxUI = 3;
+	WorldTransform UI_worldTransform_[kMaxUI];
 };
 

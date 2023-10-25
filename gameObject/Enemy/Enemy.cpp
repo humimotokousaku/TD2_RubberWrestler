@@ -30,6 +30,8 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 
 	pairingTimeCounter_ = 0;
 	reflectionVelocity_ = { 0, 0, 0 };
+
+	worldTransform_.scale_ = { 0.9f,0.9f ,0.9f };
 }
 
 void Enemy::Update() {

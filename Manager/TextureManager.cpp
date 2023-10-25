@@ -29,6 +29,11 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[REFIRE] = LoadTexture("resources/particle/refire/reFire.png");
 	mipImages_[WHITE] = LoadTexture("resources/whiteTexture2x2.png");
 	mipImages_[ROPE] = LoadTexture("resources/Rope.png");
+	mipImages_[GUIDE_PAD_A] = LoadTexture("resources/Guide/GamePad/Guide_Pad_A.png");
+	mipImages_[RING_MAT] = LoadTexture("resources/ring/ring.png");
+	mipImages_[GUIDE_TEXT_PRESS] = LoadTexture("resources/Guide/Text/press.png");
+	mipImages_[GUIDE_TEXT_GRAB] = LoadTexture("resources/Guide/Text/grab.png");
+	mipImages_[GUIDE_TEXT_THROW] = LoadTexture("resources/Guide/Text/throw.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

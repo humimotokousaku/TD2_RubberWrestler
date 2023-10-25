@@ -6,8 +6,7 @@ void RingMat::Initialize(Model* model) {
 
 	worldTransform_.Initialize();
 
-	worldTransform_.translation_.y = -2;
-	worldTransform_.scale_ = Multiply(50.0f, worldTransform_.scale_);
+	worldTransform_.translation_.y = -6;
 }
 
 void RingMat::Update() {

@@ -113,6 +113,9 @@ public:
 	Behavior GetBehavior() { return behavior_; }
 
 	int GetCameraArr() { return cameraArr_; }
+
+	// 投げるUIを使うか
+	bool GetIsUseThrowUI() { return isUseThrowUI_; }
 private:
 	// 入力
 	Input* input_;
@@ -158,4 +161,7 @@ private:
 
 	// 使用するカメラを指定
 	int cameraArr_;
+
+	// 投げるUIを使うか
+	bool isUseThrowUI_;
 };

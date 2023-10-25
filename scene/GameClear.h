@@ -28,6 +28,19 @@ private:
 	SoundData soundData1_;
 
 	WorldTransform worldTransform_;
-	Sprite* gameClear_;
-};
+	// UIの数
+	const static int kMaxUI = 2;
+	WorldTransform UI_worldTransform_[kMaxUI];
+	// 背景の位置
+	WorldTransform backGroundWorldTransform_;
 
+
+	Sprite* gameClear_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
+
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guideText_Press_;
+	// 背景
+	std::unique_ptr<Sprite> backGround_;
+};

@@ -51,10 +51,14 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	cameraArr_ = 0;
 
+	isUseThrowUI_ = false;
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
+
+	worldTransform_.scale_ = { 0.9f,0.9f ,0.9f };
 }
 
 // Updateの関数定義
@@ -75,6 +79,7 @@ void Player::Update() {
 		case Behavior::NONE:
 			worldTransformL_arm_.rotation_ = { 0,0,0 };
 			worldTransformR_arm_.rotation_ = { 0,0,0 };
+			isUseThrowUI_ = false;
 			break;
 			// つかむ瞬間
 		case Behavior::GRAB:
@@ -97,6 +102,7 @@ void Player::Update() {
 			wait_.frame = 0;
 			wait_.endFrame = 500;
 			isThrow_ = false;
+			isUseThrowUI_ = false;
 			enemy_->SetRotation(worldTransformBody_.rotation_);
 			break;
 			// ラリアット
@@ -117,7 +123,7 @@ void Player::Update() {
 		// 移動処理
 		ProcessUserInput();
 		// Rトリガーを押したらつかむ
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || input_->TriggerKey(DIK_SPACE)) {
+		if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::GRAB;
 		}
 
@@ -132,7 +138,7 @@ void Player::Update() {
 	case Behavior::GRABING:
 		BehaviorGrabingUpdate();
 		// Rトリガーを押したら投げる
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER || input_->TriggerKey(DIK_SPACE)) {
+		if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::THROW;
 		}
 		break;
@@ -346,9 +352,10 @@ void Player::BehaviorGrabUpdate() {
 
 // つかんでいる間
 void Player::BehaviorGrabingInitialize() {
-	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
+	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 0.7f };
 	worldTransformR_arm_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransformBody_.rotation_.x = 0.0f;
+	isUseThrowUI_ = true;
 }
 void Player::BehaviorGrabingUpdate() {
 	// 移動処理
@@ -395,7 +402,7 @@ void Player::BehaviorThrowUpdate() {
 void Player::BehaviorLariatInitialize() {
 	lariat_.frame = 0;
 	lariat_.endFrame = 250;
-	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,1.2f };
+	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,0.5f };
 	isThrow_ = false;
 }
 
