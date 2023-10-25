@@ -34,6 +34,8 @@ void TextureManager::TransferTexture(const Microsoft::WRL::ComPtr<ID3D12Descript
 	mipImages_[GUIDE_TEXT_PRESS] = LoadTexture("resources/Guide/Text/press.png");
 	mipImages_[GUIDE_TEXT_GRAB] = LoadTexture("resources/Guide/Text/grab.png");
 	mipImages_[GUIDE_TEXT_THROW] = LoadTexture("resources/Guide/Text/throw.png");
+	mipImages_[GUIDE_TEXT_REFLECTION] = LoadTexture("resources/Guide/Text/reflection.png");
+	mipImages_[GUIDE_TEXT_GOAL] = LoadTexture("resources/Guide/Text/goal.png");
 
 	DirectX::TexMetadata metadata[kMaxImages]{};
 	for (uint32_t i = 0; i < kMaxImages; i++) {

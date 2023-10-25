@@ -42,13 +42,6 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	throw_.endFrame = 40;
 	lariat_.endFrame = 250;
 
-	// グループを追加
-	globalVariables_ = GlobalVariables::GetInstance();
-	GlobalVariables::GetInstance()->CreateGroup(groupName);
-	globalVariables_->AddItem(groupName, "Grab_endFrame", grab_.endFrame);
-	globalVariables_->AddItem(groupName, "Throw_endFrame", throw_.endFrame);
-	globalVariables_->AddItem(groupName, "Lariat_endFrame", lariat_.endFrame);
-
 	cameraArr_ = 0;
 
 	isUseThrowUI_ = false;
@@ -117,8 +110,6 @@ void Player::Update() {
 		behaviorRequest_ = std::nullopt;
 	}
 
-	ImGui::Begin("Player");
-
 	// 一瞬だけエフェクトを作る信号を送る
 	if (isEffectSignal_) {
 		isEffectSignal_ = false;
@@ -134,9 +125,6 @@ void Player::Update() {
 		if (input_->GamePadTrigger(XINPUT_GAMEPAD_A) || input_->TriggerKey(DIK_SPACE)) {
 			behaviorRequest_ = Behavior::GRAB;
 		}
-
-		// playerの今の状態とinfo
-		ImGui::Text("Behavior:NONE\nPRESS SPACEorR_TRIGGER");
 		break;
 		// つかむ瞬間
 	case Behavior::GRAB:
@@ -158,23 +146,12 @@ void Player::Update() {
 	case Behavior::WAITING:
 		bodyRotate_ = atan2(enemy_->GetWorldPosition().x - GetWorldPosition().x, enemy_->GetWorldPosition().z - GetWorldPosition().z);
 		worldTransformBody_.rotation_.y = bodyRotate_;
-
-		// playerの今の状態とinfo
-		ImGui::Text("Behavior:WAITING\nWaitFrame:%d", wait_.frame);
 		break;
 		// ラリアット
 	case Behavior::LARIAT:
 		BehaviorLariatUpdate();
 		break;
 	}
-
-	ImGui::DragFloat3("L_arm.rotate", &worldTransformL_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
-	ImGui::DragFloat3("R_arm.rotate", &worldTransformR_arm_.rotation_.x, 0.01f, -6.28f, 6.28f);
-	ImGui::DragFloat3("Body.rotate", &worldTransformBody_.rotation_.x, 0.01f, -6.28f, 6.28f);
-	ImGui::Text("worldTransform.translation%f  %f  %f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
-	ImGui::Text("Body.translation%f  %f  %f", worldTransformBody_.translation_.x, worldTransformBody_.translation_.y, worldTransformBody_.translation_.z);
-	ImGui::Text("enemy.translation%f  %f  %f", enemy_->GetTranslation().x, enemy_->GetTranslation().y, enemy_->GetTranslation().z);
-	ImGui::End();
 
 	worldTransform_.UpdateMatrix();
 	worldTransformBody_.UpdateMatrix();
@@ -355,9 +332,6 @@ void Player::BehaviorGrabUpdate() {
 	}
 
 	grab_.frame++;
-
-	// playerの今の状態とinfo
-	ImGui::Text("Behavior:GRAB\nGrabFrame:%d", grab_.frame);
 }
 
 // つかんでいる間
@@ -371,8 +345,6 @@ void Player::BehaviorGrabingUpdate() {
 	// 移動処理
 	ProcessUserInput();
 	tempBodyWorldTransform_ = worldTransformBody_;
-	// playerの今の状態とinfo
-	ImGui::Text("Behavior:GRABING\nPRESS SPACEorR_TRIGGER");
 }
 
 // 投げる
@@ -403,9 +375,6 @@ void Player::BehaviorThrowUpdate() {
 	}
 
 	throw_.frame++;
-
-	// playerの今の状態とinfo
-	ImGui::Text("Behavior:THROW\nThrowFrame:%d", throw_.frame);
 }
 
 // ラリアット
@@ -438,9 +407,6 @@ void Player::BehaviorLariatUpdate() {
 	}
 
 	lariat_.frame++;
-
-	// playerの今の状態とinfo
-	ImGui::Text("Behavior:LARIAT\nLariatFrame:%d", lariat_.frame);
 }
 
 /// 各ふるまいに応じた挙動と初期化ここまで
@@ -464,9 +430,6 @@ void Player::SetParent(const WorldTransform* parent) {
 }
 
 void Player::ApplyGlobalVariables() {
-	grab_.endFrame = globalVariables_->GetIntValue(groupName, "Grab_endFrame");
-	throw_.endFrame = globalVariables_->GetIntValue(groupName, "Throw_endFrame");
-	lariat_.endFrame = globalVariables_->GetIntValue(groupName, "Lariat_endFrame");
 }
 
 #pragma endregion

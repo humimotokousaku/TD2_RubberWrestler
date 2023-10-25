@@ -31,7 +31,7 @@ private:
 	// 背景の位置
 	WorldTransform backGroundWorldTransform_;
 	// UIの数
-	const static int kMaxUI = 2;
+	const static int kMaxUI = 4;
 	WorldTransform UI_worldTransform_[kMaxUI];
 
 	// タイトルの文字
@@ -41,6 +41,12 @@ private:
 	// GamePadのAボタン
 	std::unique_ptr<Sprite> guidePad_A_;
 
-	// GamePadのAボタン
+	// Press文字
 	std::unique_ptr<Sprite> guideText_Press_;
+
+	// チュートリアル
+	std::unique_ptr<Sprite> guideText_Reflection_;
+	std::unique_ptr<Sprite> guideText_Goal_;
+
+	bool isTutorial_;
 };

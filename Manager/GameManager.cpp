@@ -53,7 +53,7 @@ void GameManager::Initialize() {
 	imGuiManager_->Initialize(winApp_->GetHwnd());
 
 	// ブローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
+//	GlobalVariables::GetInstance()->LoadFiles();
 
 	sceneTransition_ = SceneTransition::GetInstance();
 	sceneTransition_->Initialize(false);
@@ -126,7 +126,7 @@ void GameManager::BeginFrame() {
 	// ImGui
 	imGuiManager_->PreDraw();
 	// グローバル変数の更新
-	GlobalVariables::GetInstance()->Update();
+	//GlobalVariables::GetInstance()->Update();
 }
 
 void GameManager::EndFrame() {
@@ -151,15 +151,5 @@ void GameManager::Finalize() {
 }
 
 void GameManager::ImGuiAdjustParameter() {
-	ImGui::Begin("CommonSettings");
-	if (ImGui::BeginTabBar("CommonTabBar"))
-	{
-		// ライトのImGui
-		if (ImGui::BeginTabItem("Half Lambert")) {
-			light_->ImGuiAdjustParameter();
-			ImGui::EndTabItem();
-		}
-		ImGui::EndTabBar();
-	}
-	ImGui::End();
+
 }

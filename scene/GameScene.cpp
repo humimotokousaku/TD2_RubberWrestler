@@ -540,14 +540,6 @@ void GameScene::Draw() {
 	for (int i = 0; i < 3; i++) {
 		leftRope_[i]->Draw(viewProjection_, ROPE);
 	}
-
-	ImGui::Begin("camera");
-	ImGui::Checkbox("isActive0", &followCamera_[0]->isActive_);
-	ImGui::Checkbox("isActive1", &followCamera_[1]->isActive_);
-	ImGui::Text("translation0:%f  %f  %f", followCamera_[0]->GetViewProjection().translation_.x, followCamera_[0]->GetViewProjection().translation_.y, followCamera_[0]->GetViewProjection().translation_.z);
-	ImGui::Text("translation1:%f  %f  %f", followCamera_[1]->GetViewProjection().translation_.x, followCamera_[1]->GetViewProjection().translation_.y, followCamera_[1]->GetViewProjection().translation_.z);
-	ImGui::Text("view.translation0:%f  %f  %f", viewProjection_.translation_.x, viewProjection_.translation_.y, viewProjection_.translation_.z);
-	ImGui::End();
 }
 
 void GameScene::Finalize() {
