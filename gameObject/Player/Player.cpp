@@ -53,6 +53,8 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	isUseThrowUI_ = false;
 
+	isEffectSignal_ = false;
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
@@ -77,6 +79,7 @@ void Player::Update() {
 		switch (behavior_) {
 			// 何もつかんでいないとき
 		case Behavior::NONE:
+			worldTransform_.rotation_.y = 0;
 			worldTransformL_arm_.rotation_ = { 0,0,0 };
 			worldTransformR_arm_.rotation_ = { 0,0,0 };
 			isUseThrowUI_ = false;
@@ -116,6 +119,11 @@ void Player::Update() {
 
 	ImGui::Begin("Player");
 
+	// 一瞬だけエフェクトを作る信号を送る
+	if (isEffectSignal_) {
+		isEffectSignal_ = false;
+	}
+
 	// 更新処理
 	switch (behavior_) {
 		// 何もつかんでいないとき
@@ -148,6 +156,8 @@ void Player::Update() {
 		break;
 		// 待機中
 	case Behavior::WAITING:
+		bodyRotate_ = atan2(enemy_->GetWorldPosition().x - GetWorldPosition().x, enemy_->GetWorldPosition().z - GetWorldPosition().z);
+		worldTransformBody_.rotation_.y = bodyRotate_;
 
 		// playerの今の状態とinfo
 		ImGui::Text("Behavior:WAITING\nWaitFrame:%d", wait_.frame);
@@ -404,16 +414,25 @@ void Player::BehaviorLariatInitialize() {
 	lariat_.endFrame = 250;
 	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,0.5f };
 	isThrow_ = false;
+	enemy_->SetParent(&GetWorldTransformBody());
 }
 
 void Player::BehaviorLariatUpdate() {
+	if (lariat_.frame == 0) {
+		isEffectSignal_ = true;
+	}
 	if (lariat_.frame == 90) {
 		cameraArr_++;
+		isEffectSignal_ = true;
 	}
 	if (lariat_.frame == 170) {
 		cameraArr_++;
+		isEffectSignal_ = true;
 	}
 	if (lariat_.frame > lariat_.endFrame) {
+		enemy_->SetParent(nullptr);
+		worldTransform_.UpdateMatrix();
+		//enemy_->SetTranslation(worldTransform_.translation_);
 		cameraArr_ = 0;
 		behaviorRequest_ = Behavior::NONE;
 	}

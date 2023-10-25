@@ -116,6 +116,10 @@ public:
 
 	// 投げるUIを使うか
 	bool GetIsUseThrowUI() { return isUseThrowUI_; }
+
+	// エフェクトを出す合図
+	bool GetIsEffectSignal() { return isEffectSignal_; }
+
 private:
 	// 入力
 	Input* input_;
@@ -164,4 +168,10 @@ private:
 
 	// 投げるUIを使うか
 	bool isUseThrowUI_;
+
+	// エフェクトを出す合図
+	bool isEffectSignal_;
+
+	// ラリアット待ちの時に敵に身体を向ける
+	float bodyRotate_;
 };

@@ -241,7 +241,7 @@ void GameScene::Update() {
 	}
 	//////////////////////////////////////////////////////////////////////////*/
 
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (player_->GetIsEffectSignal()) {
 		tEmitter_->OnCollision(enemy_->GetWorldPosition());
 	}
 

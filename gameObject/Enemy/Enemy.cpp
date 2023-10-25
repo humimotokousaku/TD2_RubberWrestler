@@ -107,7 +107,7 @@ void Enemy::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
 	worldTransform_.rotation_ = player_->GetPlayerBodyRotation();
-	worldTransform_.translation_.x = 3;
+	worldTransform_.translation_.x = 6;
 	worldTransform_.translation_.z = 0;
 }
 

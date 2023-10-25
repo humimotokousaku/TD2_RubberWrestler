@@ -37,6 +37,10 @@ void Input::Update() {
 
 	// 全キーの入力状態を取得
 	keyboard_->GetDeviceState(sizeof(key_), &key_);
+
+	// コントローラの入力取得
+	preJoyState_ = joyState_;
+	GetJoystickState(0, joyState_);
 }
 
 bool Input::TriggerKey(BYTE keyNumber) const {

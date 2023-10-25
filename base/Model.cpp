@@ -147,7 +147,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	};
 
 	// Lightingするか
-	materialData_->enableLighting = false;
+	materialData_->enableLighting = true;
 
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 
