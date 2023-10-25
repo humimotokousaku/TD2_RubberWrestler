@@ -317,10 +317,6 @@ void GameScene::Update() {
 		leftRope_[i]->Update();
 	}
 
-	//ロープの一部に力を加えてテスト
-	if (input_->TriggerKey(DIK_O)) {
-		topRope_[0]->TestSpring();
-	}
 
 	//ロープの当たり判定
 	if (enemy_->GetPairingTimeCounter() <= 0) {
