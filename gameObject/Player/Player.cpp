@@ -142,11 +142,6 @@ void Player::Update() {
 		break;
 		// 待機中
 	case Behavior::WAITING:
-		if (wait_.frame > wait_.endFrame) {
-			behaviorRequest_ = Behavior::LARIAT;
-		}
-
-		wait_.frame++;
 
 		// playerの今の状態とinfo
 		ImGui::Text("Behavior:WAITING\nWaitFrame:%d", wait_.frame);
@@ -368,6 +363,7 @@ void Player::BehaviorThrowInitialize() {
 	throw_.frame = 0;
 	throw_.endFrame = 40;
 	enemy_->SetThrowDir(worldTransformBody_.matWorld_);
+	enemy_->SetReboundCount(0);
 }
 void Player::BehaviorThrowUpdate() {
 	if (throw_.frame < throw_.endFrame) {

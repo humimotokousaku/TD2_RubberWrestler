@@ -200,6 +200,12 @@ void GameScene::Update() {
 	//敵
 	enemy_->Update();
 
+	//敵とプレイヤーの当たり判定
+	if (Distance(player_->GetWorldPosition(), enemy_->GetWorldPosition()) <= 5.0f && enemy_->GetReboundCount() == 2 && player_->GetBehavior() == Player::Behavior::WAITING) {
+		player_->SetBehaviorRequest(Player::Behavior::LARIAT);
+		enemy_->SetSpeed({0, 0, 0});
+	}
+
 	// リングのマット
 	ringMat_->Update();
 
@@ -321,7 +327,8 @@ void GameScene::Update() {
 				velocity.x = 0;
 				velocity.y = 0;
 				velocity.z = (float)ropeNode->externalForce_.z * 1.5f * -1 / powerRope;
-				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z + 10 });
+				enemy_->SetParentRope(nullptr);
+				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z + 15 });
 				bottomRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
 				if (enemy_->GetReboundCount() == enemyReboundCount) {
@@ -370,7 +377,7 @@ void GameScene::Update() {
 				velocity.y = 0;
 				velocity.z = (float)ropeNode->externalForce_.z * 1.5f * -1 / powerRope;
 				enemy_->SetParentRope(nullptr);
-				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z - 10 });
+				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z - 15 });
 				topRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
 				if (enemy_->GetReboundCount() == enemyReboundCount) {
@@ -419,7 +426,7 @@ void GameScene::Update() {
 				velocity.y = 0;
 				velocity.z = 0;
 				enemy_->SetParentRope(nullptr);
-				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x + 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
+				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x + 15, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
 				leftRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
 				if (enemy_->GetReboundCount() == enemyReboundCount) {
@@ -467,7 +474,7 @@ void GameScene::Update() {
 				velocity.y = 0;
 				velocity.z = 0;
 				enemy_->SetParentRope(nullptr);
-				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x - 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
+				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x - 15, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
 				rightRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
 				enemy_->SetPairingTimeCounter(cooldownFrame);
 				if (enemy_->GetReboundCount() == enemyReboundCount) {

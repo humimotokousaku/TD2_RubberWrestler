@@ -106,6 +106,12 @@
     <Filter Include="ヘッダー ファイル\particle">
       <UniqueIdentifier>{8bc8b20a-72dd-4ec1-baf7-909a0246a91c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\gameObject\Box">
+      <UniqueIdentifier>{b432dffa-13e0-4d99-bc47-0e83611b84d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\gameObject\Box">
+      <UniqueIdentifier>{4094c7d0-8a28-408f-b459-125e5e57f813}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -248,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="math\Vectro3.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="gameObject\Box\Box.cpp">
+      <Filter>ソース ファイル\gameObject\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="gameObject\Rope.h">
       <Filter>ヘッダー ファイル\gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="gameObject\Box\Box.h">
+      <Filter>ヘッダー ファイル\gameObject\Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

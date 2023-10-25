@@ -18,6 +18,17 @@ class Player : public ICharacter{
 public:
 	Player();
 	~Player();
+
+	// 行動パターン
+	enum class Behavior {
+		NONE,	 // 何もつかんでいない
+		GRAB,	 // つかんだ瞬間
+		GRABING, // つかんでいるとき
+		THROW,	 // 投げた瞬間
+		WAITING, // ラリアットするまでの待ち時間
+		LARIAT	 // ラリアット
+	};
+
 	/// <summary>
 	/// 初期化
 	/// <summary>
@@ -98,6 +109,8 @@ public:
 	//Matrix4x4 GetPlayerBodyRotation() { return worldTransformBody_.matWorld_; }
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+	void SetBehaviorRequest(std::optional<Behavior> behaviorRequest) { behaviorRequest_ = behaviorRequest; }
+	Behavior GetBehavior() { return behavior_; }
 
 	int GetCameraArr() { return cameraArr_; }
 private:
@@ -113,16 +126,6 @@ private:
 	WorldTransform worldTransformR_arm_;
 
 	//WorldTransform worldTransformBuffer_;
-
-	// 行動パターン
-	enum class Behavior {
-		NONE,	 // 何もつかんでいない
-		GRAB,	 // つかんだ瞬間
-		GRABING, // つかんでいるとき
-		THROW,	 // 投げた瞬間
-		WAITING, // ラリアットするまでの待ち時間
-		LARIAT	 // ラリアット
-	};
 	Behavior behavior_ = Behavior::NONE;
 	// 次の振るまいリクエスト
 	std::optional<Behavior> behaviorRequest_ = std::nullopt;

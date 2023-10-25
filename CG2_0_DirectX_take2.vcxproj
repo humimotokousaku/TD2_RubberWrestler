@@ -109,6 +109,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClCompile Include="components\light\Light.cpp" />
     <ClCompile Include="Dust.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
+    <ClCompile Include="gameObject\Box\Box.cpp" />
     <ClCompile Include="gameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="gameObject\ICharacter.cpp" />
     <ClCompile Include="gameObject\Player\Player.cpp" />
@@ -159,6 +160,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" </Command>
     <ClInclude Include="components\light\Light.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="Dust.h" />
+    <ClInclude Include="gameObject\Box\Box.h" />
     <ClInclude Include="gameObject\Enemy\Enemy.h" />
     <ClInclude Include="gameObject\ICharacter.h" />
     <ClInclude Include="gameObject\Player\Player.h" />
