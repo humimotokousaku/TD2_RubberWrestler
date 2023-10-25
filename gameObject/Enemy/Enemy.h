@@ -47,6 +47,9 @@ public:
 		throwDir_ = throwDir;
 		worldTransform_.rotation_ = player_->GetPlayerBodyRotation();
 	}
+	Matrix4x4 GetThrowDir() {
+		return throwDir_;
+	}
 
 	void SetRotation(Vector3 rotation) { worldTransform_.rotation_ = rotation; }
 

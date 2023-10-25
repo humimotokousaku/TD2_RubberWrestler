@@ -197,10 +197,6 @@ void GameScene::Update() {
 	// 自機
 	player_->Update();
 
-	Velocity_ = player_->GetThrowVelocity();
-
-	enemy_->SetVelocity(Velocity_);
-
 	//敵
 	enemy_->Update();
 
@@ -323,6 +319,9 @@ void GameScene::Update() {
 			enemy_->SetPairingTimeCounter(enemy_->GetPairingTimeCounter() + 1);
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.5f * -1 / powerRope;
+				velocity.y = 0;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.55f * -1 / powerRope;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z + 10 });
 				bottomRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
@@ -335,9 +334,6 @@ void GameScene::Update() {
 					enemy_->SetSpeed(velocity);
 				}
 				else {
-					velocity.x = (float)ropeNode->externalForce_.x * 1.0f * -1 / powerRope;
-					velocity.y = 0;
-					velocity.z = (float)ropeNode->externalForce_.z * 1.05f * -1 / powerRope;
 					enemy_->SetSpeed(velocity);
 				}
 			}
@@ -375,6 +371,9 @@ void GameScene::Update() {
 
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.5f * -1 / powerRope;
+				velocity.y = 0;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.55f * -1 / powerRope;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z - 10 });
 				topRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
@@ -387,10 +386,6 @@ void GameScene::Update() {
 					enemy_->SetSpeed(velocity);
 				}
 				else {
-					velocity.x = (float)ropeNode->externalForce_.x * 1.0f * -1 / powerRope;
-					velocity.y = 0;
-					velocity.z = (float)ropeNode->externalForce_.z * 1.05f * -1 / powerRope;
-
 					enemy_->SetSpeed(velocity);
 				}
 			}
@@ -428,6 +423,9 @@ void GameScene::Update() {
 
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.55f * -1 / powerRope;
+				velocity.y = 0;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.5f * -1 / powerRope;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x + 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
 				leftRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
@@ -440,9 +438,6 @@ void GameScene::Update() {
 					enemy_->SetSpeed(velocity);
 				}
 				else {
-					velocity.x = (float)ropeNode->externalForce_.x * 1.05f * -1 / powerRope;
-					velocity.y = 0;
-					velocity.z = (float)ropeNode->externalForce_.z * 1.0f * -1 / powerRope;
 					enemy_->SetSpeed(velocity);
 				}
 			}
@@ -479,6 +474,9 @@ void GameScene::Update() {
 
 			if (std::abs(enemy_->GetPrePosition().z - enemy_->GetWorldPosition().z) < 0.01f && enemy_->GetPairingTimeCounter() > 15) {
 				Vector3 velocity;
+				velocity.x = (float)ropeNode->externalForce_.x * 1.55f * -1 / powerRope;
+				velocity.y = 0;
+				velocity.z = (float)ropeNode->externalForce_.z * 1.5f * -1 / powerRope;
 				enemy_->SetParentRope(nullptr);
 				enemy_->SetEnemyPos({ ropeNode->worldTransform.translation_.x - enemy_->GetParentPosition().x - 10, 0, ropeNode->worldTransform.translation_.z - enemy_->GetParentPosition().z });
 				rightRope_[0]->SetSxternalForce(ropeNode, { 0, -0.1f, 0 });
@@ -491,9 +489,6 @@ void GameScene::Update() {
 					enemy_->SetSpeed(velocity);
 				}
 				else {
-					velocity.x = (float)ropeNode->externalForce_.x * 1.05f * -1 / powerRope;
-					velocity.y = 0;
-					velocity.z = (float)ropeNode->externalForce_.z * 1.0f * -1 / powerRope;
 					enemy_->SetSpeed(velocity);
 				}
 			}

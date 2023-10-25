@@ -95,8 +95,8 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_ = { 0.0f, 0.0f, 0.0f };
 			worldTransformBody_.rotation_ = tempBodyWorldTransform_.rotation_;
 			wait_.frame = 0;
-			wait_.endFrame = 120;
-			isThrow_ = true;
+			wait_.endFrame = 500;
+			isThrow_ = false;
 			enemy_->SetRotation(worldTransformBody_.rotation_);
 			break;
 			// ラリアット
@@ -382,6 +382,8 @@ void Player::BehaviorThrowUpdate() {
 		enemy_->SetParent(nullptr);
 		worldTransform_.UpdateMatrix();
 		enemy_->SetTranslation(worldTransform_.translation_);
+		// 移動ベクトルをカメラの角度だけ回転
+		enemy_->SetSpeed({ TransformNormal({ 0.0f, 0.0f, 0.3f }, enemy_->GetThrowDir()) });
 
 		// 振るまいリクエストをリセット
 		behaviorRequest_ = Behavior::WAITING;
