@@ -22,13 +22,13 @@ public:
 
 	void Draw(const ViewProjection& viewProjection, uint32_t textureHandle);
 
-	void SetPlayer(Player* player) { player_ = player; }
-	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+	static void SetPlayer(Player* player) { sPlayer_ = player; }
+	static void SetEnemy(Enemy* enemy) { sEnemy_ = enemy; }
 
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 	Model* model_;
-	Player* player_;
-	Enemy* enemy_;
+	static Player* sPlayer_;
+	static Enemy* sEnemy_;
 };

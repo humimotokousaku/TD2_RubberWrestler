@@ -72,7 +72,10 @@ private:
 
 	std::unique_ptr<Sprite> sprite_;
 
-	std::unique_ptr<Box> box_;
+	std::unique_ptr<Box> leftTopBox_;
+	std::unique_ptr<Box> leftBotBox_;
+	std::unique_ptr<Box> rightTopBox_;
+	std::unique_ptr<Box> rightBotBox_;
 
 	WorldTransform worldTransform_[2];
 

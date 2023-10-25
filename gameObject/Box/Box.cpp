@@ -10,6 +10,8 @@ Box::~Box()
 {
 }
 
+Player* Box::sPlayer_;
+Enemy* Box::sEnemy_;
 void Box::Initialize(Model* model, Vector3 pos, Vector3 size) {
 	model_ = model;
 
@@ -27,14 +29,14 @@ void Box::Update() {
 	//詳細
 	float enemyWidth = 0.5f;
 	
-	Vector3 enemyPos = enemy_->GetWorldPosition();
+	Vector3 enemyPos = sEnemy_->GetWorldPosition();
 
 	if (worldPos.x - worldTransform_.scale_.x <= enemyPos.x + enemyWidth && enemyPos.x - enemyWidth <= worldPos.x + worldTransform_.scale_.x) {
 		if (worldPos.z - worldTransform_.scale_.z <= enemyPos.z + enemyWidth && enemyPos.z - enemyWidth <= worldPos.z + worldTransform_.scale_.z) {
-			if (player_->GetBehavior() == Player::Behavior::WAITING) {
-				player_->SetBehaviorRequest(Player::Behavior::NONE);
-				enemy_->SetEnemyPos({0, 0, 0});
-				enemy_->SetSpeed({ 0, 0, 0 });
+			if (sPlayer_->GetBehavior() == Player::Behavior::WAITING) {
+				sPlayer_->SetBehaviorRequest(Player::Behavior::NONE);
+				sEnemy_->SetEnemyPos({0, 0, 0});
+				sEnemy_->SetSpeed({ 0, 0, 0 });
 			}
 		}
 	}
@@ -43,5 +45,5 @@ void Box::Update() {
 }
 
 void Box::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone, { 0,0,0,1 });
 }
