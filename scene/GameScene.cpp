@@ -519,9 +519,13 @@ void GameScene::Update() {
 
 void GameScene::Draw() {
 	// UI
-	guidePad_A_->Draw(UI_worldTransform_[0], GUIDE_PAD_A, kBlendModeNone, {1,1,1,1});
-	guideText_Grab_->Draw(UI_worldTransform_[1], GUIDE_TEXT_GRAB, kBlendModeNone, { 1,1,1,1 });
-	guideText_Throw_->Draw(UI_worldTransform_[2], GUIDE_TEXT_THROW, kBlendModeNone, { 1,1,1,1 });
+	guidePad_A_->Draw(UI_worldTransform_[0], GUIDE_PAD_A, kBlendModeNone, { 1,1,1,1 });
+	if (player_->GetIsUseThrowUI()) {
+		guideText_Throw_->Draw(UI_worldTransform_[2], GUIDE_TEXT_THROW, kBlendModeNone, { 1,1,1,1 });
+	}
+	else {
+		guideText_Grab_->Draw(UI_worldTransform_[1], GUIDE_TEXT_GRAB, kBlendModeNone, { 1,1,1,1 });
+	}
 
 	player_->Draw(viewProjection_, WHITE);
 	tEmitter_->Draw(viewProjection_);

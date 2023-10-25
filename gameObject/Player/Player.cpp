@@ -51,6 +51,8 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	cameraArr_ = 0;
 
+	isUseThrowUI_ = false;
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
@@ -75,6 +77,7 @@ void Player::Update() {
 		case Behavior::NONE:
 			worldTransformL_arm_.rotation_ = { 0,0,0 };
 			worldTransformR_arm_.rotation_ = { 0,0,0 };
+			isUseThrowUI_ = false;
 			break;
 			// つかむ瞬間
 		case Behavior::GRAB:
@@ -97,6 +100,7 @@ void Player::Update() {
 			wait_.frame = 0;
 			wait_.endFrame = 500;
 			isThrow_ = false;
+			isUseThrowUI_ = false;
 			enemy_->SetRotation(worldTransformBody_.rotation_);
 			break;
 			// ラリアット
@@ -354,6 +358,7 @@ void Player::BehaviorGrabingInitialize() {
 	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
 	worldTransformR_arm_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransformBody_.rotation_.x = 0.0f;
+	isUseThrowUI_ = true;
 }
 void Player::BehaviorGrabingUpdate() {
 	// 移動処理
