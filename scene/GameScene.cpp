@@ -188,6 +188,24 @@ void GameScene::Initialize() {
 	}
 	leftRope_[1]->SetParent(leftRope_[0].get());
 	leftRope_[2]->SetParent(leftRope_[0].get());
+
+
+	// UI
+	guidePad_A_ = std::make_unique<Sprite>();
+	guidePad_A_->Initialize(Vector3(0, 0), Vector3(64, 64), false);
+
+	guideText_Grab_ = std::make_unique<Sprite>();
+	guideText_Grab_->Initialize(Vector3(0, 0), Vector3(156, 64), false);
+
+	guideText_Throw_ = std::make_unique<Sprite>();
+	guideText_Throw_->Initialize(Vector3(0, 0), Vector3(136, 64), false);
+
+	for (int i = 0; i < kMaxUI; i++) {
+		UI_worldTransform_[i].Initialize();
+	}
+	UI_worldTransform_[0].translation_ = { 30,30,0 };
+	UI_worldTransform_[1].translation_ = { 118,30,0 };
+	UI_worldTransform_[2].translation_ = { 108,30,0 };
 }
 
 void GameScene::Update() {
@@ -225,7 +243,7 @@ void GameScene::Update() {
 	tEmitter_->Update();
 
 	// シーンの切り替え
-	if (input_->TriggerKey(DIK_RETURN)) {
+	if (input_->GamePadTrigger(XINPUT_GAMEPAD_RIGHT_SHOULDER) || input_->TriggerKey(DIK_RETURN)) {
 		SceneTransition::sceneChangeType_ = FADE_IN;
 	}
 
@@ -500,10 +518,15 @@ void GameScene::Update() {
 
 
 void GameScene::Draw() {
+	// UI
+	guidePad_A_->Draw(UI_worldTransform_[0], GUIDE_PAD_A, kBlendModeNone, {1,1,1,1});
+	guideText_Grab_->Draw(UI_worldTransform_[1], GUIDE_TEXT_GRAB, kBlendModeNone, { 1,1,1,1 });
+	guideText_Throw_->Draw(UI_worldTransform_[2], GUIDE_TEXT_THROW, kBlendModeNone, { 1,1,1,1 });
+
 	player_->Draw(viewProjection_, WHITE);
 	tEmitter_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_, WHITE);
-	ringMat_->Draw(viewProjection_, UVCHEKER);
+	ringMat_->Draw(viewProjection_, RING_MAT);
 	skydome_->Draw(viewProjection_, BACKGROUND);
 
 	for (int i = 0; i < 3; i++) {

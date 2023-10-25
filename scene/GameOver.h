@@ -23,6 +23,14 @@ private:
 	Input* input_;
 
 	WorldTransform worldTransform_;
+	// UIの数
+	const static int kMaxUI = 2;
+	WorldTransform UI_worldTransform_[kMaxUI];
+
 	Sprite* gameOver_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guidePad_A_;
+	// GamePadのAボタン
+	std::unique_ptr<Sprite> guideText_Press_;
 };
 
