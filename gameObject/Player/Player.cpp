@@ -57,6 +57,8 @@ void Player::Initialize(const std::vector<Model*>& models) {
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
 	worldTransformR_arm_.UpdateMatrix();
+
+	worldTransform_.scale_ = { 0.9f,0.9f ,0.9f };
 }
 
 // Updateの関数定義
@@ -355,7 +357,7 @@ void Player::BehaviorGrabUpdate() {
 
 // つかんでいる間
 void Player::BehaviorGrabingInitialize() {
-	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 1.5f };
+	worldTransformL_arm_.rotation_ = { 0.3f, 0.0f, 0.7f };
 	worldTransformR_arm_.rotation_ = { 0.0f,0.0f,0.0f };
 	worldTransformBody_.rotation_.x = 0.0f;
 	isUseThrowUI_ = true;
@@ -404,7 +406,7 @@ void Player::BehaviorThrowUpdate() {
 void Player::BehaviorLariatInitialize() {
 	lariat_.frame = 0;
 	lariat_.endFrame = 250;
-	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,1.2f };
+	worldTransformL_arm_.rotation_ = { 0.0f,0.0f,0.5f };
 	isThrow_ = false;
 }
 
