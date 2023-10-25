@@ -29,6 +29,7 @@ void Enemy::Initialize(const std::vector<Model*>& models) {
 	worldTransformR_arm_.translation_.y = 5.0f;
 
 	pairingTimeCounter_ = 0;
+	reflectionVelocity_ = { 0, 0, 0 };
 }
 
 void Enemy::Update() {

@@ -76,6 +76,8 @@ public:
 	inline void SetParentPosition(Vector3 pos) { parentPos_ = pos; }
 	inline Vector3 GetSpeed() { return velocity_; }
 	inline void SetSpeed(Vector3 velocity) { velocity_ = velocity; }
+	inline Vector3 GetReflectionSpeed() { return reflectionVelocity_; }
+	inline void SetReflectionSpeed(Vector3 velocity) { reflectionVelocity_ = velocity; }
 	inline bool IsParent() { return worldTransform_.parent_; }
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 	void SetEnemyPos(Vector3 pos) {
@@ -95,6 +97,7 @@ private:
 
 	//移動スピード
 	Vector3 velocity_;
+	Vector3 reflectionVelocity_;
 
 	//ロープに当たる前の位置
 	Vector3 prePos_;
