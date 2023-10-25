@@ -42,6 +42,7 @@ void GameScene::Initialize() {
 	// 天球
 	modelSkydome_.reset(Model::CreateModelFromObj("resources/skydome", "skydome.obj"));
 
+
 	// カメラの位置と向き
 	//viewProjection_.translation_.y = 11;
 	//viewProjection_.translation_.z = -40;
@@ -66,6 +67,10 @@ void GameScene::Initialize() {
 
 	player_->SetEnemy(enemy_.get());
 
+	box_ = std::make_unique<Box>();
+	box_->Initialize(modelCube_.get(), {20, 0, 10}, {10, 10, 10});
+	box_->SetPlayer(player_.get());
+	box_->SetEnemy(enemy_.get());
 
 	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
@@ -211,6 +216,9 @@ void GameScene::Update() {
 
 	// 天球
 	skydome_->Update();
+
+	//障害物
+	box_->Update();
 
 	/*//FPSを120に固定する処理///////////////////////////////////////////////////
 	auto startTime = std::chrono::high_resolution_clock::now();
@@ -501,6 +509,7 @@ void GameScene::Draw() {
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, UVCHEKER);
 	skydome_->Draw(viewProjection_, BACKGROUND);
+	box_->Draw(viewProjection_, UVCHEKER);
 
 	for (int i = 0; i < 3; i++) {
 		bottomRope_[i]->Draw(viewProjection_, ROPE);
