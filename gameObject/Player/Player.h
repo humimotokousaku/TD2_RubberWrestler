@@ -120,6 +120,8 @@ public:
 	// エフェクトを出す合図
 	bool GetIsEffectSignal() { return isEffectSignal_; }
 
+	bool GetIsFinish() { return isFinish_; }
+
 private:
 	// 入力
 	Input* input_;
@@ -174,4 +176,6 @@ private:
 
 	// ラリアット待ちの時に敵に身体を向ける
 	float bodyRotate_;
+
+	bool isFinish_;
 };

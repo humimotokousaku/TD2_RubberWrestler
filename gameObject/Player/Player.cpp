@@ -48,6 +48,8 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 	isEffectSignal_ = false;
 
+	isFinish_ = false;
+
 	worldTransformBody_.UpdateMatrix();
 	worldTransformHead_.UpdateMatrix();
 	worldTransformL_arm_.UpdateMatrix();
@@ -58,6 +60,10 @@ void Player::Initialize(const std::vector<Model*>& models) {
 
 // Updateの関数定義
 void Player::Update() {
+	if (isFinish_) {
+		isFinish_ = false;
+	}
+
 	// 基底クラスの更新処理
 	ICharacter::Update();
 
@@ -96,7 +102,7 @@ void Player::Update() {
 			worldTransformR_arm_.rotation_ = { 0.0f, 0.0f, 0.0f };
 			worldTransformBody_.rotation_ = tempBodyWorldTransform_.rotation_;
 			wait_.frame = 0;
-			wait_.endFrame = 500;
+			wait_.endFrame = 600;
 			isThrow_ = false;
 			isUseThrowUI_ = false;
 			enemy_->SetRotation(worldTransformBody_.rotation_);
@@ -144,8 +150,13 @@ void Player::Update() {
 		break;
 		// 待機中
 	case Behavior::WAITING:
+		if (wait_.frame >= wait_.endFrame) {
+			behaviorRequest_ = Behavior::NONE;
+			enemy_->SetTranslation(Vector3(0, 0, 0));
+		}
 		bodyRotate_ = atan2(enemy_->GetWorldPosition().x - GetWorldPosition().x, enemy_->GetWorldPosition().z - GetWorldPosition().z);
 		worldTransformBody_.rotation_.y = bodyRotate_;
+		wait_.frame++;
 		break;
 		// ラリアット
 	case Behavior::LARIAT:
@@ -169,10 +180,10 @@ void Player::Update() {
 
 // Drawの関数定義
 void Player::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
-	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
-	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
-	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	models_[kModelIndexBody]->Draw(worldTransformBody_, viewProjection, textureHandle, kBlendModeNone, { 0,0,1,1 });
+	models_[kModelIndexHead]->Draw(worldTransformHead_, viewProjection, textureHandle, kBlendModeNone, { 0,0,1,1 });
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, viewProjection, textureHandle, kBlendModeNone, { 1,1,0,1 });
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, viewProjection, textureHandle, kBlendModeNone, { 0,0,1,1 });
 }
 
 void Player::Finalize() {
@@ -298,7 +309,19 @@ void Player::ProcessUserInput() {
 		worldTransformBody_.translation_ = worldTransform_.translation_;
 	}
 
-	Rotate();
+	//Rotate();
+	if (worldTransform_.translation_.x >= 20.001f) {
+		worldTransform_.translation_.x = 20;
+	}
+	if (worldTransform_.translation_.x <= -20.001f) {
+		worldTransform_.translation_.x = -20;
+	}
+	if (worldTransform_.translation_.z >= 20.001f) {
+		worldTransform_.translation_.z = 20;
+	}
+	if (worldTransform_.translation_.z <= -20.001f) {
+		worldTransform_.translation_.z = -20;
+	}
 }
 
 /// 各ふるまいに応じた挙動と初期化ここから
@@ -403,6 +426,7 @@ void Player::BehaviorLariatUpdate() {
 		worldTransform_.UpdateMatrix();
 		//enemy_->SetTranslation(worldTransform_.translation_);
 		cameraArr_ = 0;
+		isFinish_ = true;
 		behaviorRequest_ = Behavior::NONE;
 	}
 

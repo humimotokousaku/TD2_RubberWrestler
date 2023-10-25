@@ -8,15 +8,15 @@ void GameClear::Initialize() {
 	// 基本機能
 	input_ = Input::GetInstance();
 	input_->Initialize();
-	HRESULT result;
-	// Xaudio2エンジンのインスタンスを生成
-	result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	// マスターボイスを生成
-	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
-	// 音声読み込み
-	soundData1_ = audio_->SoundLoadWave("resources/fanfare.wav");
-	// 音声再生
-	audio_->SoundPlayWave(xAudio2_.Get(), soundData1_);
+	//HRESULT result;
+	//// Xaudio2エンジンのインスタンスを生成
+	//result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	//// マスターボイスを生成
+	//result = xAudio2_->CreateMasteringVoice(&masterVoice_);
+	//// 音声読み込み
+	//soundData1_ = audio_->SoundLoadWave("resources/fanfare.wav");
+	//// 音声再生
+	//audio_->SoundPlayWave(xAudio2_.Get(), soundData1_);
 
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();

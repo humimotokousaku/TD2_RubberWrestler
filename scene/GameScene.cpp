@@ -66,6 +66,16 @@ void GameScene::Initialize() {
 
 	player_->SetEnemy(enemy_.get());
 
+	leftTopBox_ = std::make_unique<Box>();
+	leftBotBox_ = std::make_unique<Box>();
+	rightTopBox_ = std::make_unique<Box>();
+	rightBotBox_ = std::make_unique<Box>();
+	leftTopBox_->Initialize(modelCube_.get(), { -20, 0, 20 }, { 2, 10, 2 });
+	leftBotBox_->Initialize(modelCube_.get(), { -20, 0, -20 }, { 2, 10, 2 });
+	rightTopBox_->Initialize(modelCube_.get(), { 20, 0, 20 }, { 2, 10, 2 });
+	rightBotBox_->Initialize(modelCube_.get(), { 20, 0, -20 }, { 2, 10, 2 });
+	Box::SetPlayer(player_.get());
+	Box::SetEnemy(enemy_.get());
 
 	//player_->SetEnemyPearent(&enemy_->GetWorldTransform());
 
@@ -220,7 +230,7 @@ void GameScene::Update() {
 	//敵とプレイヤーの当たり判定
 	if (Distance(player_->GetWorldPosition(), enemy_->GetWorldPosition()) <= 5.0f && enemy_->GetReboundCount() == 2 && player_->GetBehavior() == Player::Behavior::WAITING) {
 		player_->SetBehaviorRequest(Player::Behavior::LARIAT);
-		enemy_->SetSpeed({0, 0, 0});
+		enemy_->SetSpeed({ 0, 0, 0 });
 	}
 
 	// リングのマット
@@ -228,6 +238,12 @@ void GameScene::Update() {
 
 	// 天球
 	skydome_->Update();
+
+	//障害物
+	leftTopBox_->Update();
+	leftBotBox_->Update();
+	rightTopBox_->Update();
+	rightBotBox_->Update();
 
 	/*//FPSを120に固定する処理///////////////////////////////////////////////////
 	auto startTime = std::chrono::high_resolution_clock::now();
@@ -248,12 +264,12 @@ void GameScene::Update() {
 	tEmitter_->Update();
 
 	// シーンの切り替え
-	if (input_->GamePadTrigger(XINPUT_GAMEPAD_RIGHT_SHOULDER) || input_->TriggerKey(DIK_RETURN)) {
+	if (player_->GetIsFinish()) {
 		SceneTransition::sceneChangeType_ = FADE_IN;
 	}
 
 	if (SceneTransition::GetInstance()->GetSceneChangeSignal()) {
-		sceneNum = GAMEOVER_SCENE;
+		sceneNum = GAMECLEAR_SCENE;
 	}
 
 	// Activeになっているカメラを使う
@@ -526,7 +542,12 @@ void GameScene::Draw() {
 	tEmitter_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_, WHITE);
 	ringMat_->Draw(viewProjection_, RING_MAT);
-	skydome_->Draw(viewProjection_, BACKGROUND);
+	skydome_->Draw(viewProjection_, WHITE);
+
+	leftTopBox_->Draw(viewProjection_, WHITE);
+	leftBotBox_->Draw(viewProjection_, WHITE);
+	rightTopBox_->Draw(viewProjection_, WHITE);
+	rightBotBox_->Draw(viewProjection_, WHITE);
 
 	for (int i = 0; i < 3; i++) {
 		bottomRope_[i]->Draw(viewProjection_, ROPE);

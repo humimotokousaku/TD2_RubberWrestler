@@ -15,5 +15,5 @@ void Skydome::Update() {
 }
 
 void Skydome::Draw(const ViewProjection& viewProjection, uint32_t textureHandle) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone, { 1,1,1,1 });
+	model_->Draw(worldTransform_, viewProjection, textureHandle, kBlendModeNone, { 1,0.1f,0,1 });
 }
