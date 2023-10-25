@@ -11,7 +11,6 @@ GameManager::GameManager() {
 }
 
 void GameManager::Initialize() {
-
 	const char kWindowTitle[] = "2121_ゴム・レスラー";
 	// タイトルバーの変換
 	auto&& titleString = ConvertString(kWindowTitle);

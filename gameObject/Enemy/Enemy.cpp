@@ -38,16 +38,6 @@ void Enemy::Update() {
 	// 速さ
 	prePos_ = GetWorldPosition();
 
-	if (input_->PressKey(DIK_P)) {
-		velocity_.z = 0.8f;
-		velocity_.x = 1.1f;
-	}
-	if (input_->PressKey(DIK_R)) {
-		worldTransform_.translation_.x = 0;
-		worldTransform_.translation_.y = 0;
-		worldTransform_.translation_.z = 0;
-	}
-
 	//移動処理
 	/*worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 	worldTransformBody_.translation_ = worldTransform_.translation_;*/

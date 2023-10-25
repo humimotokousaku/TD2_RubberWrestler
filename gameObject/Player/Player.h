@@ -178,4 +178,8 @@ private:
 	float bodyRotate_;
 
 	bool isFinish_;
+
+	float e2bR;
+	float e2bX;
+	float e2bZ;
 };
